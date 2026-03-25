@@ -12,9 +12,10 @@ import {
   LogOut,
   Leaf,
   ChevronRight,
+  X,
 } from "lucide-react";
 import clsx from "clsx";
-import { useState } from "react";
+import { useSidebar } from "@/store/sidebarContext";
 
 const NAV = [
   {
@@ -38,7 +39,7 @@ const NAV = [
 export function AdminSidebar() {
   const pathname = usePathname();
   const router = useRouter();
-  const [collapsed, setCollapsed] = useState(false);
+  const { collapsed, setCollapsed, toggle } = useSidebar();
 
   const handleLogout = () => {
     localStorage.removeItem("adminAuth");
@@ -49,12 +50,21 @@ export function AdminSidebar() {
   return (
     <aside
       className={clsx(
-        "bg-brand-dark text-white flex flex-col transition-all duration-300 shrink-0",
-        collapsed ? "w-16" : "w-64",
+        "bg-brand-dark text-white flex flex-col transition-all duration-300 shrink-0 fixed lg:relative inset-y-0 left-0 z-40",
+        collapsed
+          ? "w-16 -translate-x-full lg:translate-x-0"
+          : "w-64 translate-x-0",
       )}
     >
       {/* Logo */}
       <div className="flex items-center gap-3 px-4 py-5 border-b border-white/10">
+        {/* Close button for mobile */}
+        <button
+          onClick={toggle}
+          className="lg:hidden p-1 rounded-lg hover:bg-white/10 transition-colors"
+        >
+          <X size={18} />
+        </button>
         <div className="w-8 h-8 rounded-xl bg-brand-pink/20 flex items-center justify-center shrink-0">
           <Leaf size={16} className="text-brand-pink" />
         </div>
@@ -69,8 +79,8 @@ export function AdminSidebar() {
           </div>
         )}
         <button
-          onClick={() => setCollapsed(!collapsed)}
-          className="ml-auto p-1 rounded-lg hover:bg-white/10 transition-colors"
+          onClick={toggle}
+          className="ml-auto p-1 rounded-lg hover:bg-white/10 transition-colors hidden lg:block"
         >
           <ChevronRight
             size={14}

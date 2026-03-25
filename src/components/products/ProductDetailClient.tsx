@@ -10,6 +10,8 @@ import {
   RotateCcw,
   ChevronDown,
   ChevronUp,
+  ChevronLeft,
+  ChevronRight,
   Loader2,
 } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
@@ -41,7 +43,22 @@ export function ProductDetailClient({ slug }: { slug: string }) {
   const [loading, setLoading] = useState(true);
   const [qty, setQty] = useState(1);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { addItem } = useCartStore();
+
+  const images = product?.images || [];
+
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % images.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  const goToImage = (index: number) => {
+    setCurrentImageIndex(index);
+  };
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -135,60 +152,106 @@ export function ProductDetailClient({ slug }: { slug: string }) {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Image */}
+          {/* Image Gallery with Carousel */}
           <div className="space-y-4">
-            <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-brand-cream to-white h-96 flex items-center justify-center shadow-card">
+            <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-brand-cream to-white h-96 md:h-[500px] flex items-center justify-center shadow-card">
               {discount > 0 && (
-                <span className="absolute top-4 left-4 badge bg-brand-pink text-white text-sm px-4 py-1.5">
+                <span className="absolute top-4 left-4 z-10 badge bg-brand-pink text-white text-sm px-4 py-1.5">
                   {discount}% OFF
                 </span>
               )}
               {product.tags?.[0] && (
-                <span className="absolute top-4 right-4 badge bg-brand-green text-white text-sm px-4 py-1.5 capitalize">
+                <span className="absolute top-4 right-4 z-10 badge bg-brand-green text-white text-sm px-4 py-1.5 capitalize">
                   {product.tags[0]}
                 </span>
               )}
-              <div className="text-center animate-float">
-                {product.images?.[0] ? (
+
+              {/* Main Image */}
+              <div className="w-full h-full relative">
+                {images.length > 0 ? (
                   <img
-                    src={product.images[0]}
-                    alt={product.name}
-                    className="w-full h-full object-cover rounded-2xl"
+                    src={images[currentImageIndex]}
+                    alt={`${product.name} - Image ${currentImageIndex + 1}`}
+                    className="w-full h-full object-cover"
                   />
                 ) : (
-                  <>
+                  <div className="w-full h-full flex flex-col items-center justify-center">
                     <div className="text-9xl mb-4">🫓</div>
                     <div className="text-sm text-gray-400 font-medium">
                       {product.weight}
                     </div>
-                  </>
+                  </div>
                 )}
               </div>
+
+              {/* Carousel Navigation Arrows */}
+              {images.length > 1 && (
+                <>
+                  <button
+                    onClick={prevImage}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white shadow-lg flex items-center justify-center text-brand-dark hover:text-brand-pink transition-colors z-10"
+                    aria-label="Previous image"
+                  >
+                    <ChevronLeft size={20} />
+                  </button>
+                  <button
+                    onClick={nextImage}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white shadow-lg flex items-center justify-center text-brand-dark hover:text-brand-pink transition-colors z-10"
+                    aria-label="Next image"
+                  >
+                    <ChevronRight size={20} />
+                  </button>
+                </>
+              )}
+
+              {/* Image Counter */}
+              {images.length > 1 && (
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/60 text-white text-xs px-3 py-1 rounded-full z-10">
+                  {currentImageIndex + 1} / {images.length}
+                </div>
+              )}
             </div>
+
             {/* Thumbnail row */}
-            <div className="flex gap-3">
-              {product.images?.length && product.images.length > 1
-                ? product.images.map((img, i) => (
-                    <div
-                      key={i}
-                      className="w-20 h-20 rounded-2xl bg-gradient-to-br from-brand-cream to-white flex items-center justify-center text-3xl cursor-pointer border-2 border-transparent hover:border-brand-pink transition-colors overflow-hidden"
-                    >
-                      <img
-                        src={img}
-                        alt={`${product.name} ${i + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  ))
-                : [1, 2, 3].map((i) => (
-                    <div
-                      key={i}
-                      className="w-20 h-20 rounded-2xl bg-gradient-to-br from-brand-cream to-white flex items-center justify-center text-3xl cursor-pointer border-2 border-transparent hover:border-brand-pink transition-colors"
-                    >
-                      🫓
-                    </div>
-                  ))}
-            </div>
+            {images.length > 1 && (
+              <div className="flex gap-3 overflow-x-auto pb-2">
+                {images.map((img, i) => (
+                  <button
+                    key={i}
+                    onClick={() => goToImage(i)}
+                    className={`w-16 h-16 md:w-20 md:h-20 rounded-xl flex-shrink-0 overflow-hidden border-2 transition-all ${
+                      i === currentImageIndex
+                        ? "border-brand-pink shadow-md"
+                        : "border-transparent hover:border-gray-300"
+                    }`}
+                  >
+                    <img
+                      src={img}
+                      alt={`${product.name} thumbnail ${i + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* Dot Indicators (Mobile) */}
+            {images.length > 1 && (
+              <div className="flex justify-center gap-2 md:hidden">
+                {images.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => goToImage(i)}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      i === currentImageIndex
+                        ? "bg-brand-pink w-6"
+                        : "bg-gray-300"
+                    }`}
+                    aria-label={`Go to image ${i + 1}`}
+                  />
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Info */}

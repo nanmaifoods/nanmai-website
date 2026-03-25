@@ -197,7 +197,7 @@ export default function AdminProductsPage() {
     edit: null,
   });
   const [form, setForm] = useState<ProductForm>(EMPTY_FORM);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [uploading, setUploading] = useState(false);
 
   // Fetch products from Supabase in live mode
@@ -227,26 +227,31 @@ export default function AdminProductsPage() {
 
   const openNew = () => {
     setForm(EMPTY_FORM);
-    setImagePreview(null);
+    setImagePreviews([]);
     setModal({ open: true, edit: null });
   };
 
   const openEdit = (p: Product) => {
     const { id, created_at, ...rest } = p;
     setForm(rest);
-    setImagePreview(p.images?.[0] || null);
+    setImagePreviews(p.images || []);
     setModal({ open: true, edit: p });
   };
 
   const closeModal = () => {
     setModal({ open: false, edit: null });
     setForm(EMPTY_FORM);
-    setImagePreview(null);
+    setImagePreviews([]);
   };
 
   const handleSave = async () => {
     if (!form.name || !form.price) {
       toast.error("Please fill in required fields");
+      return;
+    }
+
+    if (!form.images || form.images.length === 0) {
+      toast.error("Please upload at least 1 product image");
       return;
     }
 
@@ -400,36 +405,64 @@ export default function AdminProductsPage() {
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    // Check if we can add more images (max 4)
+    if (imagePreviews.length >= 4) {
+      toast.error("Maximum 4 images allowed");
+      return;
+    }
 
     if (isTest) {
-      // Create a local URL for preview
-      const url = URL.createObjectURL(file);
-      setImagePreview(url);
-      toast.success("Image selected (test mode)");
+      // Create local URLs for preview
+      const newUrls = Array.from(files).map((file) =>
+        URL.createObjectURL(file),
+      );
+      const remainingSlots = 4 - imagePreviews.length;
+      const urlsToAdd = newUrls.slice(0, remainingSlots);
+      setImagePreviews([...imagePreviews, ...urlsToAdd]);
+      setForm((prev) => ({
+        ...prev,
+        images: [...imagePreviews, ...urlsToAdd],
+      }));
+      toast.success(`${urlsToAdd.length} image(s) selected (test mode)`);
     } else {
       setUploading(true);
       try {
-        const fileExt = file.name.split(".").pop();
-        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-        const filePath = `products/${fileName}`;
+        const newUrls: string[] = [];
 
-        const { data, error } = await supabase.storage
-          .from("product-images")
-          .upload(filePath, file);
+        for (
+          let i = 0;
+          i < Math.min(files.length, 4 - imagePreviews.length);
+          i++
+        ) {
+          const file = files[i];
+          const fileExt = file.name.split(".").pop();
+          const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+          const filePath = `products/${fileName}`;
 
-        if (error) {
-          throw error;
+          const { data, error } = await supabase.storage
+            .from("product-images")
+            .upload(filePath, file);
+
+          if (error) {
+            throw error;
+          }
+
+          const { data: urlData } = supabase.storage
+            .from("product-images")
+            .getPublicUrl(filePath);
+
+          newUrls.push(urlData.publicUrl);
         }
 
-        const { data: urlData } = supabase.storage
-          .from("product-images")
-          .getPublicUrl(filePath);
-
-        setImagePreview(urlData.publicUrl);
-        setForm((prev) => ({ ...prev, images: [urlData.publicUrl] }));
-        toast.success("Image uploaded successfully!");
+        setImagePreviews([...imagePreviews, ...newUrls]);
+        setForm((prev) => ({
+          ...prev,
+          images: [...imagePreviews, ...newUrls],
+        }));
+        toast.success(`${newUrls.length} image(s) uploaded successfully!`);
       } catch (err) {
         console.error("Upload error:", err);
         toast.error(
@@ -439,6 +472,13 @@ export default function AdminProductsPage() {
         setUploading(false);
       }
     }
+  };
+
+  const removeImage = (index: number) => {
+    const newPreviews = imagePreviews.filter((_, i) => i !== index);
+    setImagePreviews(newPreviews);
+    setForm((prev) => ({ ...prev, images: newPreviews }));
+    toast.success("Image removed");
   };
 
   const filtered = products.filter((p) =>
@@ -595,40 +635,62 @@ export default function AdminProductsPage() {
               {/* Image Upload */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-                  Product Image
+                  Product Images (1-4) <span className="text-red-500">*</span>
                 </label>
-                <div className="flex items-center gap-4">
-                  <div className="w-24 h-24 rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden border-2 border-dashed border-gray-300">
-                    {imagePreview ? (
+                <div className="flex flex-wrap gap-3">
+                  {imagePreviews.map((preview, index) => (
+                    <div
+                      key={index}
+                      className="relative w-20 h-20 rounded-xl bg-gray-100 overflow-hidden border-2 border-gray-200"
+                    >
                       <img
-                        src={imagePreview}
-                        alt="Preview"
+                        src={preview}
+                        alt={`Preview ${index + 1}`}
                         className="w-full h-full object-cover"
                       />
-                    ) : (
-                      <ImageIcon size={32} className="text-gray-400" />
-                    )}
-                  </div>
-                  <label className="cursor-pointer">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      className="hidden"
-                      disabled={uploading}
-                    />
-                    <span
-                      className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium ${uploading ? "bg-gray-100 text-gray-400" : "bg-brand-pink text-white hover:bg-opacity-90"} transition-colors`}
-                    >
-                      {uploading ? (
-                        <Loader2 size={16} className="animate-spin" />
-                      ) : (
-                        <Upload size={16} />
+                      <button
+                        type="button"
+                        onClick={() => removeImage(index)}
+                        className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors"
+                      >
+                        <X size={12} />
+                      </button>
+                      {index === 0 && (
+                        <span className="absolute bottom-0 left-0 right-0 bg-brand-pink/80 text-white text-[10px] text-center py-0.5 font-medium">
+                          Main
+                        </span>
                       )}
-                      {uploading ? "Uploading..." : "Upload Image"}
-                    </span>
-                  </label>
+                    </div>
+                  ))}
+                  {imagePreviews.length < 4 && (
+                    <label className="w-20 h-20 rounded-xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:border-brand-pink hover:bg-brand-pink/5 transition-colors">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        onChange={handleImageUpload}
+                        className="hidden"
+                        disabled={uploading}
+                      />
+                      {uploading ? (
+                        <Loader2
+                          size={20}
+                          className="text-gray-400 animate-spin"
+                        />
+                      ) : (
+                        <>
+                          <Upload size={20} className="text-gray-400" />
+                          <span className="text-[10px] text-gray-400 mt-1">
+                            {4 - imagePreviews.length} left
+                          </span>
+                        </>
+                      )}
+                    </label>
+                  )}
                 </div>
+                <p className="text-xs text-gray-500 mt-2">
+                  Upload 1-4 images. First image will be the main product image.
+                </p>
               </div>
 
               <div>

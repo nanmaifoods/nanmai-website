@@ -1,7 +1,8 @@
 "use client";
-import { Bell, Search, LogOut } from "lucide-react";
+import { Bell, Search, LogOut, Menu } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useAdminMode } from "@/store/adminModeContext";
+import { useSidebar } from "@/store/sidebarContext";
 
 const PAGE_TITLES: Record<string, string> = {
   "/admin": "Dashboard",
@@ -17,6 +18,7 @@ export function AdminHeader() {
   const router = useRouter();
   const title = PAGE_TITLES[pathname] || "Admin";
   const { mode, setMode, isTest } = useAdminMode();
+  const { toggle } = useSidebar();
 
   const handleLogout = () => {
     localStorage.removeItem("adminAuth");
@@ -27,6 +29,14 @@ export function AdminHeader() {
   return (
     <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between gap-4">
       <div className="flex items-center gap-4">
+        {/* Hamburger Menu Toggle */}
+        <button
+          onClick={toggle}
+          className="p-2 rounded-lg hover:bg-gray-100 transition-colors lg:hidden"
+          title="Toggle Sidebar"
+        >
+          <Menu size={20} className="text-gray-600" />
+        </button>
         <h1 className="font-bold text-xl text-brand-dark">{title}</h1>
 
         {/* Test/Live Toggle */}
