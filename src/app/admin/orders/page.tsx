@@ -155,8 +155,9 @@ export default function AdminOrdersPage() {
       setOrders((prev) =>
         prev.map((o) => (o.id === orderId ? { ...o, status } : o)),
       );
-      if (selected?.id === orderId)
-        setSelected((prev) => ({ ...prev, status }));
+      if (selected?.id === orderId && selected) {
+        setSelected({ ...selected, status });
+      }
     } else {
       try {
         const res = await fetch(`/api/orders/${orderId}`, {
@@ -168,8 +169,9 @@ export default function AdminOrdersPage() {
           setOrders((prev) =>
             prev.map((o) => (o.id === orderId ? { ...o, status } : o)),
           );
-          if (selected?.id === orderId)
-            setSelected((prev) => ({ ...prev, status }));
+          if (selected?.id === orderId && selected) {
+            setSelected({ ...selected, status });
+          }
         }
       } catch (err) {
         console.error("Error updating status:", err);
