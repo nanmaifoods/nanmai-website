@@ -1,5 +1,5 @@
 "use client";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   ShoppingCart,
   Star,
@@ -7,160 +7,12 @@ import {
   X,
   Search,
   SlidersHorizontal,
+  Loader2,
 } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
 import { Product } from "@/types/database";
 import toast from "react-hot-toast";
 import Link from "next/link";
-
-const ALL_PRODUCTS: Product[] = [
-  {
-    id: "1",
-    created_at: "",
-    name: "Classic Appalam",
-    slug: "classic-appalam",
-    description:
-      "The original crispy traditional South Indian papad, thin and light.",
-    price: 149,
-    original_price: 199,
-    images: [],
-    category: "classic",
-    weight: "200g",
-    stock: 50,
-    is_active: true,
-    is_featured: true,
-    tags: ["bestseller"],
-    ingredients: null,
-    nutritional_info: null,
-  },
-  {
-    id: "2",
-    created_at: "",
-    name: "Garlic Appalam",
-    slug: "garlic-appalam",
-    description:
-      "Infused with the rich aroma of fresh garlic for bold flavour.",
-    price: 179,
-    original_price: 229,
-    images: [],
-    category: "flavoured",
-    weight: "200g",
-    stock: 40,
-    is_active: true,
-    is_featured: true,
-    tags: ["popular"],
-    ingredients: null,
-    nutritional_info: null,
-  },
-  {
-    id: "3",
-    created_at: "",
-    name: "Pepper Appalam",
-    slug: "pepper-appalam",
-    description: "Studded with coarsely ground black pepper for a spicy kick.",
-    price: 179,
-    original_price: 219,
-    images: [],
-    category: "flavoured",
-    weight: "200g",
-    stock: 35,
-    is_active: true,
-    is_featured: false,
-    tags: ["spicy"],
-    ingredients: null,
-    nutritional_info: null,
-  },
-  {
-    id: "4",
-    created_at: "",
-    name: "Cumin Appalam",
-    slug: "cumin-appalam",
-    description: "Fragrant with roasted cumin seeds, a family favourite.",
-    price: 169,
-    original_price: 209,
-    images: [],
-    category: "flavoured",
-    weight: "200g",
-    stock: 45,
-    is_active: true,
-    is_featured: false,
-    tags: ["aromatic"],
-    ingredients: null,
-    nutritional_info: null,
-  },
-  {
-    id: "5",
-    created_at: "",
-    name: "Mini Appalam",
-    slug: "mini-appalam",
-    description: "Bite-sized minis, perfect for snacking and party platters.",
-    price: 129,
-    original_price: 159,
-    images: [],
-    category: "mini",
-    weight: "150g",
-    stock: 60,
-    is_active: true,
-    is_featured: false,
-    tags: ["snack"],
-    ingredients: null,
-    nutritional_info: null,
-  },
-  {
-    id: "6",
-    created_at: "",
-    name: "Jumbo Pack",
-    slug: "jumbo-pack",
-    description: "Our biggest pack – great value for large families.",
-    price: 449,
-    original_price: 599,
-    images: [],
-    category: "packs",
-    weight: "1kg",
-    stock: 20,
-    is_active: true,
-    is_featured: true,
-    tags: ["value"],
-    ingredients: null,
-    nutritional_info: null,
-  },
-  {
-    id: "7",
-    created_at: "",
-    name: "Mixed Flavour Pack",
-    slug: "mixed-flavour-pack",
-    description: "Sample all our flavours in one convenient combo pack.",
-    price: 349,
-    original_price: 449,
-    images: [],
-    category: "packs",
-    weight: "600g",
-    stock: 30,
-    is_active: true,
-    is_featured: false,
-    tags: ["combo"],
-    ingredients: null,
-    nutritional_info: null,
-  },
-  {
-    id: "8",
-    created_at: "",
-    name: "Chilli Appalam",
-    slug: "chilli-appalam",
-    description: "For the spice lovers – extra fiery red chilli infused papad.",
-    price: 189,
-    original_price: 229,
-    images: [],
-    category: "flavoured",
-    weight: "200g",
-    stock: 25,
-    is_active: true,
-    is_featured: false,
-    tags: ["spicy", "new"],
-    ingredients: null,
-    nutritional_info: null,
-  },
-];
 
 const CATEGORIES = ["all", "classic", "flavoured", "mini", "packs"];
 const SORT_OPTIONS = [
@@ -188,18 +40,26 @@ function ProductCard({ product }: { product: Product }) {
               {discount}% OFF
             </span>
           )}
-          {product.tags[0] && (
+          {product.tags?.[0] && (
             <span className="absolute top-3 right-3 badge bg-brand-green text-white z-10 text-xs capitalize">
               {product.tags[0]}
             </span>
           )}
           <div className="w-full h-full flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
-            <div className="text-center">
-              <div className="text-6xl mb-2">🫓</div>
-              <div className="text-xs text-gray-400 font-medium">
-                {product.weight}
+            {product.images?.[0] ? (
+              <img
+                src={product.images[0]}
+                alt={product.name}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="text-center">
+                <div className="text-6xl mb-2">🫓</div>
+                <div className="text-xs text-gray-400 font-medium">
+                  {product.weight}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </Link>
@@ -259,14 +119,37 @@ function ProductCard({ product }: { product: Product }) {
 }
 
 export function ProductsClientPage() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState("all");
   const [sort, setSort] = useState("default");
   const [search, setSearch] = useState("");
   const [mobileFilter, setMobileFilter] = useState(false);
   const [maxPrice, setMaxPrice] = useState(1000);
 
+  // Fetch products from Supabase
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch("/api/products");
+        const data = await res.json();
+        if (data.products) {
+          setProducts(data.products);
+        }
+      } catch (err) {
+        console.error("Error fetching products:", err);
+        toast.error("Failed to load products");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   const filtered = useMemo(() => {
-    let list = ALL_PRODUCTS.filter((p) => p.is_active);
+    let list = products.filter((p) => p.is_active);
     if (category !== "all") list = list.filter((p) => p.category === category);
     if (search)
       list = list.filter((p) =>
@@ -279,8 +162,13 @@ export function ProductsClientPage() {
       list = [...list].sort((a, b) => b.price - a.price);
     if (sort === "name-asc")
       list = [...list].sort((a, b) => a.name.localeCompare(b.name));
+    // Featured items first for default sort
+    if (sort === "default")
+      list = [...list].sort(
+        (a, b) => (b.is_featured ? 1 : 0) - (a.is_featured ? 1 : 0),
+      );
     return list;
-  }, [category, sort, search, maxPrice]);
+  }, [products, category, sort, search, maxPrice]);
 
   return (
     <div className="min-h-screen bg-white">
@@ -408,9 +296,24 @@ export function ProductsClientPage() {
           {/* Product Grid */}
           <div className="flex-1">
             <p className="text-sm text-gray-500 mb-5">
-              {filtered.length} products found
+              {loading ? (
+                <span className="flex items-center gap-2">
+                  <Loader2 size={16} className="animate-spin" /> Loading
+                  products...
+                </span>
+              ) : (
+                `${filtered.length} products found`
+              )}
             </p>
-            {filtered.length === 0 ? (
+            {loading ? (
+              <div className="text-center py-20">
+                <Loader2
+                  size={32}
+                  className="animate-spin text-brand-pink mx-auto mb-4"
+                />
+                <p className="text-gray-500">Loading products...</p>
+              </div>
+            ) : filtered.length === 0 ? (
               <div className="text-center py-20">
                 <div className="text-5xl mb-4">😢</div>
                 <p className="text-gray-500">No products match your filters.</p>

@@ -1,4 +1,5 @@
 "use client";
+import { useState, useEffect } from "react";
 import {
   TrendingUp,
   ShoppingBag,
@@ -10,6 +11,7 @@ import {
   CheckCircle,
   XCircle,
   Truck,
+  Loader2,
 } from "lucide-react";
 import {
   LineChart,
@@ -25,8 +27,10 @@ import {
   Pie,
   Cell,
 } from "recharts";
+import { useAdminMode } from "@/store/adminModeContext";
 
-const STATS = [
+// Mock data for test mode
+const TEST_STATS = [
   {
     label: "Total Revenue",
     value: "₹1,24,500",
@@ -61,7 +65,7 @@ const STATS = [
   },
 ];
 
-const REVENUE_DATA = [
+const TEST_REVENUE_DATA = [
   { month: "Sep", revenue: 42000, orders: 180 },
   { month: "Oct", revenue: 58000, orders: 220 },
   { month: "Nov", revenue: 71000, orders: 290 },
@@ -71,7 +75,7 @@ const REVENUE_DATA = [
   { month: "Mar", revenue: 124500, orders: 480 },
 ];
 
-const PRODUCT_DATA = [
+const TEST_PRODUCT_DATA = [
   { name: "Classic", sales: 320 },
   { name: "Garlic", sales: 280 },
   { name: "Pepper", sales: 195 },
@@ -80,14 +84,14 @@ const PRODUCT_DATA = [
   { name: "Jumbo", sales: 90 },
 ];
 
-const PIE_DATA = [
+const TEST_PIE_DATA = [
   { name: "Confirmed", value: 68, color: "#2E7D32" },
   { name: "Pending", value: 15, color: "#F9A825" },
   { name: "Shipped", value: 12, color: "#12A6DF" },
   { name: "Cancelled", value: 5, color: "#ef4444" },
 ];
 
-const RECENT_ORDERS = [
+const TEST_RECENT_ORDERS = [
   {
     id: "NM-2024-001",
     customer: "Priya Sharma",
@@ -145,11 +149,177 @@ const COLOR_MAP: Record<string, string> = {
 };
 
 export function AdminDashboardClient() {
+  const { isTest } = useAdminMode();
+  const [loading, setLoading] = useState(!isTest);
+  const [stats, setStats] = useState(TEST_STATS);
+  const [revenueData, setRevenueData] = useState(TEST_REVENUE_DATA);
+  const [productData, setProductData] = useState(TEST_PRODUCT_DATA);
+  const [pieData, setPieData] = useState(TEST_PIE_DATA);
+  const [recentOrders, setRecentOrders] = useState(TEST_RECENT_ORDERS);
+
+  useEffect(() => {
+    if (!isTest) {
+      fetchLiveData();
+    } else {
+      setStats(TEST_STATS);
+      setRevenueData(TEST_REVENUE_DATA);
+      setProductData(TEST_PRODUCT_DATA);
+      setPieData(TEST_PIE_DATA);
+      setRecentOrders(TEST_RECENT_ORDERS);
+      setLoading(false);
+    }
+  }, [isTest]);
+
+  const fetchLiveData = async () => {
+    setLoading(true);
+    try {
+      // Fetch orders
+      const ordersRes = await fetch("/api/orders");
+      const ordersData = await ordersRes.json();
+
+      // Fetch products
+      const productsRes = await fetch("/api/products");
+      const productsData = await productsRes.json();
+
+      // Fetch customers
+      const customersRes = await fetch("/api/customers");
+      const customersData = await customersRes.json();
+
+      if (ordersData.orders && productsData.products) {
+        const orders = ordersData.orders;
+        const products = productsData.products;
+
+        // Calculate stats
+        const totalRevenue = orders.reduce(
+          (sum: number, o: { total: number }) => sum + (o.total || 0),
+          0,
+        );
+        const activeProducts = products.filter(
+          (p: { is_active: boolean }) => p.is_active,
+        ).length;
+        const confirmedOrders = orders.filter((o: { status: string }) =>
+          ["confirmed", "processing", "shipped", "delivered"].includes(
+            o.status,
+          ),
+        ).length;
+        const pendingOrders = orders.filter(
+          (o: { status: string }) => o.status === "pending",
+        ).length;
+        const shippedOrders = orders.filter(
+          (o: { status: string }) => o.status === "shipped",
+        ).length;
+        const cancelledOrders = orders.filter(
+          (o: { status: string }) => o.status === "cancelled",
+        ).length;
+
+        setStats([
+          {
+            label: "Total Revenue",
+            value: `₹${totalRevenue.toLocaleString()}`,
+            change: "+0%",
+            up: true,
+            icon: TrendingUp,
+            color: "pink",
+          },
+          {
+            label: "Total Orders",
+            value: orders.length.toString(),
+            change: "+0",
+            up: true,
+            icon: ShoppingBag,
+            color: "green",
+          },
+          {
+            label: "Products Active",
+            value: activeProducts.toString(),
+            change: "+0",
+            up: true,
+            icon: Package,
+            color: "gold",
+          },
+          {
+            label: "Customers",
+            value: customersData.customers?.length?.toString() || "0",
+            change: "+0",
+            up: true,
+            icon: Users,
+            color: "pink",
+          },
+        ]);
+
+        // Calculate pie data percentages
+        const total = orders.length || 1;
+        setPieData([
+          {
+            name: "Confirmed",
+            value: Math.round((confirmedOrders / total) * 100),
+            color: "#2E7D32",
+          },
+          {
+            name: "Pending",
+            value: Math.round((pendingOrders / total) * 100),
+            color: "#F9A825",
+          },
+          {
+            name: "Shipped",
+            value: Math.round((shippedOrders / total) * 100),
+            color: "#12A6DF",
+          },
+          {
+            name: "Cancelled",
+            value: Math.round((cancelledOrders / total) * 100),
+            color: "#ef4444",
+          },
+        ]);
+
+        // Recent orders (last 5)
+        const recent5 = orders
+          .slice(0, 5)
+          .map(
+            (o: {
+              id: string;
+              customer_name: string;
+              items: unknown[];
+              total: number;
+              status: string;
+            }) => ({
+              id: o.id.substring(0, 12),
+              customer: o.customer_name || "Guest",
+              items: Array.isArray(o.items) ? o.items.length : 1,
+              total: o.total || 0,
+              status: o.status,
+              time: "Just now",
+            }),
+          );
+        setRecentOrders(recent5);
+      }
+    } catch (err) {
+      console.error("Error fetching live data:", err);
+      // Fallback to test data on error
+      setStats(TEST_STATS);
+      setRevenueData(TEST_REVENUE_DATA);
+      setProductData(TEST_PRODUCT_DATA);
+      setPieData(TEST_PIE_DATA);
+      setRecentOrders(TEST_RECENT_ORDERS);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
+      {/* Mode indicator */}
+      <div
+        className={`text-sm px-4 py-2 rounded-xl ${isTest ? "bg-yellow-50 text-yellow-700 border border-yellow-200" : "bg-green-50 text-green-700 border border-green-200"}`}
+      >
+        {isTest
+          ? "🧪 TEST Mode: Showing sample data for preview"
+          : "🚀 LIVE Mode: Connected to database"}
+      </div>
+
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-        {STATS.map(({ label, value, change, up, icon: Icon, color }) => (
+        {stats.map(({ label, value, change, up, icon: Icon, color }) => (
           <div key={label} className="bg-white rounded-2xl p-5 shadow-card">
             <div className="flex items-center justify-between mb-4">
               <div
@@ -164,7 +334,9 @@ export function AdminDashboardClient() {
                 {change}
               </span>
             </div>
-            <div className="font-black text-2xl text-brand-dark">{value}</div>
+            <div className="font-black text-2xl text-brand-dark">
+              {loading ? <Loader2 size={24} className="animate-spin" /> : value}
+            </div>
             <div className="text-sm text-gray-500 mt-0.5">{label}</div>
           </div>
         ))}
@@ -178,7 +350,9 @@ export function AdminDashboardClient() {
             <div>
               <h3 className="font-bold text-base">Revenue & Orders</h3>
               <p className="text-xs text-gray-400 mt-0.5">
-                Last 7 months performance
+                {isTest
+                  ? "Sample data - Last 7 months performance"
+                  : "Live data from database"}
               </p>
             </div>
             <select className="text-xs border border-gray-200 rounded-lg px-3 py-1.5 focus:outline-none">
@@ -187,7 +361,7 @@ export function AdminDashboardClient() {
             </select>
           </div>
           <ResponsiveContainer width="100%" height={220}>
-            <LineChart data={REVENUE_DATA}>
+            <LineChart data={revenueData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
               <XAxis
                 dataKey="month"
@@ -235,17 +409,19 @@ export function AdminDashboardClient() {
         {/* Order Status Pie */}
         <div className="bg-white rounded-2xl p-5 shadow-card">
           <h3 className="font-bold text-base mb-1">Order Status</h3>
-          <p className="text-xs text-gray-400 mb-4">Distribution this month</p>
+          <p className="text-xs text-gray-400 mb-4">
+            {isTest ? "Sample distribution" : "Live distribution"}
+          </p>
           <ResponsiveContainer width="100%" height={160}>
             <PieChart>
               <Pie
-                data={PIE_DATA}
+                data={pieData}
                 innerRadius={50}
                 outerRadius={75}
                 paddingAngle={3}
                 dataKey="value"
               >
-                {PIE_DATA.map((entry, i) => (
+                {pieData.map((entry, i) => (
                   <Cell key={i} fill={entry.color} />
                 ))}
               </Pie>
@@ -260,7 +436,7 @@ export function AdminDashboardClient() {
             </PieChart>
           </ResponsiveContainer>
           <div className="grid grid-cols-2 gap-2 mt-2">
-            {PIE_DATA.map(({ name, value, color }) => (
+            {pieData.map(({ name, value, color }) => (
               <div key={name} className="flex items-center gap-2 text-xs">
                 <div
                   className="w-2.5 h-2.5 rounded-full shrink-0"
@@ -279,9 +455,11 @@ export function AdminDashboardClient() {
         {/* Product Sales Bar */}
         <div className="xl:col-span-2 bg-white rounded-2xl p-5 shadow-card">
           <h3 className="font-bold text-base mb-1">Product Performance</h3>
-          <p className="text-xs text-gray-400 mb-4">Units sold this month</p>
+          <p className="text-xs text-gray-400 mb-4">
+            {isTest ? "Sample units sold" : "Live units sold"}
+          </p>
           <ResponsiveContainer width="100%" height={200}>
-            <BarChart data={PRODUCT_DATA} barSize={32}>
+            <BarChart data={productData} barSize={32}>
               <CartesianGrid
                 strokeDasharray="3 3"
                 stroke="#f0f0f0"
@@ -317,17 +495,17 @@ export function AdminDashboardClient() {
             {[
               {
                 label: "Add New Product",
-                href: "/admin/products/new",
+                href: "/admin/products",
                 color: "bg-brand-pink text-white",
-              },
-              {
-                label: "Create Blog Post",
-                href: "/admin/blogs/new",
-                color: "bg-brand-green text-white",
               },
               {
                 label: "View All Orders",
                 href: "/admin/orders",
+                color: "bg-brand-green text-white",
+              },
+              {
+                label: "Manage Blog Posts",
+                href: "/admin/blogs",
                 color: "bg-brand-dark text-white",
               },
               {
@@ -376,31 +554,44 @@ export function AdminDashboardClient() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
-              {RECENT_ORDERS.map((order) => (
-                <tr
-                  key={order.id}
-                  className="hover:bg-gray-50 transition-colors"
-                >
-                  <td className="px-5 py-3.5 font-mono text-xs text-brand-pink font-semibold">
-                    {order.id}
-                  </td>
-                  <td className="px-5 py-3.5 font-medium">{order.customer}</td>
-                  <td className="px-5 py-3.5 hidden md:table-cell text-gray-500">
-                    {order.items} items
-                  </td>
-                  <td className="px-5 py-3.5 font-bold">₹{order.total}</td>
-                  <td className="px-5 py-3.5">
-                    <span
-                      className={`badge capitalize ${STATUS_BADGE[order.status]}`}
-                    >
-                      {order.status}
-                    </span>
-                  </td>
-                  <td className="px-5 py-3.5 hidden lg:table-cell text-gray-400 text-xs">
-                    {order.time}
+              {loading ? (
+                <tr>
+                  <td colSpan={6} className="px-5 py-8 text-center">
+                    <Loader2
+                      size={24}
+                      className="animate-spin text-brand-pink mx-auto"
+                    />
                   </td>
                 </tr>
-              ))}
+              ) : (
+                recentOrders.map((order) => (
+                  <tr
+                    key={order.id}
+                    className="hover:bg-gray-50 transition-colors"
+                  >
+                    <td className="px-5 py-3.5 font-mono text-xs text-brand-pink font-semibold">
+                      {order.id}
+                    </td>
+                    <td className="px-5 py-3.5 font-medium">
+                      {order.customer}
+                    </td>
+                    <td className="px-5 py-3.5 hidden md:table-cell text-gray-500">
+                      {order.items} items
+                    </td>
+                    <td className="px-5 py-3.5 font-bold">₹{order.total}</td>
+                    <td className="px-5 py-3.5">
+                      <span
+                        className={`badge capitalize ${STATUS_BADGE[order.status]}`}
+                      >
+                        {order.status}
+                      </span>
+                    </td>
+                    <td className="px-5 py-3.5 hidden lg:table-cell text-gray-400 text-xs">
+                      {order.time}
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

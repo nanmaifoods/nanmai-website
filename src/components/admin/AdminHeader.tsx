@@ -1,31 +1,69 @@
-'use client';
-import { Bell, Search, User } from 'lucide-react';
-import { usePathname } from 'next/navigation';
+"use client";
+import { Bell, Search } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { useAdminMode } from "@/store/adminModeContext";
 
 const PAGE_TITLES: Record<string, string> = {
-  '/admin':            'Dashboard',
-  '/admin/orders':     'Orders',
-  '/admin/products':   'Products',
-  '/admin/analytics':  'Analytics',
-  '/admin/blogs':      'Blog Manager',
-  '/admin/cms':        'Site Content',
-  '/admin/media':      'Media Library',
-  '/admin/customers':  'Customers',
-  '/admin/settings':   'Settings',
+  "/admin": "Dashboard",
+  "/admin/orders": "Orders",
+  "/admin/products": "Products",
+  "/admin/analytics": "Analytics",
+  "/admin/blogs": "Blog Manager",
+  "/admin/cms": "Site Content",
+  "/admin/media": "Media Library",
+  "/admin/customers": "Customers",
+  "/admin/settings": "Settings",
 };
 
 export function AdminHeader() {
   const pathname = usePathname();
-  const title = PAGE_TITLES[pathname] || 'Admin';
+  const title = PAGE_TITLES[pathname] || "Admin";
+  const { mode, setMode, isTest } = useAdminMode();
 
   return (
     <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between gap-4">
-      <h1 className="font-bold text-xl text-brand-dark">{title}</h1>
+      <div className="flex items-center gap-4">
+        <h1 className="font-bold text-xl text-brand-dark">{title}</h1>
+
+        {/* Test/Live Toggle */}
+        <div className="flex items-center gap-2 ml-4">
+          <div className="relative flex items-center bg-gray-100 rounded-full p-1">
+            <button
+              onClick={() => setMode("test")}
+              className={`px-3 py-1 text-xs font-semibold rounded-full transition-all ${
+                isTest
+                  ? "bg-yellow-400 text-yellow-900 shadow-sm"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              🧪 TEST
+            </button>
+            <button
+              onClick={() => setMode("live")}
+              className={`px-3 py-1 text-xs font-semibold rounded-full transition-all ${
+                !isTest
+                  ? "bg-green-500 text-white shadow-sm"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              🚀 LIVE
+            </button>
+          </div>
+          <span
+            className={`text-xs font-medium ${isTest ? "text-yellow-600" : "text-green-600"}`}
+          >
+            {isTest ? "Viewing sample data" : "Connected to database"}
+          </span>
+        </div>
+      </div>
 
       <div className="flex items-center gap-3">
         {/* Search */}
         <div className="relative hidden md:block">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+          <Search
+            size={16}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+          />
           <input
             placeholder="Search…"
             className="pl-9 pr-4 py-2 text-sm bg-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-pink/30 w-48"

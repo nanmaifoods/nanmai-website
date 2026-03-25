@@ -11,7 +11,8 @@ nanmai-appalam/
 ├── public/                        # Static assets (add logo, og-image.png here)
 ├── supabase/
 │   └── migrations/
-│       └── 001_init.sql           # ← Run this first in Supabase SQL Editor
+│       ├── 001_init.sql           # ← Run this first in Supabase SQL Editor
+│       └── 002_storage.sql         # ← Run this second for image storage
 ├── src/
 │   ├── app/                       # Next.js App Router pages
 │   │   ├── layout.tsx             # Root layout (Navbar, Footer, Cart, Toaster)
@@ -32,13 +33,16 @@ nanmai-appalam/
 │   │   │   ├── layout.tsx         # Admin layout (Sidebar + Header)
 │   │   │   ├── page.tsx           # Dashboard with charts
 │   │   │   ├── orders/page.tsx    # Order management
-│   │   │   ├── products/page.tsx  # Product CRUD
+│   │   │   ├── products/page.tsx  # Product CRUD with Test/Live toggle
 │   │   │   ├── analytics/page.tsx # Detailed analytics
 │   │   │   ├── blogs/page.tsx     # Blog manager (create/edit/publish)
 │   │   │   ├── cms/page.tsx       # Site content editor
 │   │   │   ├── customers/page.tsx # Customer list & details
 │   │   │   └── settings/page.tsx  # Store settings
 │   │   └── api/
+│   │       ├── products/
+│   │       │   ├── route.ts       # GET all, POST new product
+│   │       │   └── [id]/route.ts  # GET, PUT, DELETE single product
 │   │       ├── payment/
 │   │       │   ├── create-order/route.ts  # Create Razorpay order
 │   │       │   └── verify/route.ts        # Verify payment + save to DB
@@ -61,10 +65,11 @@ nanmai-appalam/
 │   │   │   └── CartDrawer.tsx     # Slide-in cart drawer
 │   │   └── admin/
 │   │       ├── AdminSidebar.tsx   # Collapsible admin nav
-│   │       ├── AdminHeader.tsx    # Admin top bar
+│   │       ├── AdminHeader.tsx    # Admin top bar with Test/Live toggle
 │   │       └── AdminDashboardClient.tsx # Dashboard with Recharts
 │   ├── store/
-│   │   └── cartStore.ts           # Zustand cart (persisted)
+│   │   ├── cartStore.ts           # Zustand cart (persisted)
+│   │   └── adminModeContext.tsx   # Test/Live mode context
 │   ├── lib/
 │   │   ├── supabase.ts            # Supabase client (public + admin)
 │   │   └── razorpay.ts            # Razorpay helper
@@ -84,6 +89,7 @@ nanmai-appalam/
 ### Step 1 – Prerequisites
 
 Make sure you have installed:
+
 - **Node.js 18+** → https://nodejs.org
 - **VS Code** → https://code.visualstudio.com
 
@@ -111,6 +117,7 @@ npm install
    - `service_role` key → `SUPABASE_SERVICE_ROLE_KEY` (keep this secret!)
 5. Go to **SQL Editor** in Supabase
 6. Paste the contents of `supabase/migrations/001_init.sql` and click **Run**
+7. Then paste the contents of `supabase/migrations/002_storage.sql` and click **Run** (this creates image storage buckets)
 
 ### Step 5 – Set Up Razorpay
 
@@ -159,12 +166,57 @@ Open → http://localhost:3000/admin ✅
 
 ---
 
+## 🧪 ADMIN TEST/LIVE MODE
+
+The admin panel has a **Test/Live toggle** in the header:
+
+- **🧪 TEST Mode** (default): Uses sample data, changes are local only
+  - Perfect for previewing how the admin looks
+  - No database connection needed
+  - Changes won't affect production
+
+- **🚀 LIVE Mode**: Connected to Supabase database
+  - All CRUD operations work with real data
+  - Changes are permanent
+  - Images upload to Supabase Storage
+
+The toggle is persistent across sessions (saved in localStorage).
+
+---
+
+## 🔧 PRODUCT MANAGEMENT
+
+### Adding Products (Admin → Products)
+
+1. Go to `/admin/products`
+2. Click **"Add Product"**
+3. Fill in details:
+   - Product Name (required)
+   - Description
+   - Category (classic/flavoured/mini/packs)
+   - Weight (e.g., "200g")
+   - Price & Original Price
+   - Stock quantity
+   - Ingredients
+   - Tags (comma-separated)
+4. Upload an image (stored in Supabase Storage)
+5. Toggle Active/Featured as needed
+6. Click **"Add Product"**
+
+### Image Storage
+
+Product images are stored in Supabase Storage bucket `product-images`.
+The storage migration (`002_storage.sql`) sets up the bucket with proper policies.
+
+---
+
 ## 🌐 DEPLOYING TO VERCEL
 
 ### Step 1 – Push to GitHub
 
 1. Create a new repository on GitHub
 2. Push your code:
+
 ```bash
 git init
 git add .
@@ -191,6 +243,7 @@ After deployment, go to Razorpay dashboard → Webhooks → update the URL to yo
 ## 💳 TEST PAYMENTS
 
 In Razorpay test mode, use these test credentials:
+
 - **Card**: 4111 1111 1111 1111 | Any future date | CVV: any 3 digits
 - **UPI**: success@razorpay
 - **Net Banking**: Choose any bank → Success
@@ -199,44 +252,44 @@ In Razorpay test mode, use these test credentials:
 
 ## 🔐 ADMIN PANEL FEATURES
 
-| Feature | Location |
-|---------|----------|
-| Dashboard with charts | `/admin` |
-| Order management (view, update status) | `/admin/orders` |
-| Product CRUD (add/edit/delete/feature) | `/admin/products` |
-| Detailed analytics (revenue, orders, cities) | `/admin/analytics` |
-| Blog manager (create/edit/publish) | `/admin/blogs` |
-| Site content editor (CMS) | `/admin/cms` |
-| Customer list & details | `/admin/customers` |
-| Store settings (payment, shipping, notifications) | `/admin/settings` |
+| Feature                                           | Location           |
+| ------------------------------------------------- | ------------------ |
+| Dashboard with charts                             | `/admin`           |
+| Order management (view, update status)            | `/admin/orders`    |
+| Product CRUD (add/edit/delete/feature)            | `/admin/products`  |
+| Detailed analytics (revenue, orders, cities)      | `/admin/analytics` |
+| Blog manager (create/edit/publish)                | `/admin/blogs`     |
+| Site content editor (CMS)                         | `/admin/cms`       |
+| Customer list & details                           | `/admin/customers` |
+| Store settings (payment, shipping, notifications) | `/admin/settings`  |
 
 ---
 
 ## 🎨 COLOR PALETTE (From Logo)
 
-| Color | Hex | Usage |
-|-------|-----|-------|
-| Brand Pink | `#E91E8C` | Primary actions, highlights |
-| Brand Green | `#2E7D32` | Trust, natural, CTAs |
-| Brand Lime | `#66BB6A` | Accents, success states |
-| Brand Gold | `#F9A825` | Badges, premium elements |
-| Brand Cream | `#FFF8F0` | Backgrounds, cards |
+| Color       | Hex       | Usage                       |
+| ----------- | --------- | --------------------------- |
+| Brand Pink  | `#E91E8C` | Primary actions, highlights |
+| Brand Green | `#2E7D32` | Trust, natural, CTAs        |
+| Brand Lime  | `#66BB6A` | Accents, success states     |
+| Brand Gold  | `#F9A825` | Badges, premium elements    |
+| Brand Cream | `#FFF8F0` | Backgrounds, cards          |
 
 ---
 
 ## 📦 KEY DEPENDENCIES
 
-| Package | Purpose |
-|---------|---------|
-| `next` 14 | Framework |
-| `@supabase/supabase-js` | Database & auth |
-| `razorpay` | Payment gateway |
-| `zustand` | Cart state management |
-| `framer-motion` | Animations |
-| `recharts` | Admin analytics charts |
-| `tailwindcss` | Styling |
-| `react-hot-toast` | Notifications |
-| `lucide-react` | Icons |
+| Package                 | Purpose                |
+| ----------------------- | ---------------------- |
+| `next` 14               | Framework              |
+| `@supabase/supabase-js` | Database & auth        |
+| `razorpay`              | Payment gateway        |
+| `zustand`               | Cart state management  |
+| `framer-motion`         | Animations             |
+| `recharts`              | Admin analytics charts |
+| `tailwindcss`           | Styling                |
+| `react-hot-toast`       | Notifications          |
+| `lucide-react`          | Icons                  |
 
 ---
 

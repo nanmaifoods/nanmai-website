@@ -1,163 +1,451 @@
 "use client";
-import { useState } from "react";
-import { Plus, Pencil, Trash2, Search, Eye, EyeOff, Star } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
+import {
+  Plus,
+  Pencil,
+  Trash2,
+  Search,
+  Eye,
+  EyeOff,
+  Star,
+  Upload,
+  X,
+  Image as ImageIcon,
+  Loader2,
+} from "lucide-react";
+import { useAdminMode } from "@/store/adminModeContext";
+import { Product } from "@/types/database";
+import toast from "react-hot-toast";
+import { supabase } from "@/lib/supabase";
 
-const INIT_PRODUCTS = [
+const TEST_PRODUCTS: Product[] = [
   {
-    id: "1",
+    id: "test-1",
+    created_at: new Date().toISOString(),
     name: "Classic Appalam",
+    slug: "classic-appalam",
+    description: "The original crispy traditional South Indian papad.",
     category: "classic",
     price: 149,
     original_price: 199,
+    images: [],
+    weight: "200g",
     stock: 50,
     is_active: true,
     is_featured: true,
-    weight: "200g",
+    tags: ["bestseller"],
+    ingredients: "Urad Dal Flour, Salt, Black Pepper, Asafoetida",
+    nutritional_info: null,
   },
   {
-    id: "2",
+    id: "test-2",
+    created_at: new Date().toISOString(),
     name: "Garlic Appalam",
+    slug: "garlic-appalam",
+    description:
+      "Infused with the rich aroma of fresh garlic for bold flavour.",
     category: "flavoured",
     price: 179,
     original_price: 229,
+    images: [],
+    weight: "200g",
     stock: 40,
     is_active: true,
     is_featured: true,
-    weight: "200g",
+    tags: ["popular"],
+    ingredients: "Urad Dal Flour, Garlic Flakes, Salt",
+    nutritional_info: null,
   },
   {
-    id: "3",
+    id: "test-3",
+    created_at: new Date().toISOString(),
     name: "Pepper Appalam",
+    slug: "pepper-appalam",
+    description: "Studded with coarsely ground black pepper for a spicy kick.",
     category: "flavoured",
     price: 179,
     original_price: 219,
+    images: [],
+    weight: "200g",
     stock: 35,
     is_active: true,
     is_featured: false,
-    weight: "200g",
+    tags: ["spicy"],
+    ingredients: "Urad Dal Flour, Black Pepper, Salt",
+    nutritional_info: null,
   },
   {
-    id: "4",
+    id: "test-4",
+    created_at: new Date().toISOString(),
     name: "Cumin Appalam",
+    slug: "cumin-appalam",
+    description: "Fragrant with roasted cumin seeds, a family favourite.",
     category: "flavoured",
     price: 169,
     original_price: 209,
+    images: [],
+    weight: "200g",
     stock: 45,
     is_active: true,
     is_featured: false,
-    weight: "200g",
+    tags: ["aromatic"],
+    ingredients: "Urad Dal Flour, Cumin Seeds, Salt",
+    nutritional_info: null,
   },
   {
-    id: "5",
+    id: "test-5",
+    created_at: new Date().toISOString(),
     name: "Mini Appalam",
+    slug: "mini-appalam",
+    description: "Bite-sized minis, perfect for snacking and party platters.",
     category: "mini",
     price: 129,
     original_price: 159,
+    images: [],
+    weight: "150g",
     stock: 60,
     is_active: true,
     is_featured: false,
-    weight: "150g",
+    tags: ["snack"],
+    ingredients: "Urad Dal Flour, Salt, Spices",
+    nutritional_info: null,
   },
   {
-    id: "6",
+    id: "test-6",
+    created_at: new Date().toISOString(),
     name: "Jumbo Pack",
+    slug: "jumbo-pack",
+    description: "Our biggest pack – great value for large families.",
     category: "packs",
     price: 449,
     original_price: 599,
+    images: [],
+    weight: "1kg",
     stock: 20,
     is_active: true,
     is_featured: true,
-    weight: "1kg",
+    tags: ["value"],
+    ingredients: "Urad Dal Flour, Salt, Spices",
+    nutritional_info: null,
   },
   {
-    id: "7",
+    id: "test-7",
+    created_at: new Date().toISOString(),
     name: "Mixed Flavour Pack",
+    slug: "mixed-flavour-pack",
+    description: "Sample all our flavours in one convenient combo pack.",
     category: "packs",
     price: 349,
     original_price: 449,
+    images: [],
+    weight: "600g",
     stock: 30,
     is_active: true,
     is_featured: false,
-    weight: "600g",
+    tags: ["combo"],
+    ingredients: "Urad Dal Flour, Spices, Salt",
+    nutritional_info: null,
   },
   {
-    id: "8",
+    id: "test-8",
+    created_at: new Date().toISOString(),
     name: "Chilli Appalam",
+    slug: "chilli-appalam",
+    description: "For the spice lovers – extra fiery red chilli infused papad.",
     category: "flavoured",
     price: 189,
     original_price: 229,
+    images: [],
+    weight: "200g",
     stock: 25,
     is_active: false,
     is_featured: false,
-    weight: "200g",
+    tags: ["spicy", "new"],
+    ingredients: "Urad Dal Flour, Red Chilli, Salt",
+    nutritional_info: null,
   },
 ];
 
-type Product = (typeof INIT_PRODUCTS)[0];
+const CATEGORIES = ["classic", "flavoured", "mini", "packs"];
 
-const EMPTY: Omit<Product, "id"> = {
+type ProductForm = Omit<Product, "id" | "created_at">;
+
+const EMPTY_FORM: ProductForm = {
   name: "",
+  slug: "",
+  description: "",
   category: "classic",
   price: 0,
-  original_price: 0,
+  original_price: null,
+  images: [],
+  weight: "",
   stock: 0,
   is_active: true,
   is_featured: false,
-  weight: "",
+  tags: [],
+  ingredients: null,
+  nutritional_info: null,
 };
 
 export default function AdminProductsPage() {
-  const [products, setProducts] = useState(INIT_PRODUCTS);
+  const { isTest, mode } = useAdminMode();
+  const [products, setProducts] = useState<Product[]>(TEST_PRODUCTS);
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(false);
   const [modal, setModal] = useState<{ open: boolean; edit: Product | null }>({
     open: false,
     edit: null,
   });
-  const [form, setForm] = useState<Omit<Product, "id">>(EMPTY);
+  const [form, setForm] = useState<ProductForm>(EMPTY_FORM);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+
+  // Fetch products from Supabase in live mode
+  const fetchProducts = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/products?active=false"); // Get all for admin
+      const data = await res.json();
+      if (data.products) {
+        setProducts(data.products);
+      }
+    } catch (err) {
+      console.error("Error fetching products:", err);
+      toast.error("Failed to fetch products");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isTest) {
+      fetchProducts();
+    } else {
+      setProducts(TEST_PRODUCTS);
+    }
+  }, [isTest, fetchProducts]);
 
   const openNew = () => {
-    setForm(EMPTY);
+    setForm(EMPTY_FORM);
+    setImagePreview(null);
     setModal({ open: true, edit: null });
   };
+
   const openEdit = (p: Product) => {
-    const { id, ...rest } = p;
+    const { id, created_at, ...rest } = p;
     setForm(rest);
+    setImagePreview(p.images?.[0] || null);
     setModal({ open: true, edit: p });
   };
-  const closeModal = () => setModal({ open: false, edit: null });
 
-  const handleSave = () => {
-    if (modal.edit) {
-      setProducts((prev) =>
-        prev.map((p) =>
-          p.id === modal.edit!.id ? { ...form, id: modal.edit!.id } : p,
-        ),
-      );
-    } else {
-      setProducts((prev) => [...prev, { ...form, id: String(Date.now()) }]);
-    }
-    closeModal();
+  const closeModal = () => {
+    setModal({ open: false, edit: null });
+    setForm(EMPTY_FORM);
+    setImagePreview(null);
   };
 
-  const toggleActive = (id: string) =>
-    setProducts((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, is_active: !p.is_active } : p)),
-    );
-  const toggleFeatured = (id: string) =>
-    setProducts((prev) =>
-      prev.map((p) =>
-        p.id === id ? { ...p, is_featured: !p.is_featured } : p,
-      ),
-    );
-  const deleteProduct = (id: string) => {
-    if (confirm("Delete this product?"))
+  const handleSave = async () => {
+    if (!form.name || !form.price) {
+      toast.error("Please fill in required fields");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      if (isTest) {
+        // Test mode - just update local state
+        if (modal.edit) {
+          setProducts((prev) =>
+            prev.map((p) =>
+              p.id === modal.edit!.id
+                ? { ...form, id: modal.edit!.id, created_at: p.created_at }
+                : p,
+            ),
+          );
+          toast.success("Product updated (test mode)");
+        } else {
+          const newProduct: Product = {
+            ...form,
+            id: `test-${Date.now()}`,
+            created_at: new Date().toISOString(),
+          };
+          setProducts((prev) => [...prev, newProduct]);
+          toast.success("Product added (test mode)");
+        }
+      } else {
+        // Live mode - call API
+        const url = modal.edit
+          ? `/api/products/${modal.edit.id}`
+          : "/api/products";
+        const method = modal.edit ? "PUT" : "POST";
+
+        const res = await fetch(url, {
+          method,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(form),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || "Failed to save product");
+        }
+
+        toast.success(
+          `Product ${modal.edit ? "updated" : "created"} successfully!`,
+        );
+        fetchProducts();
+      }
+      closeModal();
+    } catch (err) {
+      console.error("Error saving product:", err);
+      toast.error(
+        err instanceof Error ? err.message : "Failed to save product",
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const toggleActive = async (id: string) => {
+    const product = products.find((p) => p.id === id);
+    if (!product) return;
+
+    if (isTest) {
+      setProducts((prev) =>
+        prev.map((p) => (p.id === id ? { ...p, is_active: !p.is_active } : p)),
+      );
+      toast.success(
+        `Product ${!product.is_active ? "activated" : "deactivated"} (test mode)`,
+      );
+    } else {
+      try {
+        const res = await fetch(`/api/products/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ is_active: !product.is_active }),
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to update");
+        }
+
+        fetchProducts();
+        toast.success(
+          `Product ${!product.is_active ? "activated" : "deactivated"}`,
+        );
+      } catch (err) {
+        toast.error("Failed to update product");
+      }
+    }
+  };
+
+  const toggleFeatured = async (id: string) => {
+    const product = products.find((p) => p.id === id);
+    if (!product) return;
+
+    if (isTest) {
+      setProducts((prev) =>
+        prev.map((p) =>
+          p.id === id ? { ...p, is_featured: !p.is_featured } : p,
+        ),
+      );
+      toast.success(
+        `Product ${!product.is_featured ? "featured" : "unfeatured"} (test mode)`,
+      );
+    } else {
+      try {
+        const res = await fetch(`/api/products/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ is_featured: !product.is_featured }),
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to update");
+        }
+
+        fetchProducts();
+        toast.success(
+          `Product ${!product.is_featured ? "featured" : "unfeatured"}`,
+        );
+      } catch (err) {
+        toast.error("Failed to update product");
+      }
+    }
+  };
+
+  const deleteProduct = async (id: string) => {
+    if (!confirm("Delete this product? This action cannot be undone.")) return;
+
+    if (isTest) {
       setProducts((prev) => prev.filter((p) => p.id !== id));
+      toast.success("Product deleted (test mode)");
+    } else {
+      try {
+        const res = await fetch(`/api/products/${id}`, {
+          method: "DELETE",
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to delete");
+        }
+
+        fetchProducts();
+        toast.success("Product deleted successfully!");
+      } catch (err) {
+        toast.error("Failed to delete product");
+      }
+    }
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (isTest) {
+      // Create a local URL for preview
+      const url = URL.createObjectURL(file);
+      setImagePreview(url);
+      toast.success("Image selected (test mode)");
+    } else {
+      setUploading(true);
+      try {
+        const fileExt = file.name.split(".").pop();
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+        const filePath = `products/${fileName}`;
+
+        const { data, error } = await supabase.storage
+          .from("product-images")
+          .upload(filePath, file);
+
+        if (error) {
+          throw error;
+        }
+
+        const { data: urlData } = supabase.storage
+          .from("product-images")
+          .getPublicUrl(filePath);
+
+        setImagePreview(urlData.publicUrl);
+        setForm((prev) => ({ ...prev, images: [urlData.publicUrl] }));
+        toast.success("Image uploaded successfully!");
+      } catch (err) {
+        console.error("Upload error:", err);
+        toast.error(
+          "Failed to upload image. Make sure you have created a storage bucket named 'product-images' in Supabase.",
+        );
+      } finally {
+        setUploading(false);
+      }
+    }
   };
 
   const filtered = products.filter((p) =>
     p.name.toLowerCase().includes(search.toLowerCase()),
   );
-  const upd = (k: keyof typeof form, v: any) =>
+
+  const upd = (k: keyof ProductForm, v: unknown) =>
     setForm((f) => ({ ...f, [k]: v }));
 
   return (
@@ -176,9 +464,23 @@ export default function AdminProductsPage() {
             className="input-field pl-9 bg-white"
           />
         </div>
-        <button onClick={openNew} className="btn-primary whitespace-nowrap">
+        {loading && <Loader2 className="animate-spin text-brand-pink" />}
+        <button
+          onClick={openNew}
+          className="btn-primary whitespace-nowrap"
+          disabled={loading}
+        >
           <Plus size={16} /> Add Product
         </button>
+      </div>
+
+      {/* Mode indicator */}
+      <div
+        className={`text-sm px-4 py-2 rounded-xl ${isTest ? "bg-yellow-50 text-yellow-700 border border-yellow-200" : "bg-green-50 text-green-700 border border-green-200"}`}
+      >
+        {isTest
+          ? "🧪 Test Mode: Changes are local only and won't be saved to the database."
+          : "🚀 Live Mode: Connected to Supabase database. Changes are permanent."}
       </div>
 
       {/* Product Grid */}
@@ -189,7 +491,15 @@ export default function AdminProductsPage() {
             className={`bg-white rounded-2xl shadow-card overflow-hidden transition-all ${!product.is_active ? "opacity-60" : ""}`}
           >
             <div className="h-36 bg-gradient-to-br from-brand-cream to-white flex items-center justify-center text-5xl relative">
-              🫓
+              {product.images?.[0] ? (
+                <img
+                  src={product.images[0]}
+                  alt={product.name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                "🫓"
+              )}
               {product.is_featured && (
                 <span className="absolute top-2 left-2 badge bg-brand-gold text-brand-dark text-xs">
                   <Star size={9} className="inline mr-0.5" />
@@ -215,9 +525,11 @@ export default function AdminProductsPage() {
                   <span className="font-black text-brand-pink">
                     ₹{product.price}
                   </span>
-                  <span className="text-xs text-gray-400 line-through">
-                    ₹{product.original_price}
-                  </span>
+                  {product.original_price && (
+                    <span className="text-xs text-gray-400 line-through">
+                      ₹{product.original_price}
+                    </span>
+                  )}
                 </div>
                 <span
                   className={`text-xs font-semibold ${product.stock < 10 ? "text-red-500" : "text-green-600"}`}
@@ -265,7 +577,7 @@ export default function AdminProductsPage() {
           onClick={closeModal}
         >
           <div
-            className="bg-white rounded-3xl w-full max-w-lg shadow-2xl"
+            className="bg-white rounded-3xl w-full max-w-2xl shadow-2xl max-h-[90vh] flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
@@ -276,10 +588,49 @@ export default function AdminProductsPage() {
                 onClick={closeModal}
                 className="p-2 hover:bg-gray-100 rounded-xl text-gray-400"
               >
-                ✕
+                <X size={18} />
               </button>
             </div>
-            <div className="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
+            <div className="p-6 space-y-4 overflow-y-auto flex-1">
+              {/* Image Upload */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                  Product Image
+                </label>
+                <div className="flex items-center gap-4">
+                  <div className="w-24 h-24 rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden border-2 border-dashed border-gray-300">
+                    {imagePreview ? (
+                      <img
+                        src={imagePreview}
+                        alt="Preview"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <ImageIcon size={32} className="text-gray-400" />
+                    )}
+                  </div>
+                  <label className="cursor-pointer">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="hidden"
+                      disabled={uploading}
+                    />
+                    <span
+                      className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium ${uploading ? "bg-gray-100 text-gray-400" : "bg-brand-pink text-white hover:bg-opacity-90"} transition-colors`}
+                    >
+                      {uploading ? (
+                        <Loader2 size={16} className="animate-spin" />
+                      ) : (
+                        <Upload size={16} />
+                      )}
+                      {uploading ? "Uploading..." : "Upload Image"}
+                    </span>
+                  </label>
+                </div>
+              </div>
+
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-1.5">
                   Product Name *
@@ -291,6 +642,20 @@ export default function AdminProductsPage() {
                   className="input-field"
                 />
               </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                  Description
+                </label>
+                <textarea
+                  value={form.description}
+                  onChange={(e) => upd("description", e.target.value)}
+                  placeholder="Describe the product..."
+                  rows={3}
+                  className="input-field resize-none"
+                />
+              </div>
+
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-1.5">
@@ -301,9 +666,9 @@ export default function AdminProductsPage() {
                     onChange={(e) => upd("category", e.target.value)}
                     className="input-field"
                   >
-                    {["classic", "flavoured", "mini", "packs"].map((c) => (
+                    {CATEGORIES.map((c) => (
                       <option key={c} value={c} className="capitalize">
-                        {c}
+                        {c.charAt(0).toUpperCase() + c.slice(1)}
                       </option>
                     ))}
                   </select>
@@ -320,6 +685,7 @@ export default function AdminProductsPage() {
                   />
                 </div>
               </div>
+
               <div className="grid grid-cols-3 gap-4">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-1.5">
@@ -338,9 +704,12 @@ export default function AdminProductsPage() {
                   </label>
                   <input
                     type="number"
-                    value={form.original_price}
+                    value={form.original_price || ""}
                     onChange={(e) =>
-                      upd("original_price", Number(e.target.value))
+                      upd(
+                        "original_price",
+                        e.target.value ? Number(e.target.value) : null,
+                      )
                     }
                     className="input-field"
                   />
@@ -357,6 +726,39 @@ export default function AdminProductsPage() {
                   />
                 </div>
               </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                  Ingredients
+                </label>
+                <input
+                  value={form.ingredients || ""}
+                  onChange={(e) => upd("ingredients", e.target.value || null)}
+                  placeholder="Urad Dal Flour, Salt, Spices..."
+                  className="input-field"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                  Tags (comma-separated)
+                </label>
+                <input
+                  value={form.tags?.join(", ") || ""}
+                  onChange={(e) =>
+                    upd(
+                      "tags",
+                      e.target.value
+                        .split(",")
+                        .map((t) => t.trim())
+                        .filter(Boolean),
+                    )
+                  }
+                  placeholder="bestseller, popular, spicy"
+                  className="input-field"
+                />
+              </div>
+
               <div className="flex gap-6">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
@@ -385,7 +787,11 @@ export default function AdminProductsPage() {
               <button
                 onClick={handleSave}
                 className="flex-1 btn-primary justify-center"
+                disabled={loading}
               >
+                {loading ? (
+                  <Loader2 size={16} className="animate-spin" />
+                ) : null}
                 {modal.edit ? "Save Changes" : "Add Product"}
               </button>
             </div>
