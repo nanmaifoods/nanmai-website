@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'DM Mono', monospace;
+
+  --brand-pink:  #E91E8C;
+  --brand-green: #2E7D32;
+  --brand-lime:  #66BB6A;
+  --brand-cream: #FFF8F0;
+  --brand-gold:  #F9A825;
+  --brand-dark:  #1A1A1A;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: #ffffff;
+  color: var(--brand-dark);
+  overflow-x: hidden;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #f5f5f5; }
+::-webkit-scrollbar-thumb { background: var(--brand-pink); border-radius: 3px; }
+
+/* Selection */
+::selection { background: var(--brand-pink); color: white; }
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-6 py-3 bg-brand-pink text-white font-semibold rounded-full
+           hover:bg-opacity-90 transition-all duration-200 shadow-brand hover:shadow-hover
+           hover:-translate-y-0.5 active:translate-y-0;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 px-6 py-3 border-2 border-brand-pink text-brand-pink
+           font-semibold rounded-full hover:bg-brand-pink hover:text-white
+           transition-all duration-200 hover:-translate-y-0.5;
+  }
+  .btn-green {
+    @apply inline-flex items-center gap-2 px-6 py-3 bg-brand-green text-white font-semibold
+           rounded-full hover:bg-opacity-90 transition-all duration-200 hover:-translate-y-0.5;
+  }
+  .card {
+    @apply bg-white rounded-2xl shadow-card hover:shadow-hover transition-all duration-300
+           hover:-translate-y-1 overflow-hidden;
+  }
+  .section-title {
+    @apply font-display text-3xl md:text-4xl lg:text-5xl font-bold text-brand-dark;
+  }
+  .section-subtitle {
+    @apply text-gray-500 text-lg mt-3 max-w-2xl;
+  }
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
+  }
+  .input-field {
+    @apply w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none
+           focus:border-brand-pink focus:ring-2 focus:ring-brand-pink/20
+           transition-all duration-200 bg-white;
+  }
+  .shimmer {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+}
+
+/* Leaf decoration */
+.leaf-bg {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5 Q45 15 45 30 Q45 45 30 55 Q15 45 15 30 Q15 15 30 5Z' fill='%232E7D32' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+/* Gradient text */
+.text-gradient {
+  background: linear-gradient(135deg, var(--brand-pink), var(--brand-green));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Pattern bg */
+.pattern-bg {
+  background-color: #fff;
+  background-image: radial-gradient(circle, rgba(233,30,140,0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
