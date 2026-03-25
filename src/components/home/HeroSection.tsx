@@ -31,7 +31,7 @@ export function HeroSection() {
               >
                 <path
                   d="M0 8 Q100 0 200 8"
-                  stroke="#E91E8C"
+                  stroke="#12A6DF"
                   strokeWidth="3"
                   strokeLinecap="round"
                   fill="none"
