@@ -7,10 +7,6 @@ import {
   Users,
   ArrowUpRight,
   ArrowDownRight,
-  Clock,
-  CheckCircle,
-  XCircle,
-  Truck,
   Loader2,
 } from "lucide-react";
 import {
@@ -93,7 +89,7 @@ const TEST_PIE_DATA = [
 
 const TEST_RECENT_ORDERS = [
   {
-    id: "NM-2024-001",
+    id: "test-1",
     customer: "Priya Sharma",
     items: 3,
     total: 497,
@@ -101,7 +97,7 @@ const TEST_RECENT_ORDERS = [
     time: "2 min ago",
   },
   {
-    id: "NM-2024-002",
+    id: "test-2",
     customer: "Ramesh Kumar",
     items: 1,
     total: 179,
@@ -109,7 +105,7 @@ const TEST_RECENT_ORDERS = [
     time: "18 min ago",
   },
   {
-    id: "NM-2024-003",
+    id: "test-3",
     customer: "Anitha Rajan",
     items: 2,
     total: 358,
@@ -117,7 +113,7 @@ const TEST_RECENT_ORDERS = [
     time: "34 min ago",
   },
   {
-    id: "NM-2024-004",
+    id: "test-4",
     customer: "Karthik Srinivas",
     items: 5,
     total: 895,
@@ -125,7 +121,7 @@ const TEST_RECENT_ORDERS = [
     time: "1 hr ago",
   },
   {
-    id: "NM-2024-005",
+    id: "test-5",
     customer: "Meena Devi",
     items: 1,
     total: 449,
@@ -149,8 +145,8 @@ const COLOR_MAP: Record<string, string> = {
 };
 
 export function AdminDashboardClient() {
-  const { isTest } = useAdminMode();
-  const [loading, setLoading] = useState(!isTest);
+  const { isTest, mode } = useAdminMode();
+  const [loading, setLoading] = useState(mode === "live");
   const [stats, setStats] = useState(TEST_STATS);
   const [revenueData, setRevenueData] = useState(TEST_REVENUE_DATA);
   const [productData, setProductData] = useState(TEST_PRODUCT_DATA);
@@ -355,10 +351,6 @@ export function AdminDashboardClient() {
                   : "Live data from database"}
               </p>
             </div>
-            <select className="text-xs border border-gray-200 rounded-lg px-3 py-1.5 focus:outline-none">
-              <option>Last 7 months</option>
-              <option>Last 12 months</option>
-            </select>
           </div>
           <ResponsiveContainer width="100%" height={220}>
             <LineChart data={revenueData}>
@@ -450,80 +442,40 @@ export function AdminDashboardClient() {
         </div>
       </div>
 
-      {/* Charts Row 2 */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
-        {/* Product Sales Bar */}
-        <div className="xl:col-span-2 bg-white rounded-2xl p-5 shadow-card">
-          <h3 className="font-bold text-base mb-1">Product Performance</h3>
-          <p className="text-xs text-gray-400 mb-4">
-            {isTest ? "Sample units sold" : "Live units sold"}
-          </p>
-          <ResponsiveContainer width="100%" height={200}>
-            <BarChart data={productData} barSize={32}>
-              <CartesianGrid
-                strokeDasharray="3 3"
-                stroke="#f0f0f0"
-                vertical={false}
-              />
-              <XAxis
-                dataKey="name"
-                tick={{ fontSize: 11, fill: "#9ca3af" }}
-                axisLine={false}
-                tickLine={false}
-              />
-              <YAxis
-                tick={{ fontSize: 11, fill: "#9ca3af" }}
-                axisLine={false}
-                tickLine={false}
-              />
-              <Tooltip
-                contentStyle={{
-                  borderRadius: 12,
-                  border: "none",
-                  boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
-                }}
-              />
-              <Bar dataKey="sales" fill="#12A6DF" radius={[6, 6, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="bg-white rounded-2xl p-5 shadow-card">
-          <h3 className="font-bold text-base mb-4">Quick Actions</h3>
-          <div className="space-y-2">
-            {[
-              {
-                label: "Add New Product",
-                href: "/admin/products",
-                color: "bg-brand-pink text-white",
-              },
-              {
-                label: "View All Orders",
-                href: "/admin/orders",
-                color: "bg-brand-green text-white",
-              },
-              {
-                label: "Manage Blog Posts",
-                href: "/admin/blogs",
-                color: "bg-brand-dark text-white",
-              },
-              {
-                label: "Edit Homepage",
-                href: "/admin/cms",
-                color: "bg-brand-gold text-brand-dark",
-              },
-            ].map(({ label, href, color }) => (
-              <a
-                key={label}
-                href={href}
-                className={`block text-center py-2.5 px-4 rounded-xl text-sm font-semibold transition-all hover:opacity-90 hover:-translate-y-0.5 ${color}`}
-              >
-                {label}
-              </a>
-            ))}
-          </div>
-        </div>
+      {/* Charts Row 2 - Product Performance */}
+      <div className="bg-white rounded-2xl p-5 shadow-card">
+        <h3 className="font-bold text-base mb-1">Product Performance</h3>
+        <p className="text-xs text-gray-400 mb-4">
+          {isTest ? "Sample units sold" : "Live units sold"}
+        </p>
+        <ResponsiveContainer width="100%" height={200}>
+          <BarChart data={productData} barSize={32}>
+            <CartesianGrid
+              strokeDasharray="3 3"
+              stroke="#f0f0f0"
+              vertical={false}
+            />
+            <XAxis
+              dataKey="name"
+              tick={{ fontSize: 11, fill: "#9ca3af" }}
+              axisLine={false}
+              tickLine={false}
+            />
+            <YAxis
+              tick={{ fontSize: 11, fill: "#9ca3af" }}
+              axisLine={false}
+              tickLine={false}
+            />
+            <Tooltip
+              contentStyle={{
+                borderRadius: 12,
+                border: "none",
+                boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+              }}
+            />
+            <Bar dataKey="sales" fill="#12A6DF" radius={[6, 6, 0, 0]} />
+          </BarChart>
+        </ResponsiveContainer>
       </div>
 
       {/* Recent Orders */}

@@ -1,6 +1,6 @@
 "use client";
-import { Bell, Search } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { Bell, Search, LogOut } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
 import { useAdminMode } from "@/store/adminModeContext";
 
 const PAGE_TITLES: Record<string, string> = {
@@ -8,17 +8,21 @@ const PAGE_TITLES: Record<string, string> = {
   "/admin/orders": "Orders",
   "/admin/products": "Products",
   "/admin/analytics": "Analytics",
-  "/admin/blogs": "Blog Manager",
-  "/admin/cms": "Site Content",
-  "/admin/media": "Media Library",
   "/admin/customers": "Customers",
   "/admin/settings": "Settings",
 };
 
 export function AdminHeader() {
   const pathname = usePathname();
+  const router = useRouter();
   const title = PAGE_TITLES[pathname] || "Admin";
   const { mode, setMode, isTest } = useAdminMode();
+
+  const handleLogout = () => {
+    localStorage.removeItem("adminAuth");
+    localStorage.removeItem("adminEmail");
+    router.push("/admin/login");
+  };
 
   return (
     <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between gap-4">
@@ -52,7 +56,7 @@ export function AdminHeader() {
           <span
             className={`text-xs font-medium ${isTest ? "text-yellow-600" : "text-green-600"}`}
           >
-            {isTest ? "Viewing sample data" : "Connected to database"}
+            {isTest ? "Sample data" : "Real data"}
           </span>
         </div>
       </div>
@@ -76,15 +80,22 @@ export function AdminHeader() {
           <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-brand-pink rounded-full" />
         </button>
 
-        {/* Profile */}
+        {/* Profile & Logout */}
         <div className="flex items-center gap-2.5 pl-3 border-l border-gray-200">
           <div className="w-8 h-8 rounded-full bg-brand-pink text-white flex items-center justify-center text-sm font-bold">
             A
           </div>
           <div className="hidden md:block leading-tight">
             <div className="text-sm font-semibold text-brand-dark">Admin</div>
-            <div className="text-xs text-gray-400">nanmaiappalam.com</div>
+            <div className="text-xs text-gray-400">nanmaifoods.com</div>
           </div>
+          <button
+            onClick={handleLogout}
+            className="ml-2 p-2 rounded-xl hover:bg-red-50 text-gray-400 hover:text-red-500 transition-colors"
+            title="Logout"
+          >
+            <LogOut size={18} />
+          </button>
         </div>
       </div>
     </header>

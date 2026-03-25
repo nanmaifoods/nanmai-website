@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   ShoppingBag,
@@ -37,7 +37,14 @@ const NAV = [
 
 export function AdminSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [collapsed, setCollapsed] = useState(false);
+
+  const handleLogout = () => {
+    localStorage.removeItem("adminAuth");
+    localStorage.removeItem("adminEmail");
+    router.push("/admin/login");
+  };
 
   return (
     <aside
@@ -122,7 +129,10 @@ export function AdminSidebar() {
           <Globe size={18} className="shrink-0" />
           {!collapsed && <span>View Website</span>}
         </Link>
-        <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-white/60 hover:bg-red-500/20 hover:text-red-400 transition-all mt-1">
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-white/60 hover:bg-red-500/20 hover:text-red-400 transition-all mt-1"
+        >
           <LogOut size={18} className="shrink-0" />
           {!collapsed && <span>Logout</span>}
         </button>
