@@ -10,6 +10,10 @@ import {
   ChevronRight,
   Loader2,
 } from "lucide-react";
+import { createAdminClient } from "@/lib/supabase";
+
+// Disable caching to always show fresh data
+export const dynamic = "force-dynamic";
 
 interface BlogPost {
   id: string;
@@ -27,17 +31,25 @@ interface BlogPost {
 
 async function getBlog(slug: string): Promise<BlogPost | null> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-    const res = await fetch(`${baseUrl}/api/blogs/${slug}`, {
-      cache: "no-store",
-    });
+    const supabase = createAdminClient();
+    const { data, error } = await supabase
+      .from("blogs")
+      .select("*")
+      .eq("slug", slug)
+      .eq("is_published", true)
+      .single();
 
-    if (!res.ok) {
+    if (error || !data) {
       return null;
     }
 
-    const data = await res.json();
-    return data.blog;
+    // Increment views
+    await supabase
+      .from("blogs")
+      .update({ views: (data.views || 0) + 1 })
+      .eq("id", data.id);
+
+    return data as BlogPost;
   } catch (err) {
     console.error("Error fetching blog:", err);
     return null;
@@ -47,9 +59,10 @@ async function getBlog(slug: string): Promise<BlogPost | null> {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const blog = await getBlog(params.slug);
+  const { slug } = await params;
+  const blog = await getBlog(slug);
 
   if (!blog) {
     return { title: "Blog Not Found" };
@@ -110,9 +123,10 @@ function formatDate(dateStr: string) {
 export default async function BlogDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const blog = await getBlog(params.slug);
+  const { slug } = await params;
+  const blog = await getBlog(slug);
 
   if (!blog) {
     notFound();

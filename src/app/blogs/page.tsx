@@ -16,7 +16,9 @@ async function getBlogs() {
     const supabase = createAdminClient();
     const { data, error } = await supabase
       .from("blogs")
-      .select("*")
+      .select(
+        "id, slug, title, excerpt, cover_image, category, read_time, tags, created_at",
+      )
       .eq("is_published", true)
       .order("created_at", { ascending: false });
 
