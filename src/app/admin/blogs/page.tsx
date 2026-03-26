@@ -64,7 +64,28 @@ export default function AdminBlogsPage() {
   const [saving, setSaving] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [tagInput, setTagInput] = useState("");
+  const [showDiscardDialog, setShowDiscardDialog] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLDivElement>(null);
+
+  // Check if form has unsaved changes
+  const hasUnsavedChanges = () => {
+    const initialForm = modal.edit
+      ? {
+          title: modal.edit.title,
+          slug: modal.edit.slug,
+          category: modal.edit.category,
+          content: modal.edit.content || "",
+          excerpt: modal.edit.excerpt || "",
+          is_published: modal.edit.is_published,
+          read_time: modal.edit.read_time || 5,
+          cover_image: modal.edit.cover_image || "",
+          tags: modal.edit.tags || [],
+        }
+      : EMPTY_BLOG;
+    return JSON.stringify(form) !== JSON.stringify(initialForm);
+  };
 
   // Fetch blogs from Supabase
   const fetchBlogs = async () => {
@@ -109,6 +130,65 @@ export default function AdminBlogsPage() {
 
   const closeModal = () => setModal({ open: false, edit: null });
 
+  // Handle close with unsaved changes check
+  const handleCloseModal = () => {
+    if (hasUnsavedChanges()) {
+      setShowDiscardDialog(true);
+    } else {
+      closeModal();
+    }
+  };
+
+  // Save as draft and close
+  const saveAsDraft = async () => {
+    setForm((f) => ({ ...f, is_published: false }));
+    await handleSave(true);
+  };
+
+  // Updated handleSave to support draft mode
+  const handleSave = async (asDraft = false) => {
+    if (!form.title.trim()) {
+      toast.error("Title is required");
+      return;
+    }
+
+    setSaving(true);
+    try {
+      const url = modal.edit ? `/api/blogs/${modal.edit.id}` : "/api/blogs";
+      const method = modal.edit ? "PUT" : "POST";
+
+      const payload = asDraft ? { ...form, is_published: false } : form;
+
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        toast.success(
+          asDraft
+            ? "Saved as draft!"
+            : modal.edit
+              ? "Blog updated!"
+              : "Blog created!",
+        );
+        setShowDiscardDialog(false);
+        closeModal();
+        fetchBlogs();
+      } else {
+        toast.error(data.error || "Failed to save blog");
+      }
+    } catch (err) {
+      console.error("Save error:", err);
+      toast.error("Failed to save blog");
+    } finally {
+      setSaving(false);
+    }
+  };
+
   // Handle image upload
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -152,41 +232,6 @@ export default function AdminBlogsPage() {
     } finally {
       setUploadingImage(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
-    }
-  };
-
-  // Save blog (create or update)
-  const handleSave = async () => {
-    if (!form.title.trim()) {
-      toast.error("Title is required");
-      return;
-    }
-
-    setSaving(true);
-    try {
-      const url = modal.edit ? `/api/blogs/${modal.edit.id}` : "/api/blogs";
-      const method = modal.edit ? "PUT" : "POST";
-
-      const res = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        toast.success(modal.edit ? "Blog updated!" : "Blog created!");
-        closeModal();
-        fetchBlogs();
-      } else {
-        toast.error(data.error || "Failed to save blog");
-      }
-    } catch (err) {
-      console.error("Save error:", err);
-      toast.error("Failed to save blog");
-    } finally {
-      setSaving(false);
     }
   };
 
@@ -444,235 +489,278 @@ export default function AdminBlogsPage() {
       {modal.open && (
         <div
           className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
-          onClick={closeModal}
+          onClick={handleCloseModal}
         >
           <div
-            className="bg-white rounded-3xl w-full max-w-3xl shadow-2xl max-h-[90vh] overflow-hidden flex flex-col"
+            ref={modalRef}
+            className="bg-white rounded-3xl w-full max-w-3xl shadow-2xl max-h-[90vh] flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Fixed content wrapper to prevent click propagation */}
+            {/* Fixed Header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 flex-shrink-0">
+              <h3 className="font-bold text-base">
+                {modal.edit ? "Edit Blog Post" : "Create New Blog Post"}
+              </h3>
+              <button
+                onClick={handleCloseModal}
+                className="p-2 hover:bg-gray-100 rounded-xl text-gray-400"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Scrollable Content */}
             <div
-              className="flex flex-col h-full"
-              onClick={(e) => e.stopPropagation()}
+              ref={formRef}
+              className="p-6 space-y-4 overflow-y-auto flex-1 min-h-0 scroll-smooth"
             >
-              <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-                <h3 className="font-bold text-base">
-                  {modal.edit ? "Edit Blog Post" : "Create New Blog Post"}
-                </h3>
-                <button
-                  onClick={closeModal}
-                  className="p-2 hover:bg-gray-100 rounded-xl text-gray-400"
-                >
-                  <X size={18} />
-                </button>
+              {/* Cover Image */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                  Cover Image
+                </label>
+                <div className="flex items-start gap-4">
+                  <div className="flex-1">
+                    {form.cover_image ? (
+                      <div className="relative">
+                        <img
+                          src={form.cover_image}
+                          alt="Cover"
+                          className="w-full h-40 object-cover rounded-xl"
+                        />
+                        <button
+                          onClick={() =>
+                            setForm((f) => ({ ...f, cover_image: "" }))
+                          }
+                          className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-full hover:bg-red-600"
+                        >
+                          <X size={14} />
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="border-2 border-dashed border-gray-200 rounded-xl h-40 flex items-center justify-center text-gray-400">
+                        <ImageIcon size={32} />
+                        <span className="ml-2">No image selected</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="hidden"
+                    />
+                    <button
+                      onClick={() => fileInputRef.current?.click()}
+                      disabled={uploadingImage}
+                      className="btn-secondary text-sm"
+                    >
+                      {uploadingImage ? (
+                        <>
+                          <Loader2 size={14} className="animate-spin" />{" "}
+                          Uploading...
+                        </>
+                      ) : (
+                        <>
+                          <Upload size={14} /> Upload Image
+                        </>
+                      )}
+                    </button>
+                    <p className="text-xs text-gray-400 text-center">Max 5MB</p>
+                  </div>
+                </div>
               </div>
 
-              <div className="p-6 space-y-4 overflow-y-auto flex-1">
-                {/* Cover Image */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-                    Cover Image
-                  </label>
-                  <div className="flex items-start gap-4">
-                    <div className="flex-1">
-                      {form.cover_image ? (
-                        <div className="relative">
-                          <img
-                            src={form.cover_image}
-                            alt="Cover"
-                            className="w-full h-40 object-cover rounded-xl"
-                          />
-                          <button
-                            onClick={() =>
-                              setForm((f) => ({ ...f, cover_image: "" }))
-                            }
-                            className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-full hover:bg-red-600"
-                          >
-                            <X size={14} />
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="border-2 border-dashed border-gray-200 rounded-xl h-40 flex items-center justify-center text-gray-400">
-                          <ImageIcon size={32} />
-                          <span className="ml-2">No image selected</span>
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      <input
-                        ref={fileInputRef}
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageUpload}
-                        className="hidden"
-                      />
-                      <button
-                        onClick={() => fileInputRef.current?.click()}
-                        disabled={uploadingImage}
-                        className="btn-secondary text-sm"
-                      >
-                        {uploadingImage ? (
-                          <>
-                            <Loader2 size={14} className="animate-spin" />{" "}
-                            Uploading...
-                          </>
-                        ) : (
-                          <>
-                            <Upload size={14} /> Upload Image
-                          </>
-                        )}
-                      </button>
-                      <p className="text-xs text-gray-400 text-center">
-                        Max 5MB
-                      </p>
-                    </div>
-                  </div>
-                </div>
+              {/* Title */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                  Title *
+                </label>
+                <input
+                  value={form.title}
+                  onChange={(e) => upd("title", e.target.value)}
+                  placeholder="Blog post title..."
+                  className="input-field"
+                />
+              </div>
 
-                {/* Title */}
+              {/* Category & Read Time */}
+              <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-                    Title *
+                    Category
                   </label>
-                  <input
-                    value={form.title}
-                    onChange={(e) => upd("title", e.target.value)}
-                    placeholder="Blog post title..."
+                  <select
+                    value={form.category}
+                    onChange={(e) => upd("category", e.target.value)}
                     className="input-field"
-                  />
-                </div>
-
-                {/* Category & Read Time */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-                      Category
-                    </label>
-                    <select
-                      value={form.category}
-                      onChange={(e) => upd("category", e.target.value)}
-                      className="input-field"
-                    >
-                      {CATEGORIES.map((c) => (
-                        <option key={c}>{c}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-                      Read Time (min)
-                    </label>
-                    <input
-                      type="number"
-                      value={form.read_time}
-                      onChange={(e) => upd("read_time", Number(e.target.value))}
-                      className="input-field"
-                      min={1}
-                      max={60}
-                    />
-                  </div>
-                </div>
-
-                {/* Tags */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-                    Tags
-                  </label>
-                  <div className="flex gap-2 mb-2 flex-wrap">
-                    {form.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="badge bg-brand-pink/10 text-brand-pink flex items-center gap-1"
-                      >
-                        {tag}
-                        <button
-                          onClick={() => removeTag(tag)}
-                          className="hover:text-red-500"
-                        >
-                          <X size={12} />
-                        </button>
-                      </span>
+                  >
+                    {CATEGORIES.map((c) => (
+                      <option key={c}>{c}</option>
                     ))}
-                  </div>
-                  <div className="flex gap-2">
-                    <input
-                      value={tagInput}
-                      onChange={(e) => setTagInput(e.target.value)}
-                      onKeyDown={(e) =>
-                        e.key === "Enter" && (e.preventDefault(), addTag())
-                      }
-                      placeholder="Add a tag..."
-                      className="input-field flex-1"
-                    />
-                    <button onClick={addTag} className="btn-secondary">
-                      Add
-                    </button>
-                  </div>
+                  </select>
                 </div>
-
-                {/* Excerpt */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-                    Excerpt / Summary *
+                    Read Time (min)
                   </label>
-                  <textarea
-                    value={form.excerpt}
-                    onChange={(e) => upd("excerpt", e.target.value)}
-                    rows={2}
-                    placeholder="Short description shown in blog listing cards..."
-                    className="input-field resize-none"
-                  />
-                </div>
-
-                {/* Content */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-                    Full Content *{" "}
-                    <span className="text-xs text-gray-400">
-                      (Markdown supported)
-                    </span>
-                  </label>
-                  <textarea
-                    value={form.content}
-                    onChange={(e) => upd("content", e.target.value)}
-                    rows={12}
-                    placeholder="## Introduction&#10;&#10;Write your full blog post here.&#10;&#10;## Section Heading&#10;&#10;- Point 1&#10;- Point 2"
-                    className="input-field resize-none font-mono text-sm"
-                  />
-                </div>
-
-                {/* Publish */}
-                <label className="flex items-center gap-2 cursor-pointer">
                   <input
-                    type="checkbox"
-                    checked={form.is_published}
-                    onChange={(e) => upd("is_published", e.target.checked)}
-                    className="w-4 h-4 accent-[#2E7D32]"
+                    type="number"
+                    value={form.read_time}
+                    onChange={(e) => upd("read_time", Number(e.target.value))}
+                    className="input-field"
+                    min={1}
+                    max={60}
                   />
-                  <span className="text-sm font-medium">
-                    Publish immediately (visible to users)
+                </div>
+              </div>
+
+              {/* Tags */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                  Tags
+                </label>
+                <div className="flex gap-2 mb-2 flex-wrap">
+                  {form.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="badge bg-brand-pink/10 text-brand-pink flex items-center gap-1"
+                    >
+                      {tag}
+                      <button
+                        onClick={() => removeTag(tag)}
+                        className="hover:text-red-500"
+                      >
+                        <X size={12} />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+                <div className="flex gap-2">
+                  <input
+                    value={tagInput}
+                    onChange={(e) => setTagInput(e.target.value)}
+                    onKeyDown={(e) =>
+                      e.key === "Enter" && (e.preventDefault(), addTag())
+                    }
+                    placeholder="Add a tag..."
+                    className="input-field flex-1"
+                  />
+                  <button onClick={addTag} className="btn-secondary">
+                    Add
+                  </button>
+                </div>
+              </div>
+
+              {/* Excerpt */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                  Excerpt / Summary *
+                </label>
+                <textarea
+                  value={form.excerpt}
+                  onChange={(e) => upd("excerpt", e.target.value)}
+                  rows={2}
+                  placeholder="Short description shown in blog listing cards..."
+                  className="input-field resize-none"
+                />
+              </div>
+
+              {/* Content */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                  Full Content *{" "}
+                  <span className="text-xs text-gray-400">
+                    (Markdown supported)
                   </span>
                 </label>
+                <textarea
+                  value={form.content}
+                  onChange={(e) => upd("content", e.target.value)}
+                  rows={12}
+                  placeholder="## Introduction&#10;&#10;Write your full blog post here.&#10;&#10;## Section Heading&#10;&#10;- Point 1&#10;- Point 2"
+                  className="input-field resize-none font-mono text-sm"
+                />
               </div>
 
-              <div className="flex gap-3 px-6 pb-6 border-t border-gray-100 pt-4">
-                <button onClick={closeModal} className="flex-1 btn-secondary">
-                  Cancel
+              {/* Publish */}
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={form.is_published}
+                  onChange={(e) => upd("is_published", e.target.checked)}
+                  className="w-4 h-4 accent-[#2E7D32]"
+                />
+                <span className="text-sm font-medium">
+                  Publish immediately (visible to users)
+                </span>
+              </label>
+            </div>
+
+            {/* Fixed Footer */}
+            <div className="flex gap-3 px-6 py-4 border-t border-gray-100 flex-shrink-0">
+              <button
+                onClick={handleCloseModal}
+                className="flex-1 btn-secondary"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => handleSave(false)}
+                disabled={saving}
+                className="flex-1 btn-primary justify-center"
+              >
+                {saving ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin" /> Saving...
+                  </>
+                ) : modal.edit ? (
+                  "Save Changes"
+                ) : (
+                  "Create Post"
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Discard Dialog */}
+      {showDiscardDialog && (
+        <div
+          className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-4 backdrop-blur-sm"
+          onClick={() => setShowDiscardDialog(false)}
+        >
+          <div
+            className="bg-white rounded-2xl w-full max-w-md shadow-2xl p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="text-center">
+              <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl">⚠️</span>
+              </div>
+              <h3 className="font-bold text-lg mb-2">Unsaved Changes</h3>
+              <p className="text-gray-500 text-sm mb-6">
+                You have unsaved changes. What would you like to do?
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => {
+                    setShowDiscardDialog(false);
+                    closeModal();
+                  }}
+                  className="flex-1 btn-secondary"
+                >
+                  Discard
                 </button>
                 <button
-                  onClick={handleSave}
+                  onClick={saveAsDraft}
                   disabled={saving}
-                  className="flex-1 btn-primary justify-center"
+                  className="flex-1 btn-secondary bg-yellow-50 hover:bg-yellow-100 text-yellow-700 border-yellow-200"
                 >
-                  {saving ? (
-                    <>
-                      <Loader2 size={16} className="animate-spin" /> Saving...
-                    </>
-                  ) : modal.edit ? (
-                    "Save Changes"
-                  ) : (
-                    "Create Post"
-                  )}
+                  Save as Draft
                 </button>
               </div>
             </div>
