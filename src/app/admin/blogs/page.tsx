@@ -157,7 +157,12 @@ export default function AdminBlogsPage() {
       const url = modal.edit ? `/api/blogs/${modal.edit.id}` : "/api/blogs";
       const method = modal.edit ? "PUT" : "POST";
 
-      const payload = asDraft ? { ...form, is_published: false } : form;
+      // For new blogs, regenerate slug from title. For edits, keep existing slug.
+      const payload = {
+        ...form,
+        ...(asDraft ? { is_published: false } : {}),
+        ...(modal.edit ? {} : { regenerate_slug: true }), // Only regenerate slug for new blogs
+      };
 
       const res = await fetch(url, {
         method,

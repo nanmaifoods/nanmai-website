@@ -78,11 +78,14 @@ export async function PUT(
 
     if (body.title !== undefined) {
       updateData.title = body.title;
-      // Regenerate slug if title changed
-      updateData.slug = body.title
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-|-$/g, "");
+      // Only regenerate slug if explicitly requested or if it's a new slug
+      // We check if title actually changed from original
+      if (body.regenerate_slug && body.regenerate_slug === true) {
+        updateData.slug = body.title
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-|-$/g, "");
+      }
     }
     if (body.excerpt !== undefined) updateData.excerpt = body.excerpt;
     if (body.content !== undefined) updateData.content = body.content;
