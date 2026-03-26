@@ -15,6 +15,9 @@ export const metadata: Metadata = {
     "Shop premium quality traditional South Indian papads online. Crispy, tasty, made with superior ingredients. Free delivery above ₹499.",
 };
 
+// Disable caching to always show fresh data
+export const dynamic = "force-dynamic";
+
 async function getFeaturedProducts(): Promise<Product[]> {
   try {
     const supabase = createAdminClient();

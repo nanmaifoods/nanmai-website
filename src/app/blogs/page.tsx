@@ -8,6 +8,9 @@ export const metadata: Metadata = {
     "Discover recipes, health tips, and stories from the world of traditional South Indian cooking.",
 };
 
+// Disable caching to always show fresh data from Supabase
+export const dynamic = "force-dynamic";
+
 async function getBlogs() {
   try {
     const supabase = createAdminClient();
