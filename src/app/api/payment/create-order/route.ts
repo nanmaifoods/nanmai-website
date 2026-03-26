@@ -5,15 +5,20 @@ let razorpay: Razorpay | null = null;
 
 function getRazorpay() {
   if (!razorpay) {
-    if (
-      !process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ||
-      !process.env.RAZORPAY_KEY_SECRET
-    ) {
-      throw new Error("Razorpay credentials not configured");
+    const keyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
+    const keySecret = process.env.RAZORPAY_KEY_SECRET;
+
+    console.log("🔑 Razorpay Key ID:", keyId ? "✓ Set" : "✗ Missing");
+    console.log("🔑 Razorpay Key Secret:", keySecret ? "✓ Set" : "✗ Missing");
+
+    if (!keyId || !keySecret) {
+      throw new Error(
+        `Razorpay credentials not configured. Key ID: ${keyId ? "✓" : "✗"}, Secret: ${keySecret ? "✓" : "✗"}`,
+      );
     }
     razorpay = new Razorpay({
-      key_id: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-      key_secret: process.env.RAZORPAY_KEY_SECRET,
+      key_id: keyId,
+      key_secret: keySecret,
     });
   }
   return razorpay;
