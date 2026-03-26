@@ -3,6 +3,7 @@ import { Bell, Search, LogOut, Menu } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useAdminMode } from "@/store/adminModeContext";
 import { useSidebar } from "@/store/sidebarContext";
+import { getAdminUrl } from "@/lib/admin";
 
 const PAGE_TITLES: Record<string, string> = {
   "/admin": "Dashboard",
@@ -23,7 +24,7 @@ export function AdminHeader() {
   const handleLogout = () => {
     localStorage.removeItem("adminAuth");
     localStorage.removeItem("adminEmail");
-    router.push("/admin/login");
+    router.push(getAdminUrl("/login"));
   };
 
   return (
