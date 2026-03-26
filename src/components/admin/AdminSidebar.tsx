@@ -13,31 +13,25 @@ import {
   Leaf,
   ChevronRight,
   X,
-  FileText,
 } from "lucide-react";
 import clsx from "clsx";
 import { useSidebar } from "@/store/sidebarContext";
-import { getAdminUrl } from "@/lib/admin";
 
 const NAV = [
   {
     section: "Main",
     items: [
-      { href: getAdminUrl(), icon: LayoutDashboard, label: "Dashboard" },
-      { href: getAdminUrl("/orders"), icon: ShoppingBag, label: "Orders" },
-      { href: getAdminUrl("/products"), icon: Package, label: "Products" },
-      { href: getAdminUrl("/analytics"), icon: BarChart3, label: "Analytics" },
+      { href: "/admin", icon: LayoutDashboard, label: "Dashboard" },
+      { href: "/admin/orders", icon: ShoppingBag, label: "Orders" },
+      { href: "/admin/products", icon: Package, label: "Products" },
+      { href: "/admin/analytics", icon: BarChart3, label: "Analytics" },
     ],
-  },
-  {
-    section: "Content",
-    items: [{ href: getAdminUrl("/cms"), icon: FileText, label: "CMS" }],
   },
   {
     section: "System",
     items: [
-      { href: getAdminUrl("/customers"), icon: Users, label: "Customers" },
-      { href: getAdminUrl("/settings"), icon: Settings, label: "Settings" },
+      { href: "/admin/customers", icon: Users, label: "Customers" },
+      { href: "/admin/settings", icon: Settings, label: "Settings" },
     ],
   },
 ];
@@ -50,7 +44,7 @@ export function AdminSidebar() {
   const handleLogout = () => {
     localStorage.removeItem("adminAuth");
     localStorage.removeItem("adminEmail");
-    router.push(getAdminUrl("/login"));
+    router.push("/admin/login");
   };
 
   return (

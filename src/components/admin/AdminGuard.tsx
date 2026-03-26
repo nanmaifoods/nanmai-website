@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { Loader2 } from "lucide-react";
-import { getAdminUrl } from "@/lib/admin";
 
 export function AdminGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -11,7 +10,7 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // Skip auth check for login page
-    if (pathname === "/admin/login" || pathname === getAdminUrl("/login")) {
+    if (pathname === "/admin/login") {
       setChecking(false);
       return;
     }
@@ -20,7 +19,7 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
     const isAuthenticated = localStorage.getItem("adminAuth") === "true";
 
     if (!isAuthenticated) {
-      router.push(getAdminUrl("/login"));
+      router.push("/admin/login");
     } else {
       setChecking(false);
     }
@@ -41,7 +40,7 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
   }
 
   // Don't render admin layout for login page
-  if (pathname === "/admin/login" || pathname === getAdminUrl("/login")) {
+  if (pathname === "/admin/login") {
     return <>{children}</>;
   }
 
