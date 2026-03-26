@@ -64,7 +64,16 @@ export default function CheckoutPage() {
         }),
       });
       const order = await res.json();
-      if (!order.id) throw new Error("Failed to create order");
+
+      if (!res.ok) {
+        console.error("Create order error:", order);
+        throw new Error(order.error || "Failed to create order");
+      }
+
+      if (!order.id) {
+        console.error("No order ID returned:", order);
+        throw new Error("Invalid order response");
+      }
 
       await initiatePayment({
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
@@ -88,15 +97,21 @@ export default function CheckoutPage() {
           if (result.success) {
             clearCart();
             toast.success("Order placed successfully!");
-            router.push(`/order-success?orderId=${result.orderId}`);
+            router.push(
+              `/order-success?orderId=${result.orderId || order.receipt}`,
+            );
           } else {
-            toast.error("Payment verification failed. Please contact support.");
+            toast.error(
+              result.error ||
+                "Payment verification failed. Please contact support.",
+            );
           }
         },
         modal: { ondismiss: () => setLoading(false) },
       });
-    } catch (err) {
-      toast.error("Payment failed. Please try again.");
+    } catch (err: any) {
+      console.error("Payment error:", err);
+      toast.error(err.message || "Payment failed. Please try again.");
       setLoading(false);
     }
   };
