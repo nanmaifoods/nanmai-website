@@ -4,12 +4,8 @@ export function middleware(request: NextRequest) {
   const hostname = request.headers.get("host") || "";
   const pathname = request.nextUrl.pathname;
 
-  // Check if request is coming from admin subdomain (development or production)
-  const isAdminSubdomain =
-    hostname.startsWith("admin.") ||
-    (hostname.includes(".localhost") && hostname.includes("admin"));
-
-  // Admin subdomain detection (e.g., admin.localhost:3000 or admin.nanmaifoods.com)
+  // Check if request is coming from admin subdomain
+  // Handles: admin.localhost, admin.domain.com, admin.nanmai-website.vercel.app
   const adminSubdomainPattern = /^admin\./;
   const isAdminHost = adminSubdomainPattern.test(hostname);
 
@@ -27,12 +23,37 @@ export function middleware(request: NextRequest) {
     return NextResponse.rewrite(url);
   }
 
-  // If accessing /admin/* from main domain in production, redirect to admin subdomain
-  // Skip this redirect in development to make testing easier
+  // If accessing /admin/* from main Vercel domain, redirect to admin subdomain
+  // This applies to preview/custom domains, not localhost
   if (pathname.startsWith("/admin") && !hostname.includes("localhost")) {
     const url = request.nextUrl.clone();
-    const baseDomain = hostname.replace(/^www\./, "");
-    const adminUrl = `https://admin.${baseDomain}${pathname}`;
+
+    // Get the base domain (everything after the first subdomain for vercel.app)
+    // e.g., nanmai-website from nanmai-website.vercel.app
+    let baseDomain: string;
+
+    if (hostname.includes(".vercel.app")) {
+      // For Vercel preview domains: admin.nanmai-website.vercel.app
+      baseDomain = hostname.replace(/^[^.]+\./, ""); // Removes first subdomain
+    } else {
+      // For custom domains: admin.yourdomain.com
+      baseDomain = hostname.replace(/^www\./, "");
+    }
+
+    // Build the admin subdomain URL
+    let adminUrl: string;
+    if (hostname.includes(".vercel.app")) {
+      // For Vercel: admin.nanmai-website.vercel.app
+      const parts = hostname.split(".");
+      if (parts.length >= 3) {
+        adminUrl = `https://${parts[0]}.${parts.slice(1).join(".")}${pathname}`;
+      } else {
+        adminUrl = `https://admin.${hostname}${pathname}`;
+      }
+    } else {
+      adminUrl = `https://admin.${baseDomain}${pathname}`;
+    }
+
     return NextResponse.redirect(new URL(adminUrl));
   }
 

@@ -20,6 +20,15 @@ export function getAdminSubdomain(): string {
     if (hostname.startsWith("admin.")) {
       return "";
     }
+
+    // Handle Vercel preview domains (admin.nanmai-website.vercel.app)
+    if (hostname.includes(".vercel.app") && !hostname.startsWith("admin.")) {
+      const parts = hostname.split(".");
+      if (parts.length >= 3) {
+        // Reconstruct with admin prefix: admin.nanmai-website.vercel.app
+        return `https://admin.${parts.slice(1).join(".")}`;
+      }
+    }
   }
 
   return "";
