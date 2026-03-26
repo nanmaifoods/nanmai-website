@@ -44,7 +44,7 @@ async function getBlog(slug: string): Promise<BlogPost | null> {
     }
 
     // Increment views
-    await supabase
+    await (supabase as any)
       .from("blogs")
       .update({ views: (data.views || 0) + 1 })
       .eq("id", data.id);
