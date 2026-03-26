@@ -1,16 +1,12 @@
 -- ============================================================
--- FIX SCRIPT: Ensure all products are active and visible
--- Run this in your Supabase SQL Editor
+-- FIX: Activate All Products in Supabase
 -- ============================================================
 
--- Check current products status
+-- Step 1: Show current status of products
 SELECT id, name, is_active FROM products;
 
--- Activate all products (if you want to make all visible)
+-- Step 2: Activate ALL products (this will make them visible)
 UPDATE products SET is_active = TRUE WHERE is_active IS NULL OR is_active = FALSE;
 
--- OR set specific products active (replace 'your-product-id' with actual ID)
--- UPDATE products SET is_active = TRUE WHERE id = 'your-product-id';
-
--- Verify the fix
+-- Step 3: Verify the fix worked
 SELECT id, name, is_active, is_featured FROM products ORDER BY created_at DESC;
