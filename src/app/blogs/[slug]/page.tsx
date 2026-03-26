@@ -26,6 +26,7 @@ interface BlogPost {
   tags: string[];
   read_time: number;
   author: string;
+  views: number;
   created_at: string;
 }
 
@@ -43,13 +44,15 @@ async function getBlog(slug: string): Promise<BlogPost | null> {
       return null;
     }
 
+    const blogData = data as unknown as BlogPost;
+
     // Increment views
     await (supabase as any)
       .from("blogs")
-      .update({ views: (data.views || 0) + 1 })
-      .eq("id", data.id);
+      .update({ views: (blogData.views || 0) + 1 })
+      .eq("id", blogData.id);
 
-    return data as BlogPost;
+    return blogData;
   } catch (err) {
     console.error("Error fetching blog:", err);
     return null;
