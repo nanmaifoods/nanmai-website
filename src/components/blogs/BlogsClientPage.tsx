@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { Clock, ArrowRight, Tag, Loader2 } from "lucide-react";
 
@@ -24,29 +24,13 @@ const CATEGORIES = [
   "Culture",
 ];
 
-export function BlogsClientPage() {
-  const [blogs, setBlogs] = useState<Blog[]>([]);
-  const [loading, setLoading] = useState(true);
+interface BlogsClientPageProps {
+  initialBlogs: Blog[];
+}
+
+export function BlogsClientPage({ initialBlogs }: BlogsClientPageProps) {
+  const [blogs] = useState<Blog[]>(initialBlogs);
   const [category, setCategory] = useState("All");
-
-  useEffect(() => {
-    const fetchBlogs = async () => {
-      setLoading(true);
-      try {
-        const res = await fetch("/api/blogs");
-        const data = await res.json();
-        if (data.blogs) {
-          setBlogs(data.blogs);
-        }
-      } catch (err) {
-        console.error("Error fetching blogs:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchBlogs();
-  }, []);
 
   const filteredBlogs =
     category === "All" ? blogs : blogs.filter((b) => b.category === category);
@@ -61,20 +45,6 @@ export function BlogsClientPage() {
       year: "numeric",
     });
   };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-center">
-          <Loader2
-            size={40}
-            className="animate-spin text-brand-pink mx-auto mb-4"
-          />
-          <p className="text-gray-500">Loading blogs...</p>
-        </div>
-      </div>
-    );
-  }
 
   if (blogs.length === 0) {
     return (

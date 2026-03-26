@@ -1,7 +1,6 @@
 "use client";
-import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, ShoppingCart, Star, Loader2 } from "lucide-react";
+import { ArrowRight, ShoppingCart, Star } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
 import { Product } from "@/types/database";
 import toast from "react-hot-toast";
@@ -91,27 +90,16 @@ function ProductCard({ product }: { product: Product }) {
   );
 }
 
-export function FeaturedProducts() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+interface FeaturedProductsProps {
+  initialProducts: Product[];
+}
 
-  useEffect(() => {
-    const fetchFeaturedProducts = async () => {
-      try {
-        const res = await fetch("/api/products?featured=true");
-        const data = await res.json();
-        if (data.products) {
-          setProducts(data.products.slice(0, 4)); // Limit to 4 products
-        }
-      } catch (err) {
-        console.error("Error fetching featured products:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
+export function FeaturedProducts({ initialProducts }: FeaturedProductsProps) {
+  const products = initialProducts.slice(0, 4);
 
-    fetchFeaturedProducts();
-  }, []);
+  if (products.length === 0) {
+    return null;
+  }
 
   return (
     <section className="py-20 bg-white">
@@ -134,25 +122,11 @@ export function FeaturedProducts() {
           </Link>
         </div>
 
-        {loading ? (
-          <div className="text-center py-12">
-            <Loader2
-              size={32}
-              className="animate-spin text-brand-pink mx-auto mb-4"
-            />
-            <p className="text-gray-500">Loading featured products...</p>
-          </div>
-        ) : products.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {products.map((p) => (
-              <ProductCard key={p.id} product={p} />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-12">
-            <p className="text-gray-500">No featured products available.</p>
-          </div>
-        )}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {products.map((p) => (
+            <ProductCard key={p.id} product={p} />
+          ))}
+        </div>
       </div>
     </section>
   );
