@@ -19,7 +19,7 @@ import { Product } from "@/types/database";
 import toast from "react-hot-toast";
 import Link from "next/link";
 
-const FAQS = [
+const DEFAULT_FAQS = [
   {
     q: "How should I store the appalam?",
     a: "Store in an airtight container in a cool, dry place. It stays fresh for up to 6 months when stored properly.",
@@ -37,6 +37,111 @@ const FAQS = [
     a: "The shelf life is 12 months from the date of manufacture when stored correctly.",
   },
 ];
+
+const PRODUCT_FAQS: Record<string, { q: string; a: string }[]> = {
+  "party-special-appalam": [
+    { q: "What makes Party Special Appalam different?", a: "Party Special Appalam is made for sharing, with a crisp texture and festive appeal that suits family lunches, celebrations, and larger meal spreads." },
+    { q: "Is Party Special Appalam good for special occasions?", a: "Yes. It is ideal for festive meals, guest serving, and any table where you want a generous and crunchy appalam papad option." },
+    { q: "Can I serve Party Special Appalam as a snack?", a: "Yes. It works both as a mealtime side and as a light snack with chutney, pickle, or tea." },
+    { q: "Can I buy Party Special Appalam online?", a: "Yes. It is a convenient choice for customers looking for papad online, appalam packet options, or appalam near me." },
+  ],
+  "super-special-appalam": [
+    { q: "What is special about Super Special Appalam?", a: "Super Special Appalam is positioned as a premium everyday favorite with a rich aroma, satisfying crunch, and authentic South Indian taste." },
+    { q: "When should I serve Super Special Appalam?", a: "It pairs beautifully with rice, sambar, rasam, curd rice, and festive meals." },
+    { q: "Is Super Special Appalam suitable for daily use?", a: "Yes. It works well for both regular family meals and special occasions." },
+    { q: "Why is Super Special Appalam a good choice for appalam lovers?", a: "It offers a classic traditional taste in a convenient appalam packet that is easy to order as papad online." },
+  ],
+  "dinner-special-appalam": [
+    { q: "What is Dinner Special Appalam best used for?", a: "Dinner Special Appalam is best suited for evening meals and adds a crisp finish to everyday South Indian dinners." },
+    { q: "Does Dinner Special Appalam go well with rice meals?", a: "Yes. It is a great match for rice based meals, making it a strong addition for shoppers searching for rice papad online." },
+    { q: "Is Dinner Special Appalam only for dinner?", a: "No. Despite the name, it can be served for lunch, dinner, or as a snack." },
+    { q: "Why choose Dinner Special Appalam?", a: "Choose it if you want a dependable appalam papad with a traditional flavor profile and easy serving appeal." },
+  ],
+  "extra-special-appalam": [
+    { q: "What makes Extra Special Appalam unique?", a: "Extra Special Appalam is made for people who want more crunch, more flavor, and a premium feel in every serving." },
+    { q: "Is Extra Special Appalam good for guests?", a: "Yes. It is a great option for serving guests, family meals, and festive occasions." },
+    { q: "Can Extra Special Appalam be part of daily meals?", a: "Yes. It works well as an elevated everyday side dish for regular lunches and dinners." },
+    { q: "Is Extra Special Appalam available as papad online?", a: "Yes. It is a convenient option for shoppers looking for appalam near me or wanting to order papad online." },
+  ],
+  "classic-appalam": [
+    { q: "What is Classic Appalam?", a: "Classic Appalam is a simple and traditional appalam papad made for families who enjoy familiar South Indian flavors." },
+    { q: "Who is Classic Appalam best for?", a: "It is best for households that want a reliable everyday appalam packet with a timeless taste." },
+    { q: "Can I serve Classic Appalam with all meals?", a: "Yes. It pairs well with rice, curries, rasam, and curd rice." },
+    { q: "Why do customers choose Classic Appalam?", a: "Customers choose it for its simplicity, versatility, and authentic appalam in Tamil style meal experience." },
+  ],
+  "daily-dinner-appalam": [
+    { q: "What is Daily Dinner Appalam designed for?", a: "Daily Dinner Appalam is made for regular family meals and everyday serving convenience." },
+    { q: "Is Daily Dinner Appalam good for quick preparation?", a: "Yes. It is a practical choice for busy households that want a crisp side dish ready in minutes." },
+    { q: "Can Daily Dinner Appalam be used as a pappadam microwave option?", a: "Yes. Many customers may use it as a lighter pappadam microwave or microwave pappadam snack, depending on their preferred preparation method." },
+    { q: "Why choose Daily Dinner Appalam for everyday meals?", a: "It offers familiar taste, good crunch, and dependable value for daily home cooking." },
+  ],
+  "medium-appalam": [
+    { q: "What is Medium Appalam best known for?", a: "Medium Appalam is known for offering a balanced size, good crispness, and everyday serving convenience." },
+    { q: "Is Medium Appalam suitable for families?", a: "Yes. It is a practical option for regular household use." },
+    { q: "Can Medium Appalam be served as a snack?", a: "Yes. It works well both as a mealtime side and as a light snack." },
+    { q: "Why should I choose Medium Appalam?", a: "Choose it if you want an easy to handle appalam packet with traditional taste and all-purpose use." },
+  ],
+  "simply-appalam": [
+    { q: "What is Simply Appalam?", a: "Simply Appalam is a smaller, easy to enjoy appalam papad that focuses on clean flavor and simple everyday convenience." },
+    { q: "Who is Simply Appalam ideal for?", a: "It is ideal for small households, quick meals, lunch boxes, and casual snacking." },
+    { q: "Is Simply Appalam good for first time buyers?", a: "Yes. It is a great starter choice for customers trying papad online for the first time." },
+    { q: "Why choose Simply Appalam?", a: "It is a convenient, affordable, and tasty appalam packet for everyday use." },
+  ],
+  "crunchy-appalam": [
+    { q: "What makes Crunchy Appalam different?", a: "Crunchy Appalam is designed for customers who love a stronger crisp bite and snack-like texture." },
+    { q: "Is Crunchy Appalam only for snacks?", a: "No. It is excellent with meals too, especially rice and curry combinations." },
+    { q: "Can Crunchy Appalam be served with dips or pickle?", a: "Yes. It goes well with chutneys, pickles, and curd based sides." },
+    { q: "Can Crunchy Appalam be prepared as microwave papadum?", a: "Yes. Some customers use it as a microwave papadum style option for a quick and lighter snack." },
+  ],
+  "punjabi-pappad": [
+    { q: "What is Punjabi Pappad?", a: "Punjabi Pappad is a regional favorite with a bold and distinctive taste, made for those who enjoy more robust papad flavors." },
+    { q: "How is Punjabi Pappad different from regular appalam?", a: "Punjabi Pappad typically has a more pronounced regional flavor and works well as both a snack and side dish." },
+    { q: "Who will enjoy Punjabi Pappad?", a: "It is ideal for customers who enjoy spiced papad varieties, regional snacks, and North Indian style accompaniments." },
+    { q: "Can Punjabi Pappad be ordered online?", a: "Yes. It is a good option for buyers looking for Punjabi Pappad online along with traditional South Indian appalam papad." },
+  ],
+  "punjabi-special-pappad": [
+    { q: "What is Punjabi Special Pappad?", a: "Punjabi Special Pappad is a fuller regional papad option created for customers who enjoy bolder taste and a distinct serving style." },
+    { q: "Is Punjabi Special Pappad good for parties?", a: "Yes. It works very well for gatherings, snack platters, and festive serving." },
+    { q: "Can I pair Punjabi Special Pappad with meals?", a: "Yes. It goes well with rice dishes, curries, and as a crispy snack with chutneys." },
+    { q: "Why should I add Punjabi Special Pappad to my range?", a: "It broadens your product mix and appeals to customers searching for Punjabi Pappad and regional papad varieties." },
+  ],
+  "mini-appalam-snack-pack": [
+    { q: "What is the Mini Appalam Snack Pack for?", a: "This small pack is ideal for quick snacking, trial purchases, lunch boxes, and impulse buys." },
+    { q: "Is the Mini Appalam Snack Pack suitable for kids?", a: "Yes. Its compact portion size makes it a convenient snack option for smaller servings." },
+    { q: "Can I keep Mini Appalam Snack Packs for travel or office use?", a: "Yes. They are easy to carry and convenient for on the go snacking." },
+    { q: "Why choose the Mini Appalam Snack Pack?", a: "It gives you authentic appalam flavor in a compact and budget friendly format." },
+  ],
+  "nanmai-appalam-chips": [
+    { q: "What are Appalam Chips?", a: "Appalam Chips are a snack style version of traditional appalam, made for easy serving and quick enjoyment." },
+    { q: "How are Appalam Chips different from regular appalam?", a: "They are positioned more as a ready to enjoy snack, while regular appalam is usually served as a mealtime side." },
+    { q: "When should I choose Appalam Chips?", a: "Choose them for tea time, parties, casual snacking, or gifting." },
+    { q: "Are Appalam Chips a good online snack option?", a: "Yes. They are a strong choice for customers browsing papad online and looking for something snack friendly." },
+  ],
+  "nanmai-special-appalam": [
+    { q: "What is Nanmai Special Appalam?", a: "Nanmai Special Appalam is a premium family style variant designed for larger servings and fuller meal occasions." },
+    { q: "Who is this product best for?", a: "It is best for larger households, shared meals, and customers who prefer value packs." },
+    { q: "Is Nanmai Special Appalam suitable for everyday meals?", a: "Yes. It can be used daily, especially in homes that serve appalam regularly." },
+    { q: "Why choose Nanmai Special Appalam?", a: "Choose it for its family friendly quantity, traditional taste, and convenient appalam packet format." },
+  ],
+  "nanmai-dinner-appalam": [
+    { q: "What is Nanmai Dinner Appalam best for?", a: "It is best for everyday meal service and adds crispness to regular lunch and dinner plates." },
+    { q: "Is Nanmai Dinner Appalam a good family product?", a: "Yes. It is a practical and versatile option for family meals." },
+    { q: "Can it be used for quick home preparation?", a: "Yes. It is designed to be an easy mealtime addition for busy households." },
+    { q: "Why choose Nanmai Dinner Appalam?", a: "Choose it for dependable quality, traditional taste, and easy everyday use." },
+  ],
+  "nanmai-extra-appalam": [
+    { q: "What is Nanmai Extra Appalam?", a: "Nanmai Extra Appalam is a flavorful variant made for customers who want a slightly richer and more satisfying crunch." },
+    { q: "Is Nanmai Extra Appalam suitable for special meals?", a: "Yes. It works well for both special occasions and premium everyday serving." },
+    { q: "Can Nanmai Extra Appalam be served as a snack?", a: "Yes. It can be enjoyed on its own or alongside chutneys and pickles." },
+    { q: "Why should customers choose Nanmai Extra Appalam?", a: "It is a good choice for people who want traditional appalam papad with a more elevated feel." },
+  ],
+  "nanmai-classic-appalam": [
+    { q: "What is Nanmai Classic Appalam?", a: "Nanmai Classic Appalam is a straightforward traditional option built around familiar flavor and everyday comfort." },
+    { q: "Is Nanmai Classic Appalam good for regular meals?", a: "Yes. It is ideal for daily serving with rice, curries, and South Indian home style dishes." },
+    { q: "What kind of customers will like Nanmai Classic Appalam?", a: "Customers who prefer simple, authentic, and versatile appalam will enjoy it most." },
+    { q: "Why add Nanmai Classic Appalam to the website?", a: "It represents the core traditional taste many shoppers expect when they search for appalam near me or papad online." },
+  ],
+};
 
 export function ProductDetailClient({ slug }: { slug: string }) {
   const [product, setProduct] = useState<Product | null>(null);
@@ -411,7 +516,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
             Frequently Asked Questions
           </h3>
           <div className="space-y-3">
-            {FAQS.map(({ q, a }, i) => (
+            {(PRODUCT_FAQS[product.slug] || DEFAULT_FAQS).map(({ q, a }, i) => (
               <div
                 key={i}
                 className="border border-gray-200 rounded-2xl overflow-hidden"

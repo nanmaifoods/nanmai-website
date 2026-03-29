@@ -333,10 +333,10 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
         </div>
       </div>
 
-      {/* Cover emoji */}
+      {/* Cover image */}
       <div className="max-w-4xl mx-auto px-4 -mt-8 mb-8">
-        <div className="h-64 md:h-80 rounded-3xl bg-gradient-to-br from-brand-cream to-white flex items-center justify-center text-8xl shadow-card overflow-hidden">
-          {post.cover}
+        <div className="h-64 md:h-80 rounded-3xl bg-gradient-to-br from-brand-cream to-white shadow-card overflow-hidden">
+          <img src="/images/about-img2.png" alt={post.title} className="w-full h-full object-cover" />
         </div>
       </div>
 

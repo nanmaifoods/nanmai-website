@@ -14,7 +14,7 @@ import { Product } from "@/types/database";
 import toast from "react-hot-toast";
 import Link from "next/link";
 
-const CATEGORIES = ["all", "classic", "flavoured", "mini", "packs"];
+const CATEGORIES = ["all", "appalam", "punjabi-pappad", "appalam-snack-pack", "appalam-chips"];
 const SORT_OPTIONS = [
   { value: "default", label: "Featured" },
   { value: "price-asc", label: "Price: Low–High" },

@@ -94,8 +94,8 @@ export function BlogPreview() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {BLOG_POSTS.map((post) => (
             <Link key={post.slug} href={`/blogs/${post.slug}`} className="card group cursor-pointer">
-              <div className="h-44 bg-gradient-to-br from-brand-cream to-white flex items-center justify-center text-6xl group-hover:scale-105 transition-transform duration-500">
-                {post.cover}
+              <div className="h-44 bg-gradient-to-br from-brand-cream to-white overflow-hidden group-hover:scale-105 transition-transform duration-500">
+                <img src="/images/about-img2.png" alt={post.title} className="w-full h-full object-cover" />
               </div>
               <div className="p-5">
                 <div className="flex items-center gap-2 mb-3">

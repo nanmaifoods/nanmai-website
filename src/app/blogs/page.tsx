@@ -43,8 +43,8 @@ export default function BlogsPage() {
         {/* Featured Post */}
         <Link href={`/blogs/${BLOGS[0].slug}`} className="block mb-12 card group overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-2">
-            <div className="h-64 md:h-full bg-gradient-to-br from-brand-pink/10 to-brand-green/10 flex items-center justify-center text-8xl group-hover:scale-105 transition-transform duration-500">
-              {BLOGS[0].cover}
+            <div className="h-64 md:h-full bg-gradient-to-br from-brand-pink/10 to-brand-green/10 overflow-hidden group-hover:scale-105 transition-transform duration-500">
+              <img src="/images/about-img2.png" alt={BLOGS[0].title} className="w-full h-full object-cover" />
             </div>
             <div className="p-8 flex flex-col justify-center">
               <div className="flex items-center gap-2 mb-3">
@@ -68,8 +68,8 @@ export default function BlogsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {BLOGS.slice(1).map(post => (
             <Link key={post.slug} href={`/blogs/${post.slug}`} className="card group flex flex-col cursor-pointer">
-              <div className="h-48 bg-gradient-to-br from-brand-cream to-white flex items-center justify-center text-6xl group-hover:scale-105 transition-transform duration-500">
-                {post.cover}
+              <div className="h-48 bg-gradient-to-br from-brand-cream to-white overflow-hidden group-hover:scale-105 transition-transform duration-500">
+                <img src="/images/about-img2.png" alt={post.title} className="w-full h-full object-cover" />
               </div>
               <div className="p-5 flex flex-col flex-1">
                 <div className="flex items-center gap-2 mb-3">
