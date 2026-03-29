@@ -127,7 +127,6 @@ export function ProductsClientPage() {
   const [mobileFilter, setMobileFilter] = useState(false);
   const [maxPrice, setMaxPrice] = useState(1000);
 
-  // Fetch products from Supabase
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
@@ -162,7 +161,6 @@ export function ProductsClientPage() {
       list = [...list].sort((a, b) => b.price - a.price);
     if (sort === "name-asc")
       list = [...list].sort((a, b) => a.name.localeCompare(b.name));
-    // Featured items first for default sort
     if (sort === "default")
       list = [...list].sort(
         (a, b) => (b.is_featured ? 1 : 0) - (a.is_featured ? 1 : 0),
@@ -173,16 +171,28 @@ export function ProductsClientPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <div className="bg-gradient-to-r from-brand-pink/10 to-brand-green/10 py-14 px-4 text-center">
-        <p className="text-brand-pink font-semibold text-sm uppercase tracking-widest mb-2">
-          Our Collection
-        </p>
-        <h1 className="font-display text-4xl md:text-5xl font-black text-brand-dark mb-3">
-          All Products
-        </h1>
-        <p className="text-gray-500 max-w-lg mx-auto">
-          Browse our full range of premium quality South Indian appalams.
-        </p>
+      <div className="relative w-full bg-brand-cream overflow-visible flex items-center justify-center px-6 md:px-16 py-10 gap-6 md:gap-10">
+        <h2
+          className="text-brand-dark font-black uppercase leading-none text-2xl sm:text-3xl md:text-5xl lg:text-6xl text-right"
+          style={{ fontFamily: "Impact, Arial Black, sans-serif" }}
+        >
+          <span className="text-brand-pink">Authentic</span> Crunch,
+        </h2>
+
+        <div className="relative w-36 h-36 sm:w-48 sm:h-48 md:w-64 md:h-64 flex-shrink-0 z-10 -my-10 sm:-my-16 md:-my-20">
+          <img
+            src="/images/hero-image.png"
+            alt="Nanmai Appalam"
+            className="w-full h-full object-contain drop-shadow-2xl"
+          />
+        </div>
+
+        <h2
+          className="text-brand-dark font-black uppercase leading-none text-2xl sm:text-3xl md:text-5xl lg:text-6xl text-left"
+          style={{ fontFamily: "Impact, Arial Black, sans-serif" }}
+        >
+          <span className="text-brand-pink">Delivered</span> Daily.
+        </h2>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">

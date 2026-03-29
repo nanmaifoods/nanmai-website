@@ -1,29 +1,30 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Star, Shield, Leaf, ChevronDown } from "lucide-react";
+import { ArrowRight, Star, Shield, Leaf } from "lucide-react";
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-gradient-to-br from-brand-cream via-white to-brand-cream/50">
+    <section className="relative flex items-center overflow-hidden bg-gradient-to-br from-brand-cream via-white to-brand-cream/50">
       {/* Background blobs */}
       <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-brand-pink/10 blur-3xl pointer-events-none" />
       <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-brand-green/10 blur-3xl pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 w-full py-20 grid lg:grid-cols-2 gap-12 items-center">
-        {/* ── LEFT: Text ── */}
-        <div className="space-y-6 animate-fade-up z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 w-full py-8 lg:py-20 grid lg:grid-cols-2 gap-6 lg:gap-12 items-center">
+        {/* ── LEFT: Text ── order-2 on mobile, order-1 on desktop ── */}
+        <div className="space-y-6 animate-fade-up z-10 order-2 lg:order-1">
           <div className="inline-flex items-center gap-2 bg-brand-green/10 text-brand-green px-4 py-2 rounded-full text-sm font-semibold">
             <Leaf size={14} className="animate-float" />
             100% Natural Ingredients
           </div>
 
-          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-black leading-[1.05] text-brand-dark">
-            Simply <span className="text-gradient">Crispy.</span>
+          <h1 className="font-display text-xl sm:text-3xl lg:text-4xl font-black leading-[1.05] text-brand-dark">
+            Authentic South Indian{" "}
+            <span className="text-gradient">Appalam</span>
             <br />
-            Simply{" "}
+            Delivered to Your{" "}
             <span className="relative inline-block">
-              <span className="text-brand-pink">Tasty.</span>
+              <span className="text-brand-pink">Doorstep.</span>
               <svg
                 className="absolute -bottom-2 left-0 w-full"
                 viewBox="0 0 200 12"
@@ -42,8 +43,12 @@ export function HeroSection() {
           </h1>
 
           <p className="text-gray-600 text-lg leading-relaxed max-w-lg">
-            Premium quality traditional South Indian appalams, crafted with
-            superior ingredients for the perfect crunch every time.
+            Experience the true taste of tradition with Nanmai Appalam, your
+            trusted place to buy papad online. Our appalam papad is made using
+            time tested recipes that bring the authentic crunch of South India
+            to every meal. Whether you are looking for rice papad online, a
+            fresh appalam packet, or searching for appalam near me, we make it
+            simple to enjoy quality and freshness wherever you are
           </p>
 
           <div className="flex flex-wrap gap-4">
@@ -77,28 +82,15 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* ── RIGHT: Just the image, nothing else ── */}
+        {/* ── RIGHT: Image ── order-1 on mobile, order-2 on desktop ── */}
         <div
-          className="relative flex items-center justify-center animate-fade-in"
+          className="relative flex items-center justify-center animate-fade-in order-1 lg:order-2"
           style={{ animationDelay: "0.3s" }}
         >
-          <div className="relative w-full max-w-lg h-[420px] md:h-[520px]">
-            <Image
-              src="/images/hero-image.png"
-              alt="Nanmai Appalam – Premium South Indian Appalam"
-              fill
-              className="object-contain drop-shadow-2xl"
-              priority
-              sizes="(max-width: 768px) 100vw, 50vw"
-            />
+          <div className="relative rounded-3xl overflow-hidden aspect-[4/3] bg-gradient-to-br from-brand-cream to-brand-pink/10">
+            <img src="/images/new-hero-image.png" alt="Nanmai Appalam" className="w-full h-full object-cover" />
           </div>
         </div>
-      </div>
-
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce hidden md:flex flex-col items-center gap-1 text-gray-400">
-        <span className="text-xs">Scroll Down</span>
-        <ChevronDown size={16} />
       </div>
     </section>
   );

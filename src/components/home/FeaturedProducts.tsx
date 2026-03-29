@@ -116,22 +116,14 @@ export function FeaturedProducts() {
   return (
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
-          <div>
-            <p className="text-brand-pink font-semibold text-sm uppercase tracking-widest mb-2">
-              Our Collection
-            </p>
-            <h2 className="section-title">Featured Products</h2>
-            <p className="section-subtitle">
-              Handpicked favourites loved by thousands of families.
-            </p>
-          </div>
-          <Link
-            href="/products"
-            className="btn-secondary self-start md:self-auto whitespace-nowrap"
-          >
-            View All <ArrowRight size={16} />
-          </Link>
+        <div className="mb-12">
+          <p className="text-brand-pink font-semibold text-sm uppercase tracking-widest mb-2">
+            Our Collection
+          </p>
+          <h2 className="section-title">Featured Products</h2>
+          <p className="section-subtitle">
+            Handpicked favourites loved by thousands of families.
+          </p>
         </div>
 
         {loading ? (
@@ -143,11 +135,21 @@ export function FeaturedProducts() {
             <p className="text-gray-500">Loading featured products...</p>
           </div>
         ) : products.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {products.map((p) => (
-              <ProductCard key={p.id} product={p} />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {products.map((p) => (
+                <ProductCard key={p.id} product={p} />
+              ))}
+            </div>
+            <div className="text-center mt-10">
+              <Link
+                href="/products"
+                className="btn-secondary inline-flex items-center gap-2"
+              >
+                View All <ArrowRight size={16} />
+              </Link>
+            </div>
+          </>
         ) : (
           <div className="text-center py-12">
             <p className="text-gray-500">No featured products available.</p>

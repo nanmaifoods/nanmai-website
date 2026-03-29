@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { HeroSection } from '@/components/home/HeroSection';
-import { FeaturesSection } from '@/components/home/FeaturesSection';
+import { OurStorySection, FeatureCardsSection } from '@/components/home/FeaturesSection';
 import { FeaturedProducts } from '@/components/home/FeaturedProducts';
 import { TestimonialsSection } from '@/components/home/TestimonialsSection';
 import { BlogPreview } from '@/components/home/BlogPreview';
@@ -16,8 +16,9 @@ export default function HomePage() {
   return (
     <>
       <HeroSection />
-      <FeaturesSection />
+      <OurStorySection />
       <FeaturedProducts />
+      <FeatureCardsSection />
       <StatsSection />
       <TestimonialsSection />
       <BlogPreview />

@@ -171,7 +171,7 @@ export default function CheckoutPage() {
                         required
                         value={info.phone}
                         onChange={(e) => update("phone", e.target.value)}
-                        placeholder="+91 98765 43210"
+                        placeholder="+91 9842504050"
                         className="input-field"
                       />
                     </div>

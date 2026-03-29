@@ -76,7 +76,7 @@ export default function AdminSettingsPage() {
                 </label>
                 <input
                   type="email"
-                  defaultValue="hello@nanmaiappalam.com"
+                  defaultValue="kothandapani6776@gmail.com"
                   className="input-field"
                 />
               </div>
@@ -84,7 +84,7 @@ export default function AdminSettingsPage() {
                 <label className="block text-sm font-semibold text-gray-700 mb-1.5">
                   Phone Number
                 </label>
-                <input defaultValue="+91 98765 43210" className="input-field" />
+                <input defaultValue="+91 9842504050" className="input-field" />
               </div>
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-1.5">
@@ -92,7 +92,7 @@ export default function AdminSettingsPage() {
                 </label>
                 <textarea
                   rows={3}
-                  defaultValue="123 Temple Street, Chennai, Tamil Nadu 600001"
+                  defaultValue="Apple Infinite Solutions No,418 2nd main road, Prakash Nagar, Thirunindravur, Tiruvallur, Chennai - 602024"
                   className="input-field resize-none"
                 />
               </div>

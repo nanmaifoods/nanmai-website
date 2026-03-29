@@ -306,4 +306,4 @@ In Razorpay test mode, use these test credentials:
 
 ## 📞 SUPPORT
 
-For any issues, contact: hello@nanmaiappalam.com
+For any issues, contact: kothandapani6776@gmail.com
