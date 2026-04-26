@@ -101,26 +101,6 @@ export default function ContactPage() {
               </a>
             ))}
 
-            <div className="p-5 rounded-2xl bg-brand-green/10 border border-brand-green/20">
-              <div className="flex items-center gap-2 mb-2">
-                <MessageCircle size={16} className="text-brand-green" />
-                <span className="font-semibold text-sm">
-                  Quick Response on WhatsApp
-                </span>
-              </div>
-              <p className="text-xs text-gray-600 mb-3">
-                For urgent queries and order support, WhatsApp us for the
-                fastest response.
-              </p>
-              <a
-                href="https://wa.me/919876543210"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-green text-sm py-2 px-4 inline-flex"
-              >
-                Chat on WhatsApp
-              </a>
-            </div>
           </div>
 
           {/* Form */}

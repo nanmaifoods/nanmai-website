@@ -15,7 +15,7 @@ export function Footer({ showNewsletter = true }: { showNewsletter?: boolean }) 
         <div className="bg-gradient-to-r from-brand-pink to-brand-green py-12 px-4">
         <div className="max-w-3xl mx-auto text-center">
           <h3 className="font-display text-2xl md:text-3xl font-bold mb-2">
-            Stay in the Loop 🌿
+            Stay in the Loop
           </h3>
           <p className="text-white/80 mb-6">
             Get exclusive deals, new product launches & recipes!

@@ -1,13 +1,54 @@
 'use client';
 import Link from 'next/link';
 import { ArrowRight, Star, Quote } from 'lucide-react';
+import { useEffect, useState, useRef } from 'react';
+
+// ─── Animated Counter Hook ────────────────────────────────────────────────────
+function useCountUp(target: number, duration = 2000, startOnView = true) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
+  const [hasAnimated, setHasAnimated] = useState(false);
+
+  useEffect(() => {
+    if (!startOnView) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setHasAnimated(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [startOnView]);
+
+  useEffect(() => {
+    if (!hasAnimated) return;
+
+    let startTime: number;
+    const step = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3); // ease-out-cubic
+      setCount(Math.floor(eased * target));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, [hasAnimated, target, duration]);
+
+  return { count, ref };
+}
 
 // ─── Stats ───────────────────────────────────────────────────────────────────
 const STATS = [
-  { value: '50,000+', label: 'Happy Customers' },
-  { value: '15+',     label: 'Years of Excellence' },
-  { value: '10+',     label: 'Product Variants' },
-  { value: '99%',     label: 'Customer Satisfaction' },
+  { value: 50000, label: 'Happy Customers', suffix: '+' },
+  { value: 15,    label: 'Years of Excellence', suffix: '+' },
+  { value: 10,    label: 'Product Variants', suffix: '+' },
+  { value: 99,    label: 'Customer Satisfaction', suffix: '%' },
 ];
 
 export function StatsSection() {
@@ -15,15 +56,25 @@ export function StatsSection() {
     <section className="py-16 bg-gradient-to-r from-brand-pink to-brand-green text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-          {STATS.map(({ value, label }) => (
+          {STATS.map(({ value, label, suffix }) => (
             <div key={label} className="space-y-1">
-              <div className="font-display font-black text-4xl md:text-5xl">{value}</div>
+              <AnimatedStat value={value} suffix={suffix} />
               <div className="text-white/80 text-sm font-medium">{label}</div>
             </div>
           ))}
         </div>
       </div>
     </section>
+  );
+}
+
+function AnimatedStat({ value, suffix }: { value: number; suffix: string }) {
+  const { count, ref } = useCountUp(value, 2000);
+
+  return (
+    <div ref={ref} className="font-display font-black text-4xl md:text-5xl">
+      {count.toLocaleString()}{suffix}
+    </div>
   );
 }
 

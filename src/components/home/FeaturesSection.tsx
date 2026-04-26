@@ -64,7 +64,7 @@ export function OurStorySection() {
             {" "}
             Our Story Tradition in Every Crunch
           </h2>
-          <p className="section-subtitle max-w-7xl mx-auto px-4 sm:px-6 text-justify">
+          <p className="section-subtitle max-w-7xl mx-auto px-4 sm:px-6">
             {" "}
             At Nanmai, we are passionate about preserving the authentic taste of
             அப்பளம், a staple loved in South Indian homes for generations. Each

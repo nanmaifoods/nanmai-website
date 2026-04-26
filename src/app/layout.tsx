@@ -53,6 +53,7 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin=""
         />
+        <link rel="icon" href="/images/favicon.png" />
       </head>
       <body className="font-body">
         <LayoutClientWrapper>{children}</LayoutClientWrapper>
