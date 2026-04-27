@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Leaf,
   Award,
@@ -6,6 +8,8 @@ import {
   ShieldCheck,
   Flame,
 } from "lucide-react";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 const FEATURES = [
   {
@@ -51,6 +55,106 @@ const COLOR_MAP: Record<string, string> = {
   pink: "bg-brand-pink/10 text-brand-pink",
   gold: "bg-brand-gold/20 text-brand-gold",
 };
+
+export function PartnersSection() {
+  const partnerLogos = [
+    "/images/logo/image 426.png",
+    "/images/logo/image 427.png",
+    "/images/logo/image 428.png",
+    "/images/logo/image 429.png",
+    "/images/logo/image 430.png",
+    "/images/logo/image 431.png",
+    "/images/logo/image 432.png",
+    "/images/logo/image 433.png",
+    "/images/logo/image 434.png",
+    "/images/logo/image 435.png",
+    "/images/logo/image 436.png",
+    "/images/logo/image 437.png",
+    "/images/logo/image 438.png",
+    "/images/logo/image 440.png",
+    "/images/logo/image 441.png",
+    "/images/logo/image 442.png",
+    "/images/logo/image 443.png",
+    "/images/logo/image 444.png",
+    "/images/logo/image 445.png",
+    "/images/logo/image 446.png",
+    "/images/logo/image 447.png",
+    "/images/logo/image 448.png",
+    "/images/logo/image 449.png",
+    "/images/logo/image 450.png",
+    "/images/logo/image 451.png",
+  ];
+
+  const [offset, setOffset] = useState(0);
+  const visibleCount = 4;
+  const totalSlides = Math.ceil(partnerLogos.length / visibleCount);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setOffset((prev) => (prev + 1) % totalSlides);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [totalSlides]);
+
+  const currentLogos = [];
+  for (let i = 0; i < visibleCount; i++) {
+    const index = (offset * visibleCount + i) % partnerLogos.length;
+    currentLogos.push(partnerLogos[index]);
+  }
+
+  return (
+    <section className="py-12 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <p className="text-brand-pink font-semibold text-sm uppercase tracking-widest mb-2">
+            Our Partners
+          </p>
+          <h2 className="section-title text-2xl font-bold">
+            Trusted by Industry Leaders
+          </h2>
+        </div>
+        <div className="relative overflow-hidden">
+          <motion.div
+            className="flex transition-transform duration-500 ease-in-out"
+            style={{ transform: `translateX(-${offset * (100 / visibleCount)}%)` }}
+          >
+            {partnerLogos.map((logo, index) => (
+              <div
+                key={index}
+                className="flex-shrink-0 w-1/4 px-4"
+              >
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="flex items-center justify-center h-24"
+                >
+                  <img
+                    src={logo}
+                    alt={`Partner ${index + 1}`}
+                    className="h-full w-auto object-contain opacity-75 hover:opacity-100 transition-opacity"
+                  />
+                </motion.div>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+        {totalSlides > 1 && (
+          <div className="flex justify-center mt-6 space-x-2">
+            {Array.from({ length: totalSlides }).map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setOffset(i)}
+                className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                  i === offset ? 'bg-brand-pink w-5' : 'bg-gray-300 hover:bg-gray-400'
+                }`}
+                aria-label={`Go to slide ${i + 1}`}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
 
 export function OurStorySection() {
   return (
@@ -110,6 +214,7 @@ export function FeatureCardsSection() {
 export function FeaturesSection() {
   return (
     <>
+      <PartnersSection />
       <OurStorySection />
       <FeatureCardsSection />
     </>
