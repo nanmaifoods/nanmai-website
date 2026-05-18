@@ -7,9 +7,9 @@ const BLOG_CONTENT: Record<string, {
   title: string; excerpt: string; category: string; date: string; readTime: number; cover: string; tags: string[];
   author: string; authorRole: string; content: string;
 }> = {
-  'health-benefits-of-appalam': {
-    title: 'Health Benefits of Eating Appalam', excerpt: 'Discover the surprising nutritional benefits of this crispy South Indian delight.',
-    category: 'Health', date: 'March 10, 2025', readTime: 4, cover: '🌿', tags: ['health', 'nutrition'],
+     'health-benefits-of-appalam': {
+     title: 'Health Benefits of Eating Appalam', excerpt: 'Discover the surprising nutritional benefits of this crispy South Indian delight.',
+     category: 'Health', date: 'March 10, 2025', readTime: 4, cover: '/images/Blog 1_11zon.png', tags: ['health', 'nutrition'],
     author: 'Dr. Meena Rajan', authorRole: 'Nutritionist',
     content: `
 ## Introduction
@@ -49,9 +49,9 @@ To maximise health benefits, opt for roasting or microwaving your appalam rather
 Appalam is far more than a simple side dish. When made with quality ingredients like Nanmai Appalam uses, it's a nutritious, flavourful addition to any meal. Enjoy it guilt-free, knowing every crispy bite is doing your body good!
     `,
   },
-  'traditional-south-indian-cooking': {
-    title: 'Traditional South Indian Cooking Tips', excerpt: 'Master authentic South Indian cooking with these time-honoured techniques.',
-    category: 'Recipes', date: 'March 5, 2025', readTime: 6, cover: '🍲', tags: ['cooking', 'tips'],
+     'traditional-south-indian-cooking': {
+     title: 'Traditional South Indian Cooking Tips', excerpt: 'Master authentic South Indian cooking with these time-honoured techniques.',
+     category: 'Recipes', date: 'March 5, 2025', readTime: 6, cover: '/images/Blog 2_11zon.png', tags: ['cooking', 'tips'],
     author: 'Chef Subramanian', authorRole: 'Head Chef',
     content: `
 ## The Soul of South Indian Cooking
@@ -88,9 +88,9 @@ A traditional South Indian meal is never complete without crispy appalam. Serve 
 South Indian cooking rewards patience and attention to detail. Master these foundational techniques and you'll find the rest comes naturally. Happy cooking!
     `,
   },
-  'how-appalam-is-made': {
-    title: 'How Our Appalam Is Made', excerpt: 'A behind-the-scenes look at our traditional manufacturing process.',
-    category: 'Behind The Scenes', date: 'Feb 28, 2025', readTime: 5, cover: '🏭', tags: ['process', 'quality'],
+     'how-appalam-is-made': {
+     title: 'How Our Appalam Is Made', excerpt: 'A behind-the-scenes look at our traditional manufacturing process.',
+     category: 'Behind The Scenes', date: 'Feb 28, 2025', readTime: 5, cover: '/images/Blog 3_11zon.png', tags: ['process', 'quality'],
     author: 'Nanmai Team', authorRole: 'Quality Team',
     content: `
 ## From Seed to Crunch
@@ -130,9 +130,9 @@ Before packaging, every batch is inspected for size, thickness, colour, and arom
 This entire process is FSSAI certified and conducted in hygienic, food-safe conditions. When you open a packet of Nanmai Appalam, you're experiencing the result of 15+ years of craft and care.
     `,
   },
-  'best-ways-to-cook-appalam': {
-    title: '5 Best Ways to Cook Your Appalam', excerpt: 'From deep frying to air frying — find the perfect cooking method for you.',
-    category: 'How-To', date: 'Feb 20, 2025', readTime: 5, cover: '🔥', tags: ['cooking', 'tips'],
+     'best-ways-to-cook-appalam': {
+     title: '5 Best Ways to Cook Your Appalam', excerpt: 'From deep frying to air frying — find the perfect cooking method for you.',
+     category: 'How-To', date: 'Feb 20, 2025', readTime: 5, cover: '/images/Blog 4_11zon.png', tags: ['cooking', 'tips'],
     author: 'Nanmai Kitchen', authorRole: 'Recipe Team',
     content: `
 ## The Great Appalam Debate
@@ -336,7 +336,7 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
       {/* Cover image */}
       <div className="max-w-4xl mx-auto px-4 -mt-8 mb-8">
         <div className="h-64 md:h-80 rounded-3xl bg-gradient-to-br from-brand-cream to-white shadow-card overflow-hidden">
-          <img src="/images/about-img2.png" alt={post.title} className="w-full h-full object-cover" />
+           <img src={post.cover} alt={post.title} className="w-full h-full object-contain" />
         </div>
       </div>
 

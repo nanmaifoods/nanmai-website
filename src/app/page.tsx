@@ -17,8 +17,8 @@ export default function HomePage() {
     <>
       <HeroSection />
       <PartnersSection />
-      <OurStorySection />
       <FeaturedProducts />
+      <OurStorySection />
       <FeatureCardsSection />
       <StatsSection />
       <TestimonialsSection />

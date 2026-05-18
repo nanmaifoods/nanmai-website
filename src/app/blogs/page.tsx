@@ -8,12 +8,11 @@ export const metadata: Metadata = {
 };
 
 const BLOGS = [
-  { slug: 'health-benefits-of-appalam',          title: 'Health Benefits of Eating Appalam',              excerpt: 'Discover why appalam is more than just a crunchy side dish. Packed with protein from urad dal, low in calories, and naturally gluten-free, it might just be the healthiest part of your meal!',                                                         category: 'Health',              date: 'March 10, 2025', readTime: 4,  cover: '🌿', tags: ['health', 'nutrition'] },
-  { slug: 'traditional-south-indian-cooking',     title: 'Traditional South Indian Cooking Tips',          excerpt: 'Master the art of South Indian cooking with these time-honoured techniques, secret spice combinations, and ingredient tips passed down through generations of Tamil home cooks.',                                                                    category: 'Recipes',             date: 'March 5, 2025',  readTime: 6,  cover: '🍲', tags: ['cooking', 'tips']    },
-  { slug: 'how-appalam-is-made',                  title: 'How Our Appalam Is Made',                        excerpt: 'A behind-the-scenes look at our manufacturing process – from selecting the finest urad dal to the final crispy product that lands at your doorstep.',                                                                                                category: 'Behind The Scenes',   date: 'Feb 28, 2025',   readTime: 5,  cover: '🏭', tags: ['process', 'quality'] },
-  { slug: 'best-ways-to-cook-appalam',            title: '5 Best Ways to Cook Your Appalam',               excerpt: 'Fried, roasted, microwaved or air-fried? We break down the pros and cons of every cooking method to help you get the crispiest, most flavourful appalam every single time.',                                                                       category: 'How-To',              date: 'Feb 20, 2025',   readTime: 5,  cover: '🔥', tags: ['cooking', 'tips']    },
-  { slug: 'papad-in-indian-cuisine-history',      title: 'The History of Papad in Indian Cuisine',         excerpt: 'Papad has been a staple of Indian cuisine for over 2,000 years. Explore the fascinating history of this humble flatbread and how it evolved across different regions and cultures.',                                                                  category: 'Culture',             date: 'Feb 12, 2025',   readTime: 7,  cover: '📜', tags: ['history', 'culture'] },
-  { slug: 'appalam-recipes-beyond-the-side-dish', title: 'Creative Appalam Recipes Beyond the Side Dish',  excerpt: 'Think appalam is just a side dish? Think again! Discover creative ways to incorporate crispy appalam into chaat, salads, sandwich wraps, and even fusion desserts.',                                                                                 category: 'Recipes',             date: 'Feb 5, 2025',    readTime: 6,  cover: '👨‍🍳', tags: ['recipes', 'creative'] },
+   { slug: 'health-benefits-of-appalam',          title: 'Health Benefits of Eating Appalam',              excerpt: 'Discover why appalam is more than just a crunchy side dish. Packed with protein from urad dal, low in calories, and naturally gluten-free, it might just be the healthiest part of your meal!',                                                         category: 'Health',              date: 'March 10, 2025', readTime: 4,  cover: '/images/Blog 1_11zon.png', tags: ['health', 'nutrition'] },
+   { slug: 'traditional-south-indian-cooking',     title: 'Traditional South Indian Cooking Tips',          excerpt: 'Master the art of South Indian cooking with these time-honoured techniques, secret spice combinations, and ingredient tips passed down through generations of Tamil home cooks.',                                                                    category: 'Recipes',             date: 'March 5, 2025',  readTime: 6,  cover: '/images/Blog 2_11zon.png', tags: ['cooking', 'tips']    },
+   { slug: 'how-appalam-is-made',                  title: 'How Our Appalam Is Made',                        excerpt: 'A behind-the-scenes look at our manufacturing process – from selecting the finest urad dal to the final crispy product that lands at your doorstep.',                                                                                                category: 'Behind The Scenes',   date: 'Feb 28, 2025',   readTime: 5,  cover: '/images/Blog 3_11zon.png', tags: ['process', 'quality'] },
+   { slug: 'best-ways-to-cook-appalam',            title: '5 Best Ways to Cook Your Appalam',               excerpt: 'Fried, roasted, microwaved or air-fried? We break down the pros and cons of every cooking method to help you get the crispiest, most flavourful appalam every single time.',                                                                       category: 'How-To',              date: 'Feb 20, 2025',   readTime: 5,  cover: '/images/Blog 4_11zon.png', tags: ['cooking', 'tips']    },
+   { slug: 'papad-in-indian-cuisine-history',      title: 'The History of Papad in Indian Cuisine',         excerpt: 'Papad has been a staple of Indian cuisine for over 2,000 years. Explore the fascinating history of this humble flatbread and how it evolved across different regions and cultures.',                                                                  category: 'Culture',             date: 'Feb 12, 2025',   readTime: 7,  cover: '/images/Blog 5_11zon.png', tags: ['history', 'culture'] },
 ];
 
 const CATEGORIES = ['All', 'Health', 'Recipes', 'Behind The Scenes', 'How-To', 'Culture'];
@@ -44,7 +43,7 @@ export default function BlogsPage() {
         <Link href={`/blogs/${BLOGS[0].slug}`} className="block mb-12 card group overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-2">
             <div className="h-64 md:h-full bg-gradient-to-br from-brand-pink/10 to-brand-green/10 overflow-hidden group-hover:scale-105 transition-transform duration-500">
-              <img src="/images/about-img2.png" alt={BLOGS[0].title} className="w-full h-full object-cover" />
+              <img src={BLOGS[0].cover} alt={BLOGS[0].title} className="w-full h-full object-cover" />
             </div>
             <div className="p-8 flex flex-col justify-center">
               <div className="flex items-center gap-2 mb-3">
@@ -69,7 +68,7 @@ export default function BlogsPage() {
           {BLOGS.slice(1).map(post => (
             <Link key={post.slug} href={`/blogs/${post.slug}`} className="card group flex flex-col cursor-pointer">
               <div className="h-48 bg-gradient-to-br from-brand-cream to-white overflow-hidden group-hover:scale-105 transition-transform duration-500">
-                <img src="/images/about-img2.png" alt={post.title} className="w-full h-full object-cover" />
+                <img src={post.cover} alt={post.title} className="w-full h-full object-cover" />
               </div>
               <div className="p-5 flex flex-col flex-1">
                 <div className="flex items-center gap-2 mb-3">

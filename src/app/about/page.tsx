@@ -51,7 +51,7 @@ export default function AboutPage() {
           </div>
           <div className="relative rounded-3xl overflow-hidden aspect-[4/3] bg-gradient-to-br from-brand-cream to-brand-pink/10">
             <img
-              src="/images/about-img1.png"
+              src="/images/About Us Image 3.png" 
               alt="Nanmai Appalam"
               className="w-full h-full object-cover"
             />
@@ -64,7 +64,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="relative rounded-3xl overflow-hidden aspect-[4/3] bg-gradient-to-br from-brand-gold/10 to-brand-cream order-last lg:order-first">
             <img
-              src="/images/about-img2.png"
+              src="/images/About Us Image 2.png"
               alt="Nanmai Appalam"
               className="w-full h-full object-cover"
             />
@@ -138,7 +138,7 @@ export default function AboutPage() {
           </div>
           <div className="relative rounded-3xl overflow-hidden aspect-[4/3] bg-gradient-to-br from-brand-green/10 to-brand-cream">
             <img
-              src="/images/new-hero-image.png"
+              src="/images/About US_Image 1.png"
               alt="Nanmai Appalam"
               className="w-full h-full object-cover"
             />
@@ -151,7 +151,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="relative rounded-3xl overflow-hidden aspect-[4/3] bg-gradient-to-br from-brand-pink/10 to-brand-cream order-last lg:order-first">
             <img
-              src="/images/new-hero-image.png"
+              src="/images/About Us Image 4.png"
               alt="Nanmai Appalam"
               className="w-full h-full object-cover"
             />
@@ -230,7 +230,7 @@ export default function AboutPage() {
           </div>
           <div className="relative rounded-3xl overflow-hidden aspect-[4/3] bg-gradient-to-br from-brand-gold/10 to-brand-cream">
             <img
-              src="/images/new-hero-image.png"
+              src="/images/Abour Us Image 5.png"
               alt="Nanmai Appalam"
               className="w-full h-full object-cover"
             />

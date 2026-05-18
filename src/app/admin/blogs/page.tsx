@@ -8,7 +8,6 @@ const INIT_BLOGS = [
   { id: '3', title: 'How Our Appalam Is Made',                     slug: 'how-appalam-is-made',                 category: 'Behind The Scenes', is_published: true,  date: 'Feb 28, 2025', readTime: 5,  views: 2100, cover: '🏭' },
   { id: '4', title: '5 Best Ways to Cook Your Appalam',            slug: 'best-ways-to-cook-appalam',           category: 'How-To',            is_published: true,  date: 'Feb 20, 2025', readTime: 5,  views: 3400, cover: '🔥' },
   { id: '5', title: 'The History of Papad in Indian Cuisine',      slug: 'papad-in-indian-cuisine-history',     category: 'Culture',           is_published: true,  date: 'Feb 12, 2025', readTime: 7,  views: 760,  cover: '📜' },
-  { id: '6', title: 'Creative Appalam Recipes Beyond the Side Dish', slug: 'appalam-recipes-beyond-the-side-dish', category: 'Recipes',        is_published: false, date: 'Feb 5, 2025',  readTime: 6,  views: 450,  cover: '👨‍🍳' },
 ];
 
 type Blog = typeof INIT_BLOGS[0];
