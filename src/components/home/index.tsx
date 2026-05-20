@@ -124,9 +124,9 @@ export function TestimonialsSection() {
 
 // ─── Blog Preview ─────────────────────────────────────────────────────────────
 const BLOG_POSTS = [
-  { slug: 'health-benefits-of-appalam', title: 'Health Benefits of Eating Appalam', excerpt: 'Discover why appalam is more than just a crunchy side dish – it packs surprising nutritional benefits.', category: 'Health', date: 'Mar 10, 2025', readTime: 4, cover: '🌿' },
-  { slug: 'traditional-south-indian-cooking', title: 'Traditional South Indian Cooking Tips', excerpt: 'Master the art of South Indian cooking with these time-honoured techniques and ingredient secrets.', category: 'Recipes', date: 'Mar 5, 2025', readTime: 6, cover: '🍲' },
-  { slug: 'how-appalam-is-made', title: 'How Our Appalam Is Made', excerpt: 'A behind-the-scenes look at our manufacturing process – from raw ingredients to the final crispy product.', category: 'Behind The Scenes', date: 'Feb 28, 2025', readTime: 5, cover: '🏭' },
+  { slug: 'health-benefits-of-appalam', title: 'Health Benefits of Eating Appalam', excerpt: 'Discover why appalam is more than just a crunchy side dish – it packs surprising nutritional benefits.', category: 'Health', date: 'Mar 10, 2025', readTime: 4, cover: '/images/Blog 1_11zon.png' },
+  { slug: 'traditional-south-indian-cooking', title: 'Traditional South Indian Cooking Tips', excerpt: 'Master the art of South Indian cooking with these time-honoured techniques and ingredient secrets.', category: 'Recipes', date: 'Mar 5, 2025', readTime: 6, cover: '/images/Blog 2_11zon.png' },
+  { slug: 'how-appalam-is-made', title: 'How Our Appalam Is Made', excerpt: 'A behind-the-scenes look at our manufacturing process – from raw ingredients to the final crispy product.', category: 'Behind The Scenes', date: 'Feb 28, 2025', readTime: 5, cover: '/images/Blog 3_11zon.png' },
 ];
 
 export function BlogPreview() {
@@ -146,7 +146,7 @@ export function BlogPreview() {
           {BLOG_POSTS.map((post) => (
             <Link key={post.slug} href={`/blogs/${post.slug}`} className="card group cursor-pointer">
               <div className="h-44 bg-gradient-to-br from-brand-cream to-white overflow-hidden group-hover:scale-105 transition-transform duration-500">
-                <img src="/images/about-img2.png" alt={post.title} className="w-full h-full object-cover" />
+                <img src={post.cover} alt={post.title} className="w-full h-full object-cover" />
               </div>
               <div className="p-5">
                 <div className="flex items-center gap-2 mb-3">

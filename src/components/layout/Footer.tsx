@@ -10,7 +10,7 @@ import {
 
 export function Footer({ showNewsletter = true }: { showNewsletter?: boolean }) {
   return (
-    <footer className="bg-white text-black">
+    <footer className="bg-brand-dark text-brand-cream">
       {showNewsletter && (
         <div className="bg-gradient-to-r from-brand-pink to-brand-green py-12 px-4">
         <div className="max-w-3xl mx-auto text-center">
@@ -47,9 +47,9 @@ export function Footer({ showNewsletter = true }: { showNewsletter?: boolean }) 
         {/* Brand */}
         <div>
           <div className="flex items-center gap-3 mb-4">
-            <img src="/images/logo.svg" alt="Nanmai Appalam" className="h-14" />
+            <img src="/images/logo.svg" alt="Nanmai Appalam" className="h-14 invert" />
           </div>
-          <p className="text-gray-600 text-sm leading-relaxed mb-5">
+          <p className="text-gray-400 text-sm leading-relaxed mb-5">
             Perfect for everyday meals or special occasions, our appalams add a
             light and flavorful crunch that completes every plate.
           </p>
@@ -62,7 +62,7 @@ export function Footer({ showNewsletter = true }: { showNewsletter?: boolean }) 
               <a
                 key={i}
                 href={href}
-                className="w-9 h-9 rounded-full bg-gray-100 hover:bg-brand-pink hover:text-white transition-colors flex items-center justify-center"
+                className="w-9 h-9 rounded-full bg-gray-800 hover:bg-brand-pink hover:text-white transition-colors flex items-center justify-center"
               >
                 <Icon size={16} />
               </a>
@@ -72,10 +72,10 @@ export function Footer({ showNewsletter = true }: { showNewsletter?: boolean }) 
 
         {/* Quick Links */}
         <div>
-          <h4 className="font-semibold text-black mb-4 text-sm uppercase tracking-wider">
+          <h4 className="font-semibold text-brand-cream mb-4 text-sm uppercase tracking-wider">
             Quick Links
           </h4>
-          <ul className="space-y-2.5 text-sm text-gray-600">
+          <ul className="space-y-2.5 text-sm text-gray-400">
             {[
               ["/", "Home"],
               ["/about", "About Us"],
@@ -97,10 +97,10 @@ export function Footer({ showNewsletter = true }: { showNewsletter?: boolean }) 
 
         {/* Products */}
         <div>
-          <h4 className="font-semibold text-black mb-4 text-sm uppercase tracking-wider">
+          <h4 className="font-semibold text-brand-cream mb-4 text-sm uppercase tracking-wider">
             Our Products
           </h4>
-          <ul className="space-y-2.5 text-sm text-gray-600">
+          <ul className="space-y-2.5 text-sm text-gray-400">
             {[
               "Classic Appalam",
               "Garlic Appalam",
@@ -122,10 +122,10 @@ export function Footer({ showNewsletter = true }: { showNewsletter?: boolean }) 
 
         {/* Contact */}
         <div>
-          <h4 className="font-semibold text-black mb-4 text-sm uppercase tracking-wider">
+          <h4 className="font-semibold text-brand-cream mb-4 text-sm uppercase tracking-wider">
             Contact Us
           </h4>
-          <ul className="space-y-3 text-sm text-gray-600">
+          <ul className="space-y-3 text-sm text-gray-400">
             <li className="flex items-start gap-3">
               <MapPin size={16} className="text-brand-pink mt-0.5 shrink-0" />
               <span>
@@ -155,7 +155,7 @@ export function Footer({ showNewsletter = true }: { showNewsletter?: boolean }) 
         </div>
       </div>
 
-      <div className="border-t border-gray-200 px-4 py-6">
+      <div className="border-t border-gray-700 px-4 py-6">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-sm text-gray-500">
           <p>
             © {new Date().getFullYear()} Nanmai Appalam. All rights reserved.
@@ -163,19 +163,19 @@ export function Footer({ showNewsletter = true }: { showNewsletter?: boolean }) 
           <div className="flex gap-5">
             <Link
               href="/privacy-policy"
-              className="hover:text-gray-700 transition-colors"
+              className="hover:text-brand-cream transition-colors"
             >
               Privacy Policy
             </Link>
             <Link
               href="/terms"
-              className="hover:text-gray-700 transition-colors"
+              className="hover:text-brand-cream transition-colors"
             >
               Terms of Service
             </Link>
             <Link
               href="/refund-policy"
-              className="hover:text-gray-700 transition-colors"
+              className="hover:text-brand-cream transition-colors"
             >
               Refund Policy
             </Link>

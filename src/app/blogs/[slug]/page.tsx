@@ -179,10 +179,10 @@ Ask ten South Indians how to cook appalam and you'll get ten different answers â
 For everyday health-conscious eating, we recommend the **microwave or air fryer** method. For special occasions and the most authentic experience, nothing beats a **deep-fried** Nanmai Appalam.
     `,
   },
-  'papad-in-indian-cuisine-history': {
-    title: 'The History of Papad in Indian Cuisine', excerpt: 'A 2,000-year journey of India\'s most beloved crispy flatbread.',
-    category: 'Culture', date: 'Feb 12, 2025', readTime: 7, cover: 'ðŸ“œ', tags: ['history', 'culture'],
-    author: 'Prof. K. Sundaram', authorRole: 'Food Historian',
+      'papad-in-indian-cuisine-history': {
+     title: 'The History of Papad in Indian Cuisine', excerpt: 'A 2,000-year journey of India\'s most beloved crispy flatbread.',
+     category: 'Culture', date: 'Feb 12, 2025', readTime: 7, cover: '/images/Blog 5_11zon.png', tags: ['history', 'culture'],
+     author: 'Prof. K. Sundaram', authorRole: 'Food Historian',
     content: `
 ## Ancient Origins
 
