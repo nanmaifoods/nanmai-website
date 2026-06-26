@@ -8,46 +8,34 @@ import {
   MapPin,
 } from "lucide-react";
 
-export function Footer({ showNewsletter = true }: { showNewsletter?: boolean }) {
+export function Footer() {
   return (
     <footer className="bg-brand-dark text-brand-cream">
-      {showNewsletter && (
-        <div className="bg-gradient-to-r from-brand-pink to-brand-green py-12 px-4">
-        <div className="max-w-3xl mx-auto text-center">
-          <h3 className="font-display text-2xl md:text-3xl font-bold mb-2">
-            Stay in the Loop
-          </h3>
-          <p className="text-white/80 mb-6">
-            Get exclusive deals, new product launches & recipes!
-          </p>
-          <form
-            className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
-            action="/api/subscribe"
-            method="POST"
+      {/* Free Delivery Banner */}
+      <div className="bg-gradient-to-r from-brand-pink to-brand-green py-10 px-4">
+        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+          <div>
+            <h3 className="font-display text-2xl md:text-3xl font-black text-white mb-1">
+              Free Delivery on Every Order
+            </h3>
+            <p className="text-white/80 text-sm md:text-base">
+              No minimum order. No hidden charges. Delivered fresh to your doorstep.
+            </p>
+          </div>
+          <Link
+            href="/products"
+            className="shrink-0 px-8 py-3 bg-white text-brand-pink font-bold rounded-full hover:bg-brand-cream transition-colors whitespace-nowrap shadow-md"
           >
-            <input
-              type="email"
-              name="email"
-              required
-              placeholder="Enter your email"
-              className="flex-1 px-5 py-3 rounded-full text-brand-dark bg-white outline-none focus:ring-2 focus:ring-white/50"
-            />
-            <button
-              type="submit"
-              className="px-6 py-3 bg-white text-brand-pink font-bold rounded-full hover:bg-brand-cream transition-colors whitespace-nowrap"
-            >
-              Subscribe
-            </button>
-          </form>
+            Shop Now
+          </Link>
         </div>
       </div>
-      )}
 
       <div className="max-w-7xl mx-auto px-4 py-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
         {/* Brand */}
         <div>
           <div className="flex items-center gap-3 mb-4">
-            <img src="/images/logo.svg" alt="Nanmai Appalam" className="h-14 invert" />
+            <img src="/images/logo.svg" alt="Nanmai Appalam" className="h-24 w-auto mix-blend-screen" />
           </div>
           <p className="text-gray-400 text-sm leading-relaxed mb-5">
             Perfect for everyday meals or special occasions, our appalams add a

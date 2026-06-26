@@ -59,7 +59,6 @@ const COLOR_MAP: Record<string, string> = {
 export function PartnersSection() {
   const partnerLogos = [
     "/images/logo/image 426.png",
-    "/images/logo/image 427.png",
     "/images/logo/image 428.png",
     "/images/logo/image 429.png",
     "/images/logo/image 430.png",
@@ -137,20 +136,6 @@ export function PartnersSection() {
             ))}
           </motion.div>
         </div>
-        {totalSlides > 1 && (
-          <div className="flex justify-center mt-6 space-x-2">
-            {Array.from({ length: totalSlides }).map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setOffset(i)}
-                className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                  i === offset ? 'bg-brand-pink w-5' : 'bg-gray-300 hover:bg-gray-400'
-                }`}
-                aria-label={`Go to slide ${i + 1}`}
-              />
-            ))}
-          </div>
-        )}
       </div>
     </section>
   );

@@ -15,7 +15,7 @@ export function LayoutClientWrapper({
     <>
       {!isAdmin && <Navbar />}
       {children}
-      {!isAdmin && <Footer showNewsletter={pathname !== "/about"} />}
+      {!isAdmin && <Footer />}
     </>
   );
 }

@@ -19,7 +19,6 @@ const SORT_OPTIONS = [
   { value: "default", label: "Featured" },
   { value: "price-asc", label: "Price: Low–High" },
   { value: "price-desc", label: "Price: High–Low" },
-  { value: "name-asc", label: "Name: A–Z" },
 ];
 
 function ProductCard({ product }: { product: Product }) {
@@ -195,50 +194,60 @@ export function ProductsClientPage() {
         </h2>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
-        {/* Search + Sort bar */}
-        <div className="flex flex-col sm:flex-row gap-3 mb-8">
-          <div className="relative flex-1">
-            <Search
-              size={18}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-            />
-            <input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search products..."
-              className="input-field pl-11"
-            />
+      {/* Sticky Search + Sort bar */}
+      <div className="sticky top-16 md:top-20 z-30 bg-white border-b border-gray-100 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3">
+          <div className="flex flex-col sm:flex-row gap-3">
+            <div className="relative flex-1">
+              <Search
+                size={18}
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+              />
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search products..."
+                className="input-field pl-11"
+              />
+            </div>
+            <select
+              value={sort}
+              onChange={(e) => setSort(e.target.value)}
+              className="input-field max-w-[200px] sm:hidden"
+            >
+              {SORT_OPTIONS.map((o) => (
+                <option key={o.value} value={o.value}>
+                  {o.label}
+                </option>
+              ))}
+            </select>
+            <button
+              onClick={() => setMobileFilter(true)}
+              className="flex items-center gap-2 btn-secondary"
+            >
+              <SlidersHorizontal size={16} /> Filters
+            </button>
           </div>
-          <select
-            value={sort}
-            onChange={(e) => setSort(e.target.value)}
-            className="input-field max-w-[200px]"
-          >
-            {SORT_OPTIONS.map((o) => (
-              <option key={o.value} value={o.value}>
-                {o.label}
-              </option>
-            ))}
-          </select>
-          <button
-            onClick={() => setMobileFilter(true)}
-            className="sm:hidden flex items-center gap-2 btn-secondary"
-          >
-            <SlidersHorizontal size={16} /> Filters
-          </button>
         </div>
+      </div>
 
-        <div className="flex gap-8">
+      {mobileFilter && (
+        <div
+          className="fixed inset-0 z-40 bg-black/40"
+          onClick={() => setMobileFilter(false)}
+        />
+      )}
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+        <div>
           {/* Sidebar Filters */}
           <aside
             className={`
             fixed inset-y-0 left-0 z-50 bg-white w-72 p-6 shadow-2xl overflow-y-auto transition-transform duration-300
-            sm:static sm:z-auto sm:shadow-none sm:w-64 sm:translate-x-0 sm:block sm:shrink-0
-            ${mobileFilter ? "translate-x-0" : "-translate-x-full sm:translate-x-0"}
+            ${mobileFilter ? "translate-x-0" : "-translate-x-full"}
           `}
           >
-            <div className="flex items-center justify-between mb-6 sm:hidden">
+            <div className="flex items-center justify-between mb-6">
               <h3 className="font-bold text-lg">Filters</h3>
               <button onClick={() => setMobileFilter(false)}>
                 <X size={20} />
@@ -304,7 +313,7 @@ export function ProductsClientPage() {
           </aside>
 
           {/* Product Grid */}
-          <div className="flex-1">
+          <div>
             <p className="text-sm text-gray-500 mb-5">
               {loading ? (
                 <span className="flex items-center gap-2">
@@ -351,3 +360,4 @@ export function ProductsClientPage() {
     </div>
   );
 }
+

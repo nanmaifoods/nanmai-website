@@ -37,7 +37,7 @@ export function Navbar() {
     <>
       {/* ── Top Bar ── */}
       <div className="bg-brand-green text-white text-sm py-2 px-4 text-center hidden md:block">
-        <span>🌿 Free delivery on orders above ₹499 &nbsp;|&nbsp;</span>
+        <span>Tasty Appalams at your door step &nbsp;|&nbsp;</span>
         <span className="inline-flex items-center gap-1">
           <Phone size={12} /> +91 9842504050
         </span>

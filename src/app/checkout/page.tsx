@@ -38,11 +38,41 @@ export default function CheckoutPage() {
     pincode: "",
   });
   const [orderSummaryOpen, setOrderSummaryOpen] = useState(true);
+  const [voucherInput, setVoucherInput] = useState("");
+  const [appliedVoucher, setAppliedVoucher] = useState<string | null>(null);
+  const [discount, setDiscount] = useState(0);
+
+  const VOUCHERS: Record<string, number> = {
+    NANMAI50: 50,
+  };
+
+  const applyVoucher = () => {
+    const code = voucherInput.trim().toUpperCase();
+    if (!code) return;
+    if (appliedVoucher) {
+      toast.error("A voucher is already applied.");
+      return;
+    }
+    const offer = VOUCHERS[code];
+    if (offer) {
+      setAppliedVoucher(code);
+      setDiscount(offer);
+      toast.success(`Voucher applied! You saved ₹${offer} 🎉`);
+    } else {
+      toast.error("Invalid voucher code.");
+    }
+  };
+
+  const removeVoucher = () => {
+    setAppliedVoucher(null);
+    setDiscount(0);
+    setVoucherInput("");
+  };
 
   const subtotal = totalPrice();
-  const shipping = subtotal >= 499 ? 0 : 60;
+  const shipping = 0;
   const tax = Math.round(subtotal * 0.05);
-  const total = subtotal + shipping + tax;
+  const total = Math.max(0, subtotal + shipping + tax - discount);
 
   const handlePayment = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -299,8 +329,16 @@ export default function CheckoutPage() {
                         key={item.product.id}
                         className="flex items-center gap-3"
                       >
-                        <div className="w-12 h-12 bg-brand-cream rounded-xl flex items-center justify-center text-2xl shrink-0">
-                          🫓
+                        <div className="w-12 h-12 bg-brand-cream rounded-xl overflow-hidden shrink-0 flex items-center justify-center">
+                          {item.product.images?.[0] ? (
+                            <img
+                              src={item.product.images[0]}
+                              alt={item.product.name}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <span className="text-2xl">🫓</span>
+                          )}
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="font-semibold text-sm truncate">
@@ -317,6 +355,42 @@ export default function CheckoutPage() {
                     ))}
                   </div>
                 )}
+                {/* Voucher */}
+                <div className="px-6 py-4 border-t border-gray-100">
+                  {appliedVoucher ? (
+                    <div className="flex items-center justify-between bg-brand-green/10 rounded-xl px-4 py-2.5">
+                      <div className="text-sm font-semibold text-brand-green">
+                        🎉 <span className="font-mono">{appliedVoucher}</span> — ₹{discount} off
+                      </div>
+                      <button
+                        type="button"
+                        onClick={removeVoucher}
+                        className="text-xs text-gray-400 hover:text-red-500 transition-colors ml-3"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={voucherInput}
+                        onChange={(e) => setVoucherInput(e.target.value)}
+                        onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), applyVoucher())}
+                        placeholder="Voucher code"
+                        className="input-field flex-1 text-sm py-2"
+                      />
+                      <button
+                        type="button"
+                        onClick={applyVoucher}
+                        className="px-4 py-2 bg-brand-dark text-white text-sm font-semibold rounded-xl hover:bg-brand-pink transition-colors whitespace-nowrap"
+                      >
+                        Apply
+                      </button>
+                    </div>
+                  )}
+                </div>
+
                 <div className="px-6 py-4 border-t border-gray-100 space-y-3">
                   <div className="flex justify-between text-sm text-gray-600">
                     <span>Subtotal</span>
@@ -324,18 +398,18 @@ export default function CheckoutPage() {
                   </div>
                   <div className="flex justify-between text-sm text-gray-600">
                     <span>Shipping</span>
-                    <span
-                      className={
-                        shipping === 0 ? "text-brand-green font-semibold" : ""
-                      }
-                    >
-                      {shipping === 0 ? "FREE" : `₹${shipping}`}
-                    </span>
+                    <span className="text-brand-green font-semibold">FREE</span>
                   </div>
                   <div className="flex justify-between text-sm text-gray-600">
                     <span>GST (5%)</span>
                     <span>₹{tax}</span>
                   </div>
+                  {discount > 0 && (
+                    <div className="flex justify-between text-sm text-brand-green font-semibold">
+                      <span>Voucher Discount</span>
+                      <span>−₹{discount}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between font-black text-lg border-t border-gray-100 pt-3">
                     <span>Total</span>
                     <span className="text-brand-pink">₹{total}</span>
@@ -343,11 +417,6 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              {shipping > 0 && (
-                <div className="bg-brand-green/10 rounded-2xl px-4 py-3 text-sm text-brand-green font-medium">
-                  🌿 Add ₹{499 - subtotal} more for FREE delivery!
-                </div>
-              )}
 
               <button
                 type="submit"

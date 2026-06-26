@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { Mail, Send, MessageCircle, Truck, Users } from "lucide-react";
+import { Mail, Send, MessageCircle, Award, Users } from "lucide-react";
 
 export default function DealersClient() {
   const [loading, setLoading] = useState(false);
@@ -51,49 +51,40 @@ export default function DealersClient() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-14">
         <section className="mb-16">
-          <h2 className="font-bold text-xl text-brand-dark mb-6">
+          <h2 className="font-bold text-2xl text-brand-dark mb-8">
             Why Partner With Nanmai Appalam?
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="p-6 rounded-lg border border-gray-100 hover:border-brand-pink transition-all">
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 flex items-center justify-center bg-brand-pink/10 text-brand-pink rounded-lg">
-                  <Truck size={20} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                icon: Award,
+                title: "Premium Quality",
+                desc: "Made from finest ingredients using traditional methods, ensuring consistent taste and crispiness.",
+                color: "bg-brand-gold/20 text-brand-gold",
+              },
+              {
+                icon: Users,
+                title: "Trusted Brand",
+                desc: "Established brand with loyal customer base across South India and growing nationwide.",
+                color: "bg-brand-green/10 text-brand-green",
+              },
+              {
+                icon: MessageCircle,
+                title: "Dedicated Support",
+                desc: "Wholesale team provides personalized assistance for orders, logistics, and marketing support.",
+                color: "bg-brand-pink/10 text-brand-pink",
+              },
+            ].map(({ icon: Icon, title, desc, color }) => (
+              <div key={title} className="card p-6 group cursor-default">
+                <div
+                  className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-4 ${color} group-hover:scale-110 transition-transform`}
+                >
+                  <Icon size={22} />
                 </div>
-                <div>
-                  <h3 className="font-semibold text-brand-dark">Premium Quality</h3>
-                  <p className="text-gray-500 text-sm">
-                    Made from finest ingredients using traditional methods, ensuring consistent taste and crispiness.
-                  </p>
-                </div>
+                <h3 className="font-bold text-lg mb-2">{title}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
               </div>
-            </div>
-            <div className="p-6 rounded-lg border border-gray-100 hover:border-brand-pink transition-all">
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 flex items-center justify-center bg-brand-pink/10 text-brand-pink rounded-lg">
-                  <Users size={20} />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-brand-dark">Trusted Brand</h3>
-                  <p className="text-gray-500 text-sm">
-                    Established brand with loyal customer base across South India and growing nationwide.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="p-6 rounded-lg border border-gray-100 hover:border-brand-pink transition-all">
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 flex items-center justify-center bg-brand-pink/10 text-brand-pink rounded-lg">
-                  <MessageCircle size={20} />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-brand-dark">Dedicated Support</h3>
-                  <p className="text-gray-500 text-sm">
-                    Wholesale team provides personalized assistance for orders, logistics, and marketing support.
-                  </p>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </section>
 
