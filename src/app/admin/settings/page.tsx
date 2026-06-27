@@ -76,7 +76,7 @@ export default function AdminSettingsPage() {
                 </label>
                 <input
                   type="email"
-                  defaultValue="kothandapani6776@gmail.com"
+                  defaultValue="Nanmaifoods2025@gmail.com"
                   className="input-field"
                 />
               </div>
@@ -84,7 +84,7 @@ export default function AdminSettingsPage() {
                 <label className="block text-sm font-semibold text-gray-700 mb-1.5">
                   Phone Number
                 </label>
-                <input defaultValue="+91 9842504050" className="input-field" />
+                <input defaultValue="+91 9677030371" className="input-field" />
               </div>
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-1.5">

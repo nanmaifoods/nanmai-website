@@ -124,19 +124,19 @@ export function Footer() {
             <li className="flex items-center gap-3">
               <Phone size={16} className="text-brand-pink shrink-0" />
               <a
-                href="tel:+919876543210"
+                href="tel:+919677030371"
                 className="hover:text-brand-pink transition-colors"
               >
-                +91 9842504050
+                +91 9677030371
               </a>
             </li>
             <li className="flex items-center gap-3">
               <Mail size={16} className="text-brand-pink shrink-0" />
               <a
-                href="mailto:kothandapani6776@gmail.com"
+                href="mailto:Nanmaifoods2025@gmail.com"
                 className="hover:text-brand-pink transition-colors"
               >
-                kothandapani6776@gmail.com
+                Nanmaifoods2025@gmail.com
               </a>
             </li>
           </ul>

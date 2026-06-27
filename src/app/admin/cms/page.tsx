@@ -72,13 +72,13 @@ const SECTIONS = {
         key: "phone",
         label: "Phone Number",
         type: "text",
-        value: "+91 9842504050",
+        value: "+91 9677030371",
       },
       {
         key: "email",
         label: "Email Address",
         type: "text",
-        value: "kothandapani6776@gmail.com",
+        value: "Nanmaifoods2025@gmail.com",
       },
       {
         key: "address",

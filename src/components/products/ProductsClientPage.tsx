@@ -33,7 +33,7 @@ function ProductCard({ product }: { product: Product }) {
   return (
     <div className="card group flex flex-col">
       <Link href={`/products/${product.slug}`} className="block">
-        <div className="relative h-52 bg-gradient-to-br from-brand-cream to-white overflow-hidden">
+        <div className="relative bg-gradient-to-br from-brand-cream to-white overflow-hidden">
           {discount > 0 && (
             <span className="absolute top-3 left-3 badge bg-brand-pink text-white z-10 text-xs">
               {discount}% OFF
@@ -44,22 +44,22 @@ function ProductCard({ product }: { product: Product }) {
               {product.tags[0]}
             </span>
           )}
-          <div className="w-full h-full flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
-            {product.images?.[0] ? (
+          {product.images?.[0] ? (
+            <div className="group-hover:scale-105 transition-transform duration-500">
               <img
                 src={product.images[0]}
                 alt={product.name}
-                className="w-full h-full object-cover"
+                className="w-full h-auto block"
               />
-            ) : (
-              <div className="text-center">
-                <div className="text-6xl mb-2">🫓</div>
-                <div className="text-xs text-gray-400 font-medium">
-                  {product.weight}
-                </div>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-12">
+              <div className="text-6xl mb-2">🫓</div>
+              <div className="text-xs text-gray-400 font-medium">
+                {product.weight}
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </Link>
 

@@ -259,7 +259,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Image Gallery with Carousel */}
           <div className="space-y-4">
-            <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-brand-cream to-white h-96 md:h-[500px] flex items-center justify-center shadow-card">
+            <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-brand-cream to-white shadow-card">
               {discount > 0 && (
                 <span className="absolute top-4 left-4 z-10 badge bg-brand-pink text-white text-sm px-4 py-1.5">
                   {discount}% OFF
@@ -272,22 +272,20 @@ export function ProductDetailClient({ slug }: { slug: string }) {
               )}
 
               {/* Main Image */}
-              <div className="w-full h-full relative">
-                {images.length > 0 ? (
-                  <img
-                    src={images[currentImageIndex]}
-                    alt={`${product.name} - Image ${currentImageIndex + 1}`}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full flex flex-col items-center justify-center">
-                    <div className="text-9xl mb-4">🫓</div>
-                    <div className="text-sm text-gray-400 font-medium">
-                      {product.weight}
-                    </div>
+              {images.length > 0 ? (
+                <img
+                  src={images[currentImageIndex]}
+                  alt={`${product.name} - Image ${currentImageIndex + 1}`}
+                  className="w-full h-auto block"
+                />
+              ) : (
+                <div className="flex flex-col items-center justify-center py-24">
+                  <div className="text-9xl mb-4">🫓</div>
+                  <div className="text-sm text-gray-400 font-medium">
+                    {product.weight}
                   </div>
-                )}
-              </div>
+                </div>
+              )}
 
               {/* Carousel Navigation Arrows */}
               {images.length > 1 && (

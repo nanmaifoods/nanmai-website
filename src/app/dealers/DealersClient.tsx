@@ -50,6 +50,215 @@ export default function DealersClient() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-14">
+        {/* Direct Contact – moved to top */}
+        <section className="mb-16">
+          <h2 className="font-bold text-xl text-brand-dark mb-6">
+            Direct Contact
+          </h2>
+          <p className="text-gray-500 mb-6">
+            For immediate assistance with wholesale inquiries, you can also reach us directly:
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="p-6 rounded-lg border border-gray-100">
+              <h3 className="font-semibold text-brand-dark">WhatsApp</h3>
+              <p className="text-gray-500">
+                <a href="https://wa.me/919677030371" className="text-brand-pink hover:underline">
+                  +91 9677030371
+                </a>
+              </p>
+              <p className="text-sm text-gray-500 mt-1">
+                Send us a message for quick responses
+              </p>
+            </div>
+            <div className="p-6 rounded-lg border border-gray-100">
+              <h3 className="font-semibold text-brand-dark">Email</h3>
+              <p className="text-gray-500">
+                <a href="mailto:Nanmaifoods2025@gmail.com" className="text-brand-pink hover:underline">
+                  Nanmaifoods2025@gmail.com
+                </a>
+              </p>
+              <p className="text-sm text-gray-500 mt-1">
+                Dedicated wholesale inquiry address
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="mb-16">
+          <h2 className="font-bold text-xl text-brand-dark mb-6">
+            Wholesale Inquiry Form
+          </h2>
+          <p className="text-gray-500 mb-6">
+            Please fill out the form below to start your wholesale partnership with Nanmai Appalam. We'll review your information and get back to you shortly.
+          </p>
+          <div className="card p-8">
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                    Full Name *
+                  </label>
+                  <input
+                    required
+                    value={form.name}
+                    onChange={(e) =>
+                      setForm((f) => ({ ...f, name: e.target.value }))
+                    }
+                    placeholder="Your full name"
+                    className="input-field"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                    Email Address *
+                  </label>
+                  <input
+                    required
+                    value={form.email}
+                    onChange={(e) =>
+                      setForm((f) => ({ ...f, email: e.target.value }))
+                    }
+                    placeholder="your@email.com"
+                    type="email"
+                    className="input-field"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                    Phone Number *
+                  </label>
+                  <input
+                    required
+                    value={form.phone}
+                    onChange={(e) =>
+                      setForm((f) => ({ ...f, phone: e.target.value }))
+                    }
+                    placeholder="+91 9677030371"
+                    className="input-field"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                    Business Name *
+                  </label>
+                  <input
+                    required
+                    value={form.businessName}
+                    onChange={(e) =>
+                      setForm((f) => ({ ...f, businessName: e.target.value }))
+                    }
+                    placeholder="Your business or shop name"
+                    className="input-field"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                    GST Number (if applicable)
+                  </label>
+                  <input
+                    value={form.gstNumber}
+                    onChange={(e) =>
+                      setForm((f) => ({ ...f, gstNumber: e.target.value }))
+                    }
+                    placeholder="Your GST number"
+                    className="input-field"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                    Monthly Requirement (approx.)
+                  </label>
+                  <select
+                    value={form.monthlyRequirement}
+                    onChange={(e) =>
+                      setForm((f) => ({ ...f, monthlyRequirement: e.target.value }))
+                    }
+                    className="input-field"
+                  >
+                    <option value="">Select approximate monthly requirement</option>
+                    <option value="Less than 5 kg">Less than 5 kg</option>
+                    <option value="5-10 kg">5-10 kg</option>
+                    <option value="10-25 kg">10-25 kg</option>
+                    <option value="25-50 kg">25-50 kg</option>
+                    <option value="50-100 kg">50-100 kg</option>
+                    <option value="More than 100 kg">More than 100 kg</option>
+                  </select>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                    Subject *
+                  </label>
+                  <select
+                    required
+                    value={form.subject}
+                    onChange={(e) =>
+                      setForm((f) => ({ ...f, subject: e.target.value }))
+                    }
+                    className="input-field"
+                  >
+                    <option value="">Select subject</option>
+                    <option>New Dealership Inquiry</option>
+                    <option>Distributorship Opportunity</option>
+                    <option>Bulk Order Quote</option>
+                    <option>Existing Dealer Support</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                    Preferred Contact Time
+                  </label>
+                  <input
+                    value={form.phone}
+                    onChange={(e) =>
+                      setForm((f) => ({ ...f, phone: e.target.value }))
+                    }
+                    placeholder="e.g., Weekdays 10am-2pm"
+                    className="input-field"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                  Message *
+                </label>
+                <textarea
+                  required
+                  value={form.message}
+                  onChange={(e) =>
+                    setForm((f) => ({ ...f, message: e.target.value }))
+                  }
+                  placeholder="Tell us about your business, target market, and any specific requirements..."
+                  rows={5}
+                  className="input-field resize-none"
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="btn-primary w-full justify-center py-4"
+              >
+                {loading ? (
+                  <span className="flex items-center gap-2">
+                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />{" "}
+                    Submitting...
+                  </span>
+                ) : (
+                  <>
+                    <Send size={16} /> Submit Inquiry
+                  </>
+                )}
+              </button>
+            </form>
+          </div>
+        </section>
+
         <section className="mb-16">
           <h2 className="font-bold text-2xl text-brand-dark mb-8">
             Why Partner With Nanmai Appalam?
@@ -172,218 +381,7 @@ export default function DealersClient() {
           </ol>
         </section>
 
-        <section className="mb-16">
-          <h2 className="font-bold text-xl text-brand-dark mb-6">
-            Wholesale Inquiry Form
-          </h2>
-          <p className="text-gray-500 mb-6">
-            Please fill out the form below to start your wholesale partnership with Nanmai Appalam. We'll review your information and get back to you shortly.
-          </p>
-          <div className="card p-8">
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-                    Full Name *
-                  </label>
-                  <input
-                    required
-                    value={form.name}
-                    onChange={(e) =>
-                      setForm((f) => ({ ...f, name: e.target.value }))
-                    }
-                    placeholder="Your full name"
-                    className="input-field"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-                    Email Address *
-                  </label>
-                  <input
-                    required
-                    value={form.email}
-                    onChange={(e) =>
-                      setForm((f) => ({ ...f, email: e.target.value }))
-                    }
-                    placeholder="your@email.com"
-                    type="email"
-                    className="input-field"
-                  />
-                </div>
-              </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-                    Phone Number *
-                  </label>
-                  <input
-                    required
-                    value={form.phone}
-                    onChange={(e) =>
-                      setForm((f) => ({ ...f, phone: e.target.value }))
-                    }
-                    placeholder="+91 9842504050"
-                    className="input-field"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-                    Business Name *
-                  </label>
-                  <input
-                    required
-                    value={form.businessName}
-                    onChange={(e) =>
-                      setForm((f) => ({ ...f, businessName: e.target.value }))
-                    }
-                    placeholder="Your business or shop name"
-                    className="input-field"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-                    GST Number (if applicable)
-                  </label>
-                  <input
-                    value={form.gstNumber}
-                    onChange={(e) =>
-                      setForm((f) => ({ ...f, gstNumber: e.target.value }))
-                    }
-                    placeholder="Your GST number"
-                    className="input-field"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-                    Monthly Requirement (approx.)
-                  </label>
-                  <select
-                    value={form.monthlyRequirement}
-                    onChange={(e) =>
-                      setForm((f) => ({ ...f, monthlyRequirement: e.target.value }))
-                    }
-                    className="input-field"
-                  >
-                    <option value="">Select approximate monthly requirement</option>
-                    <option value="Less than 5 kg">Less than 5 kg</option>
-                    <option value="5-10 kg">5-10 kg</option>
-                    <option value="10-25 kg">10-25 kg</option>
-                    <option value="25-50 kg">25-50 kg</option>
-                    <option value="50-100 kg">50-100 kg</option>
-                    <option value="More than 100 kg">More than 100 kg</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-                    Subject *
-                  </label>
-                  <select
-                    required
-                    value={form.subject}
-                    onChange={(e) =>
-                      setForm((f) => ({ ...f, subject: e.target.value }))
-                    }
-                    className="input-field"
-                  >
-                    <option value="">Select subject</option>
-                    <option>New Dealership Inquiry</option>
-                    <option>Distributorship Opportunity</option>
-                    <option>Bulk Order Quote</option>
-                    <option>Existing Dealer Support</option>
-                    <option>Other</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-                    Preferred Contact Time
-                  </label>
-                  <input
-                    value={form.phone}
-                    onChange={(e) =>
-                      setForm((f) => ({ ...f, phone: e.target.value }))
-                    }
-                    placeholder="e.g., Weekdays 10am-2pm"
-                    className="input-field"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-                  Message *
-                </label>
-                <textarea
-                  required
-                  value={form.message}
-                  onChange={(e) =>
-                    setForm((f) => ({ ...f, message: e.target.value }))
-                  }
-                  placeholder="Tell us about your business, target market, and any specific requirements..."
-                  rows={5}
-                  className="input-field resize-none"
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="btn-primary w-full justify-center py-4"
-              >
-                {loading ? (
-                  <span className="flex items-center gap-2">
-                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />{" "}
-                    Submitting...
-                  </span>
-                ) : (
-                  <>
-                    <Send size={16} /> Submit Inquiry
-                  </>
-                )}
-              </button>
-            </form>
-          </div>
-        </section>
-
-        <section className="border-t border-gray-100 pt-12">
-          <h2 className="font-bold text-xl text-brand-dark mb-6">
-            Direct Contact
-          </h2>
-          <p className="text-gray-500 mb-6">
-            For immediate assistance with wholesale inquiries, you can also reach us directly:
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="p-6 rounded-lg border border-gray-100">
-              <h3 className="font-semibold text-brand-dark">WhatsApp</h3>
-              <p className="text-gray-500">
-                <a href="https://wa.me/919842504050" className="text-brand-pink hover:underline">
-                  +91 98425 04050
-                </a>
-              </p>
-              <p className="text-sm text-gray-500 mt-1">
-                Send us a message for quick responses
-              </p>
-            </div>
-            <div className="p-6 rounded-lg border border-gray-100">
-              <h3 className="font-semibold text-brand-dark">Email</h3>
-              <p className="text-gray-500">
-                <a href="mailto:wholesale@nanmaiappalam.com" className="text-brand-pink hover:underline">
-                  wholesale@nanmaiappalam.com
-                </a>
-              </p>
-              <p className="text-sm text-gray-500 mt-1">
-                Dedicated wholesale inquiry address
-              </p>
-            </div>
-          </div>
-        </section>
       </div>
     </div>
   );

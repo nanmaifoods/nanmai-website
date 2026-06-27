@@ -59,7 +59,8 @@ export function StoryHeroSection() {
           </div>
 
           {/* Trust Badges */}
-          <div className="flex flex-wrap gap-5 pt-2 justify-center">
+          <div className="max-w-3xl mx-auto w-full">
+          <div className="flex flex-wrap gap-5 pt-2 justify-start">
             {[
               { icon: Star, label: "4.9★ Rating", sub: "500+ Reviews" },
               { icon: Shield, label: "FSSAI Certified", sub: "Food Safe" },
@@ -77,6 +78,7 @@ export function StoryHeroSection() {
                 </div>
               </div>
             ))}
+          </div>
           </div>
         </div>
       </div>

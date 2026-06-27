@@ -43,7 +43,7 @@ export default function AboutPage() {
                 with.
               </p>
               <p>
-                Today, that goodness lives on in every appalam papad we make,
+                Today, that goodness lives on in every appalam we make,
                 bringing authentic flavor to those who seek quality papad
                 online.
               </p>
@@ -182,7 +182,7 @@ export default function AboutPage() {
               </ul>
               <p>
                 We also aim to make it easier for families everywhere to enjoy
-                authentic options like appalam papad, jeera papad packet, and
+                authentic options like appalam, jeera papad packet, and
                 even regional favorites such as Punjabi Pappad, all available
                 with the convenience of buying papad online.
               </p>

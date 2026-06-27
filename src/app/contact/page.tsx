@@ -49,18 +49,18 @@ export default function ContactPage() {
               {
                 Icon: Phone,
                 title: "Phone",
-                lines: ["+91 9842504050", "Mon–Sat, 9am–6pm"],
-                href: "tel:+919876543210",
+                lines: ["+91 9677030371", "Mon–Sat, 9am–6pm"],
+                href: "tel:+919677030371",
                 color: "green",
               },
               {
                 Icon: Mail,
                 title: "Email",
                 lines: [
-                  "kothandapani6776@gmail.com",
+                  "Nanmaifoods2025@gmail.com",
                   "We reply within 24 hours",
                 ],
-                href: "mailto:kothandapani6776@gmail.com",
+                href: "mailto:Nanmaifoods2025@gmail.com",
                 color: "pink",
               },
               {

@@ -19,9 +19,12 @@ const NAV_LINKS = [
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
   const { toggleCart, totalItems } = useCartStore();
   const count = totalItems();
+
+  useEffect(() => { setMounted(true); }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -39,7 +42,7 @@ export function Navbar() {
       <div className="bg-brand-green text-white text-sm py-2 px-4 text-center hidden md:block">
         <span>Tasty Appalams at your door step &nbsp;|&nbsp;</span>
         <span className="inline-flex items-center gap-1">
-          <Phone size={12} /> +91 9842504050
+          <Phone size={12} /> +91 9677030371
         </span>
       </div>
 
@@ -97,7 +100,7 @@ export function Navbar() {
               aria-label="Cart"
             >
               <ShoppingCart size={22} className="text-brand-dark" />
-              {count > 0 && (
+              {mounted && count > 0 && (
                 <span className="absolute -top-1 -right-1 w-5 h-5 bg-brand-pink text-white text-xs rounded-full flex items-center justify-center font-bold animate-fade-in">
                   {count}
                 </span>
