@@ -16,7 +16,6 @@ import {
 import { useAdminMode } from "@/store/adminModeContext";
 import { Product } from "@/types/database";
 import toast from "react-hot-toast";
-import { supabase } from "@/lib/supabase";
 
 const TEST_PRODUCTS: Product[] = [
   // --- Appalam Blue variants ---
@@ -313,10 +312,10 @@ export default function AdminProductsPage() {
       );
       const remainingSlots = 4 - imagePreviews.length;
       const urlsToAdd = newUrls.slice(0, remainingSlots);
-      setImagePreviews([...imagePreviews, ...urlsToAdd]);
+      setImagePreviews((prev) => [...prev, ...urlsToAdd]);
       setForm((prev) => ({
         ...prev,
-        images: [...imagePreviews, ...urlsToAdd],
+        images: [...(prev.images || []), ...urlsToAdd],
       }));
       toast.success(`${urlsToAdd.length} image(s) selected (test mode)`);
     } else {
@@ -330,35 +329,31 @@ export default function AdminProductsPage() {
           i++
         ) {
           const file = files[i];
-          const fileExt = file.name.split(".").pop();
-          const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-          const filePath = `products/${fileName}`;
+          const fd = new FormData();
+          fd.append("file", file);
+          fd.append("bucket", "product-images");
+          fd.append("folder", "products");
 
-          const { data, error } = await supabase.storage
-            .from("product-images")
-            .upload(filePath, file);
+          const res = await fetch("/api/upload", { method: "POST", body: fd });
+          const data = await res.json();
 
-          if (error) {
-            throw error;
+          if (!res.ok) {
+            throw new Error(data.error || "Upload failed");
           }
 
-          const { data: urlData } = supabase.storage
-            .from("product-images")
-            .getPublicUrl(filePath);
-
-          newUrls.push(urlData.publicUrl);
+          newUrls.push(data.url);
         }
 
-        setImagePreviews([...imagePreviews, ...newUrls]);
+        setImagePreviews((prev) => [...prev, ...newUrls]);
         setForm((prev) => ({
           ...prev,
-          images: [...imagePreviews, ...newUrls],
+          images: [...(prev.images || []), ...newUrls],
         }));
         toast.success(`${newUrls.length} image(s) uploaded successfully!`);
       } catch (err) {
         console.error("Upload error:", err);
         toast.error(
-          "Failed to upload image. Make sure you have created a storage bucket named 'product-images' in Supabase.",
+          err instanceof Error ? err.message : "Failed to upload image",
         );
       } finally {
         setUploading(false);
