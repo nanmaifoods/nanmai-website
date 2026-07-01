@@ -1,5 +1,5 @@
 "use client";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import {
   ShoppingCart,
   Star,
@@ -13,6 +13,7 @@ import { useCartStore } from "@/store/cartStore";
 import { Product } from "@/types/database";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 const CATEGORIES = ["all", "appalam", "punjabi-pappad", "appalam-snack-pack", "appalam-chips"];
 const SORT_OPTIONS = [
@@ -125,6 +126,8 @@ export function ProductsClientPage() {
   const [search, setSearch] = useState("");
   const [mobileFilter, setMobileFilter] = useState(false);
   const [maxPrice, setMaxPrice] = useState(1000);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -145,6 +148,12 @@ export function ProductsClientPage() {
 
     fetchProducts();
   }, []);
+
+  useEffect(() => {
+    if (searchParams.get("search") === "open" && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [searchParams]);
 
   const filtered = useMemo(() => {
     let list = products.filter((p) => p.is_active);
@@ -204,6 +213,7 @@ export function ProductsClientPage() {
                 className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
               />
               <input
+                ref={searchInputRef}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search products..."

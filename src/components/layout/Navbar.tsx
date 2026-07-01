@@ -2,8 +2,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { ShoppingCart, Menu, X, Phone } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { ShoppingCart, Menu, X, Phone, Search } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
 import clsx from "clsx";
 
@@ -21,6 +21,7 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
   const { toggleCart, totalItems } = useCartStore();
   const count = totalItems();
 
@@ -92,6 +93,22 @@ export function Navbar() {
               className="hidden md:flex btn-primary text-sm py-2 px-5"
             >
               Shop Now
+            </Link>
+
+            <button
+              onClick={() => router.push("/products?search=open")}
+              className="hidden md:flex p-2.5 rounded-full hover:bg-brand-pink/10 transition-colors"
+              aria-label="Search Products"
+            >
+              <Search size={22} className="text-brand-dark" />
+            </button>
+
+            <Link
+              href="/products?search=open"
+              className="md:hidden p-2.5 rounded-full hover:bg-gray-100 transition-colors"
+              aria-label="Search Products"
+            >
+              <Search size={22} className="text-brand-dark" />
             </Link>
 
             <button
