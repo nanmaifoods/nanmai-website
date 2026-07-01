@@ -49,7 +49,7 @@ export function Navbar() {
 
       <header
         className={clsx(
-          "sticky top-0 z-50 transition-all duration-300",
+          "sticky top-0 md:top-0 z-50 transition-all duration-300",
           scrolled ? "bg-white/95 backdrop-blur-md shadow-md" : "bg-white",
         )}
       >

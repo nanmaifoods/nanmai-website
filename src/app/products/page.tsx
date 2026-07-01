@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { ProductsClientPage } from '@/components/products/ProductsClientPage';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: 'Products – Shop All Appalams',
@@ -7,5 +8,9 @@ export const metadata: Metadata = {
 };
 
 export default function ProductsPage() {
-  return <ProductsClientPage />;
+  return (
+    <Suspense fallback={null}>
+      <ProductsClientPage />
+    </Suspense>
+  );
 }
