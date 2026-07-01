@@ -137,11 +137,11 @@ export default function AboutPage() {
             </div>
           </div>
           <div className="relative rounded-3xl overflow-hidden aspect-[4/3] bg-gradient-to-br from-brand-green/10 to-brand-cream">
-            <img
-              src="/images/About US_Image 1.png"
-              alt="Nanmai Appalam"
-              className="w-full h-full object-cover"
-            />
+<img
+               src="/images/new_assets/about.png"
+               alt="Nanmai Appalam"
+               className="w-full h-full object-cover"
+             />
           </div>
         </div>
       </section>
