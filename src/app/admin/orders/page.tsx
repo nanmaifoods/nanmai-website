@@ -1,7 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Search, Eye, Download, Loader2 } from "lucide-react";
+import { Search, Eye, Download } from "lucide-react";
 import { useAdminMode } from "@/store/adminModeContext";
+import { Spinner } from "@/components/ui/Spinner";
 
 const STATUS_OPTIONS = [
   "all",
@@ -243,10 +244,7 @@ export default function AdminOrdersPage() {
               {loading ? (
                 <tr>
                   <td colSpan={7} className="px-5 py-12 text-center">
-                    <Loader2
-                      size={24}
-                      className="animate-spin text-brand-pink mx-auto"
-                    />
+                    <Spinner size={104} className="mx-auto" />
                   </td>
                 </tr>
               ) : filtered.length === 0 ? (

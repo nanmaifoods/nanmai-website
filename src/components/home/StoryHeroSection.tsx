@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
-import { ArrowRight, Star, Shield, Leaf } from "lucide-react";
+import Image from "next/image";
+import { ArrowRight, Star, Shield, Leaf, Truck } from "lucide-react";
 
 export function StoryHeroSection() {
   return (
@@ -8,6 +9,34 @@ export function StoryHeroSection() {
       {/* Background blobs */}
       <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-brand-pink/10 blur-3xl pointer-events-none" />
       <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-brand-green/10 blur-3xl pointer-events-none" />
+
+      {/* Decorative broken appalam pieces */}
+      <div className="absolute -top-12 -left-12 w-36 h-36 sm:-top-32 sm:-left-32 sm:w-96 sm:h-96 md:-top-48 md:-left-48 md:w-[36rem] md:h-[36rem] rotate-[-18deg] opacity-90 pointer-events-none">
+        <div
+          className="relative w-full h-full animate-appalam-float"
+          style={{ animationDuration: "4.5s" }}
+        >
+          <Image
+            src="/images/new_assets/broken1.png"
+            alt=""
+            fill
+            className="object-contain"
+          />
+        </div>
+      </div>
+      <div className="absolute -bottom-12 -right-12 w-36 h-36 sm:-bottom-32 sm:-right-32 sm:w-96 sm:h-96 md:-bottom-48 md:-right-48 md:w-[36rem] md:h-[36rem] rotate-[14deg] opacity-90 pointer-events-none">
+        <div
+          className="relative w-full h-full animate-appalam-float"
+          style={{ animationDuration: "5.5s", animationDelay: "1.2s" }}
+        >
+          <Image
+            src="/images/new_assets/broken2.png"
+            alt=""
+            fill
+            className="object-contain"
+          />
+        </div>
+      </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 w-full py-12 lg:py-20">
         <div className="space-y-6 animate-fade-up z-10 max-w-4xl mx-auto text-center">
@@ -59,26 +88,27 @@ export function StoryHeroSection() {
           </div>
 
           {/* Trust Badges */}
-          <div className="max-w-3xl mx-auto w-full">
-          <div className="flex flex-wrap gap-5 pt-2 justify-start">
-            {[
-              { icon: Star, label: "4.9★ Rating", sub: "500+ Reviews" },
-              { icon: Shield, label: "FSSAI Certified", sub: "Food Safe" },
-              { icon: Leaf, label: "Natural", sub: "No Preservatives" },
-            ].map(({ icon: Icon, label, sub }) => (
-              <div key={label} className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-brand-pink/10 flex items-center justify-center">
-                  <Icon size={14} className="text-brand-pink" />
-                </div>
-                <div>
-                  <div className="text-xs font-bold text-brand-dark">
-                    {label}
+          <div className="max-w-3xl mx-auto w-full pt-2">
+            <div className="flex flex-wrap gap-5 justify-center sm:justify-between">
+              {[
+                { icon: Star, label: "4.9★ Rating", sub: "500+ Reviews" },
+                { icon: Shield, label: "FSSAI Certified", sub: "Food Safe" },
+                { icon: Leaf, label: "Natural", sub: "No Preservatives" },
+                { icon: Truck, label: "Pan India Delivery", sub: "Fast & Fresh" },
+              ].map(({ icon: Icon, label, sub }) => (
+                <div key={label} className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-brand-pink/10 flex items-center justify-center">
+                    <Icon size={14} className="text-brand-pink" />
                   </div>
-                  <div className="text-xs text-gray-400">{sub}</div>
+                  <div>
+                    <div className="text-xs font-bold text-brand-dark">
+                      {label}
+                    </div>
+                    <div className="text-xs text-gray-400">{sub}</div>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

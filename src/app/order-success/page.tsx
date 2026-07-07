@@ -3,6 +3,7 @@ import { CheckCircle, Package, ArrowRight, Home } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
+import { Spinner } from '@/components/ui/Spinner';
 
 function OrderSuccessContent() {
   const params = useSearchParams();
@@ -51,7 +52,7 @@ function OrderSuccessContent() {
 
 export default function OrderSuccessPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-8 h-8 border-4 border-brand-pink border-t-transparent rounded-full animate-spin" /></div>}>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><Spinner size={140} /></div>}>
       <OrderSuccessContent />
     </Suspense>
   );

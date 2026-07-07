@@ -11,11 +11,11 @@ import {
   Upload,
   X,
   Image as ImageIcon,
-  Loader2,
 } from "lucide-react";
 import { useAdminMode } from "@/store/adminModeContext";
 import { Product } from "@/types/database";
 import toast from "react-hot-toast";
+import { Spinner } from "@/components/ui/Spinner";
 
 const TEST_PRODUCTS: Product[] = [
   // --- Appalam Blue variants ---
@@ -391,7 +391,7 @@ export default function AdminProductsPage() {
             className="input-field pl-9 bg-white"
           />
         </div>
-        {loading && <Loader2 className="animate-spin text-brand-pink" />}
+        {loading && <Spinner size={80} />}
         <button
           onClick={openNew}
           className="btn-primary whitespace-nowrap"
@@ -425,7 +425,11 @@ export default function AdminProductsPage() {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                "🫓"
+                <img
+                  src="/images/new_assets/appalam_rotation.png"
+                  alt={product.name}
+                  className="w-full h-full object-contain p-4"
+                />
               )}
               {product.is_featured && (
                 <span className="absolute top-2 left-2 badge bg-brand-gold text-brand-dark text-xs">
@@ -560,10 +564,7 @@ export default function AdminProductsPage() {
                         disabled={uploading}
                       />
                       {uploading ? (
-                        <Loader2
-                          size={20}
-                          className="text-gray-400 animate-spin"
-                        />
+                        <Spinner size={90} />
                       ) : (
                         <>
                           <Upload size={20} className="text-gray-400" />
@@ -739,7 +740,7 @@ export default function AdminProductsPage() {
                 disabled={loading}
               >
                 {loading ? (
-                  <Loader2 size={16} className="animate-spin" />
+                  <Spinner size={64} />
                 ) : null}
                 {modal.edit ? "Save Changes" : "Add Product"}
               </button>

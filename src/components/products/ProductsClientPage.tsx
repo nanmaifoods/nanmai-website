@@ -7,13 +7,13 @@ import {
   X,
   Search,
   SlidersHorizontal,
-  Loader2,
 } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
 import { Product } from "@/types/database";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { Spinner } from "@/components/ui/Spinner";
 
 const CATEGORIES = ["all", "appalam", "punjabi-pappad", "appalam-snack-pack", "appalam-chips"];
 const SORT_OPTIONS = [
@@ -22,7 +22,7 @@ const SORT_OPTIONS = [
   { value: "price-desc", label: "Price: High–Low" },
 ];
 
-function ProductCard({ product }: { product: Product }) {
+function ProductCard({ product, index = 0 }: { product: Product; index?: number }) {
   const { addItem } = useCartStore();
   const discount = product.original_price
     ? Math.round(
@@ -32,6 +32,13 @@ function ProductCard({ product }: { product: Product }) {
     : 0;
 
   return (
+    <div
+      className="animate-card-float"
+      style={{
+        animationDelay: `${(index % 4) * 0.4}s`,
+        animationDuration: `${4 + (index % 3) * 0.6}s`,
+      }}
+    >
     <div className="card group flex flex-col">
       <Link href={`/products/${product.slug}`} className="block">
         <div className="relative bg-gradient-to-br from-brand-cream to-white overflow-hidden">
@@ -55,7 +62,11 @@ function ProductCard({ product }: { product: Product }) {
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-12">
-              <div className="text-6xl mb-2">🫓</div>
+              <img
+                src="/images/new_assets/appalam_rotation.png"
+                alt={product.name}
+                className="w-56 h-56 object-contain mb-2"
+              />
               <div className="text-xs text-gray-400 font-medium">
                 {product.weight}
               </div>
@@ -114,6 +125,7 @@ function ProductCard({ product }: { product: Product }) {
           </p>
         )}
       </div>
+    </div>
     </div>
   );
 }
@@ -327,7 +339,7 @@ export function ProductsClientPage() {
             <p className="text-sm text-gray-500 mb-5">
               {loading ? (
                 <span className="flex items-center gap-2">
-                  <Loader2 size={16} className="animate-spin" /> Loading
+                  <Spinner size={52} /> Loading
                   products...
                 </span>
               ) : (
@@ -336,10 +348,7 @@ export function ProductsClientPage() {
             </p>
             {loading ? (
               <div className="text-center py-20">
-                <Loader2
-                  size={32}
-                  className="animate-spin text-brand-pink mx-auto mb-4"
-                />
+                <Spinner size={140} className="mx-auto mb-4" />
                 <p className="text-gray-500">Loading products...</p>
               </div>
             ) : filtered.length === 0 ? (
@@ -359,8 +368,8 @@ export function ProductsClientPage() {
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-                {filtered.map((p) => (
-                  <ProductCard key={p.id} product={p} />
+                {filtered.map((p, i) => (
+                  <ProductCard key={p.id} product={p} index={i} />
                 ))}
               </div>
             )}

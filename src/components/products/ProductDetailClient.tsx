@@ -12,12 +12,12 @@ import {
   ChevronUp,
   ChevronLeft,
   ChevronRight,
-  Loader2,
 } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
 import { Product } from "@/types/database";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import { Spinner } from "@/components/ui/Spinner";
 
 const DEFAULT_FAQS = [
   {
@@ -191,10 +191,7 @@ export function ProductDetailClient({ slug }: { slug: string }) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
-          <Loader2
-            size={32}
-            className="animate-spin text-brand-pink mx-auto mb-4"
-          />
+          <Spinner size={140} className="mx-auto mb-4" />
           <p className="text-gray-500">Loading product...</p>
         </div>
       </div>
@@ -280,7 +277,11 @@ export function ProductDetailClient({ slug }: { slug: string }) {
                 />
               ) : (
                 <div className="flex flex-col items-center justify-center py-24">
-                  <div className="text-9xl mb-4">🫓</div>
+                  <img
+                    src="/images/new_assets/appalam_rotation.png"
+                    alt={product.name}
+                    className="w-72 h-72 object-contain mb-4"
+                  />
                   <div className="text-sm text-gray-400 font-medium">
                     {product.weight}
                   </div>

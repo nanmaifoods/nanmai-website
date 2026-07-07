@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff, Loader2, Leaf } from "lucide-react";
+import { Eye, EyeOff, Leaf } from "lucide-react";
+import { Spinner } from "@/components/ui/Spinner";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -101,7 +102,7 @@ export default function AdminLoginPage() {
               className="btn-primary w-full justify-center py-2.5 sm:py-3 text-sm sm:text-base"
             >
               {loading ? (
-                <Loader2 size={18} className="animate-spin" />
+                <Spinner size={72} />
               ) : (
                 "Sign In"
               )}

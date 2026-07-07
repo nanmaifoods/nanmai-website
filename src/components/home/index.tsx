@@ -1,7 +1,9 @@
 'use client';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowRight, Star, Quote } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
+import { motion } from 'framer-motion';
 
 // ─── Animated Counter Hook ────────────────────────────────────────────────────
 function useCountUp(target: number, duration = 2000, startOnView = true) {
@@ -88,19 +90,76 @@ const TESTIMONIALS = [
   { name: 'Suresh Babu',     location: 'Trichy',    rating: 4, text: 'Good product overall. Delivery was quick and the appalams were fresh. The classic variant is my favourite.' },
 ];
 
+const testimonialContainerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+
+const testimonialItemVariants = {
+  hidden: { opacity: 0, y: 32 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: 'easeOut' },
+  },
+};
+
 export function TestimonialsSection() {
   return (
-    <section className="py-20 bg-brand-cream">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <section className="relative overflow-hidden py-20 bg-brand-cream">
+      {/* Decorative broken appalam pieces */}
+      <div className="absolute -top-12 -left-12 w-36 h-36 sm:-top-32 sm:-left-32 sm:w-96 sm:h-96 md:-top-48 md:-left-48 md:w-[36rem] md:h-[36rem] rotate-[-18deg] opacity-90 pointer-events-none">
+        <div
+          className="relative w-full h-full animate-appalam-float"
+          style={{ animationDuration: '4.5s' }}
+        >
+          <Image
+            src="/images/new_assets/broken1.png"
+            alt=""
+            fill
+            className="object-contain"
+          />
+        </div>
+      </div>
+      <div className="absolute -bottom-12 -right-12 w-36 h-36 sm:-bottom-32 sm:-right-32 sm:w-96 sm:h-96 md:-bottom-48 md:-right-48 md:w-[36rem] md:h-[36rem] rotate-[14deg] opacity-90 pointer-events-none">
+        <div
+          className="relative w-full h-full animate-appalam-float"
+          style={{ animationDuration: '5.5s', animationDelay: '1.2s' }}
+        >
+          <Image
+            src="/images/new_assets/broken2.png"
+            alt=""
+            fill
+            className="object-contain"
+          />
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         <div className="text-center mb-14">
           <p className="text-brand-pink font-semibold text-sm uppercase tracking-widest mb-2">Testimonials</p>
           <h2 className="section-title">What Our Customers Say</h2>
           <p className="section-subtitle mx-auto">Real stories from families who love Nanmai.</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          variants={testimonialContainerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3, margin: "-150px 0px -150px 0px" }}
+        >
           {TESTIMONIALS.map(({ name, location, rating, text }) => (
-            <div key={name} className="card p-6 flex flex-col gap-4">
+            <motion.div
+              key={name}
+              variants={testimonialItemVariants}
+              whileHover={{ y: -6 }}
+              className="card p-6 flex flex-col gap-4"
+            >
               <Quote size={28} className="text-brand-pink/30" />
               <p className="text-gray-600 text-sm leading-relaxed flex-1">{text}</p>
               <div className="flex items-center justify-between pt-3 border-t border-gray-100">
@@ -114,9 +173,9 @@ export function TestimonialsSection() {
                   ))}
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

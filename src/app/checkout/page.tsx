@@ -13,6 +13,7 @@ import { initiatePayment } from "@/lib/razorpay";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Spinner } from "@/components/ui/Spinner";
 
 interface ShippingInfo {
   name: string;
@@ -337,7 +338,11 @@ export default function CheckoutPage() {
                               className="w-full h-full object-cover"
                             />
                           ) : (
-                            <span className="text-2xl">🫓</span>
+                            <img
+                              src="/images/new_assets/appalam_rotation.png"
+                              alt={item.product.name}
+                              className="w-full h-full object-contain p-1"
+                            />
                           )}
                         </div>
                         <div className="flex-1 min-w-0">
@@ -425,7 +430,7 @@ export default function CheckoutPage() {
               >
                 {loading ? (
                   <>
-                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />{" "}
+                    <Spinner size={56} />
                     Processing...
                   </>
                 ) : (

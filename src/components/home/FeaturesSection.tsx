@@ -174,13 +174,42 @@ export function OurStorySection() {
   );
 }
 
+const cardContainerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+
+const cardItemVariants = {
+  hidden: { opacity: 0, y: 32 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut" },
+  },
+};
+
 export function FeatureCardsSection() {
   return (
     <section className="py-10 bg-brand-cream">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+          variants={cardContainerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3, margin: "-150px 0px -150px 0px" }}
+        >
           {FEATURES.map(({ icon: Icon, title, desc, color }) => (
-            <div key={title} className="card p-6 group cursor-default">
+            <motion.div
+              key={title}
+              variants={cardItemVariants}
+              whileHover={{ y: -6 }}
+              className="card p-6 group cursor-default"
+            >
               <div
                 className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-4 ${COLOR_MAP[color]} group-hover:scale-110 transition-transform`}
               >
@@ -188,9 +217,9 @@ export function FeatureCardsSection() {
               </div>
               <h3 className="font-bold text-lg mb-2">{title}</h3>
               <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

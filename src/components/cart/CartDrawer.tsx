@@ -49,7 +49,7 @@ export function CartDrawer() {
               <div key={item.product.id} className="flex gap-4 p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors">
                 <div className="relative w-20 h-20 rounded-lg overflow-hidden shrink-0 bg-white">
                   <Image
-                    src={item.product.images[0] || '/placeholder-product.jpg'}
+                    src={item.product.images[0] || '/images/new_assets/appalam_rotation.png'}
                     alt={item.product.name}
                     fill className="object-cover"
                   />

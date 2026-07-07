@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Save, Bell, Shield, CreditCard, Truck, Store } from "lucide-react";
 import toast from "react-hot-toast";
+import { Spinner } from "@/components/ui/Spinner";
 
 export default function AdminSettingsPage() {
   const [tab, setTab] = useState("store");
@@ -50,7 +51,7 @@ export default function AdminSettingsPage() {
           >
             {saving ? (
               <>
-                <span className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                <Spinner size={52} />
                 Saving...
               </>
             ) : (

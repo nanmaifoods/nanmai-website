@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Save, Globe, Eye } from "lucide-react";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import { Spinner } from "@/components/ui/Spinner";
 
 const SECTIONS = {
   homepage: {
@@ -242,7 +243,7 @@ export default function AdminCmsPage() {
             >
               {saving ? (
                 <>
-                  <span className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />{" "}
+                  <Spinner size={52} />
                   Saving...
                 </>
               ) : (
@@ -287,7 +288,7 @@ export default function AdminCmsPage() {
             >
               {saving ? (
                 <>
-                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />{" "}
+                  <Spinner size={56} />
                   Saving...
                 </>
               ) : (

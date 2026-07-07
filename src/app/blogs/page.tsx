@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Clock, ArrowRight, Tag } from 'lucide-react';
 
 export const metadata: Metadata = {
@@ -21,10 +22,40 @@ export default function BlogsPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <div className="bg-gradient-to-br from-brand-cream to-white py-16 px-4 text-center border-b border-gray-100">
-        <p className="text-brand-pink font-semibold text-sm uppercase tracking-widest mb-2">Our Blog</p>
-        <h1 className="font-display text-4xl md:text-5xl font-black text-brand-dark mb-3">Stories & Recipes</h1>
-        <p className="text-gray-500 max-w-lg mx-auto text-lg">Tips, recipes, and stories from the world of traditional South Indian cooking.</p>
+      <div className="relative overflow-hidden bg-gradient-to-br from-brand-cream to-white py-16 px-4 text-center border-b border-gray-100">
+        {/* Decorative broken appalam pieces */}
+        <div className="absolute -top-10 -left-10 w-28 h-28 sm:-top-16 sm:-left-16 sm:w-56 sm:h-56 md:-top-24 md:-left-24 md:w-72 md:h-72 rotate-[-18deg] opacity-90 pointer-events-none">
+          <div
+            className="relative w-full h-full animate-appalam-float"
+            style={{ animationDuration: '4.5s' }}
+          >
+            <Image
+              src="/images/new_assets/broken1.png"
+              alt=""
+              fill
+              className="object-contain"
+            />
+          </div>
+        </div>
+        <div className="absolute -bottom-10 -right-10 w-28 h-28 sm:-bottom-16 sm:-right-16 sm:w-56 sm:h-56 md:-bottom-24 md:-right-24 md:w-72 md:h-72 rotate-[14deg] opacity-90 pointer-events-none">
+          <div
+            className="relative w-full h-full animate-appalam-float"
+            style={{ animationDuration: '5.5s', animationDelay: '1.2s' }}
+          >
+            <Image
+              src="/images/new_assets/broken2.png"
+              alt=""
+              fill
+              className="object-contain"
+            />
+          </div>
+        </div>
+
+        <div className="relative z-10">
+          <p className="text-brand-pink font-semibold text-sm uppercase tracking-widest mb-2">Our Blog</p>
+          <h1 className="font-display text-4xl md:text-5xl font-black text-brand-dark mb-3">Stories & Recipes</h1>
+          <p className="text-gray-500 max-w-lg mx-auto text-lg">Tips, recipes, and stories from the world of traditional South Indian cooking.</p>
+        </div>
       </div>
 
       {/* Category filter */}

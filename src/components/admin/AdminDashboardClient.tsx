@@ -7,7 +7,6 @@ import {
   Users,
   ArrowUpRight,
   ArrowDownRight,
-  Loader2,
 } from "lucide-react";
 import {
   LineChart,
@@ -24,6 +23,7 @@ import {
   Cell,
 } from "recharts";
 import { useAdminMode } from "@/store/adminModeContext";
+import { Spinner } from "@/components/ui/Spinner";
 
 // Mock data for test mode
 const TEST_STATS = [
@@ -331,7 +331,7 @@ export function AdminDashboardClient() {
               </span>
             </div>
             <div className="font-black text-2xl text-brand-dark">
-              {loading ? <Loader2 size={24} className="animate-spin" /> : value}
+              {loading ? <Spinner size={80} /> : value}
             </div>
             <div className="text-sm text-gray-500 mt-0.5">{label}</div>
           </div>
@@ -509,10 +509,7 @@ export function AdminDashboardClient() {
               {loading ? (
                 <tr>
                   <td colSpan={6} className="px-5 py-8 text-center">
-                    <Loader2
-                      size={24}
-                      className="animate-spin text-brand-pink mx-auto"
-                    />
+                    <Spinner size={104} className="mx-auto" />
                   </td>
                 </tr>
               ) : (

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
+import { AboutStorySection } from "@/components/about/AboutStorySection";
 
 export const metadata: Metadata = {
   title: "About Us – Our Story",
@@ -12,8 +14,36 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero */}
-      <section className="bg-brand-cream py-16 px-4">
-        <div className="max-w-4xl mx-auto text-center">
+      <section className="relative overflow-hidden bg-brand-cream py-16 px-4">
+        {/* Decorative broken appalam pieces */}
+        <div className="absolute -top-10 -left-10 w-28 h-28 sm:-top-16 sm:-left-16 sm:w-56 sm:h-56 md:-top-24 md:-left-24 md:w-72 md:h-72 rotate-[-18deg] opacity-90 pointer-events-none">
+          <div
+            className="relative w-full h-full animate-appalam-float"
+            style={{ animationDuration: "4.5s" }}
+          >
+            <Image
+              src="/images/new_assets/broken1.png"
+              alt=""
+              fill
+              className="object-contain"
+            />
+          </div>
+        </div>
+        <div className="absolute -bottom-10 -right-10 w-28 h-28 sm:-bottom-16 sm:-right-16 sm:w-56 sm:h-56 md:-bottom-24 md:-right-24 md:w-72 md:h-72 rotate-[14deg] opacity-90 pointer-events-none">
+          <div
+            className="relative w-full h-full animate-appalam-float"
+            style={{ animationDuration: "5.5s", animationDelay: "1.2s" }}
+          >
+            <Image
+              src="/images/new_assets/broken2.png"
+              alt=""
+              fill
+              className="object-contain"
+            />
+          </div>
+        </div>
+
+        <div className="relative z-10 max-w-4xl mx-auto text-center">
           <p className="text-brand-pink font-semibold text-sm uppercase tracking-widest mb-2">
             Our Story
           </p>
@@ -25,218 +55,158 @@ export default function AboutPage() {
       </section>
 
       {/* Section 1 - More Than a Name (content left, image right) */}
-      <section className="py-20 px-4">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <p className="text-brand-pink font-semibold text-sm uppercase tracking-widest mb-2">
-              Our Name
-            </p>
-            <h2 className="section-title mb-5">More Than a Name</h2>
-            <div className="text-gray-600 leading-relaxed space-y-3">
-              <p>In Tamil, Nanmai (நன்மை) means goodness.</p>
-              <p>
-                Not just in what we offer, but in how it is made, how it is
-                shared, and how it is felt.
-              </p>
-              <p>
-                For us, Nanmai is more than a name. It is a value we grew up
-                with.
-              </p>
-              <p>
-                Today, that goodness lives on in every appalam we make,
-                bringing authentic flavor to those who seek quality papad
-                online.
-              </p>
-            </div>
-          </div>
-          <div className="relative rounded-3xl overflow-hidden aspect-[4/3] bg-gradient-to-br from-brand-cream to-brand-pink/10">
-            <img
-              src="/images/About Us Image 3.png" 
-              alt="Nanmai Appalam"
-              className="w-full h-full object-cover"
-            />
-          </div>
-        </div>
-      </section>
+      <AboutStorySection
+        eyebrow="Our Name"
+        title="More Than a Name"
+        image="/images/About Us Image 3.png"
+        imageClassName="bg-gradient-to-br from-brand-cream to-brand-pink/10"
+      >
+        <p>In Tamil, Nanmai (நன்மை) means goodness.</p>
+        <p>
+          Not just in what we offer, but in how it is made, how it is shared,
+          and how it is felt.
+        </p>
+        <p>For us, Nanmai is more than a name. It is a value we grew up with.</p>
+        <p>
+          Today, that goodness lives on in every appalam we make, bringing
+          authentic flavor to those who seek quality papad online.
+        </p>
+      </AboutStorySection>
 
       {/* Section 2 - Where It All Began (image left, content right) */}
-      <section className="py-20 px-4 bg-brand-cream">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="relative rounded-3xl overflow-hidden aspect-[4/3] bg-gradient-to-br from-brand-gold/10 to-brand-cream order-last lg:order-first">
-            <img
-              src="/images/About Us Image 2.png"
-              alt="Nanmai Appalam"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div>
-            <p className="text-brand-pink font-semibold text-sm uppercase tracking-widest mb-2">
-              Our Origin
-            </p>
-            <h2 className="section-title mb-5">Where It All Began</h2>
-            <div className="text-gray-600 leading-relaxed space-y-3">
-              <p>
-                Nanmai began in a village, in a joint family, where meals were
-                simple but full of life.
-              </p>
-              <p>
-                We gathered around, shared everything, and waited for the
-                smallest joys. One of them was always appalam.
-              </p>
-              <p>
-                Crispy, warm, placed in the centre for everyone. And somehow,
-                getting one extra appalam always felt like a win.
-              </p>
-              <p>
-                We smiled over it. We waited for it. Sometimes… we even fought
-                for it.
-              </p>
-              <p>
-                Because that one crack, that one bite… was never just food. It
-                was happiness, togetherness, and home.
-              </p>
-              <p>
-                What we enjoyed back then as homemade appalam is what we now
-                bring to you through carefully packed appalam packets, so you
-                can enjoy the same feeling wherever you are, even if you are
-                simply searching for appalam near me.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      <AboutStorySection
+        eyebrow="Our Origin"
+        title="Where It All Began"
+        image="/images/About Us Image 2.png"
+        imageClassName="bg-gradient-to-br from-brand-gold/10 to-brand-cream"
+        imageOnLeft
+        sectionClassName="bg-brand-cream"
+      >
+        <p>
+          Nanmai began in a village, in a joint family, where meals were
+          simple but full of life.
+        </p>
+        <p>
+          We gathered around, shared everything, and waited for the smallest
+          joys. One of them was always appalam.
+        </p>
+        <p>
+          Crispy, warm, placed in the centre for everyone. And somehow,
+          getting one extra appalam always felt like a win.
+        </p>
+        <p>
+          We smiled over it. We waited for it. Sometimes… we even fought for
+          it.
+        </p>
+        <p>
+          Because that one crack, that one bite… was never just food. It was
+          happiness, togetherness, and home.
+        </p>
+        <p>
+          What we enjoyed back then as homemade appalam is what we now bring
+          to you through carefully packed appalam packets, so you can enjoy
+          the same feeling wherever you are, even if you are simply searching
+          for appalam near me.
+        </p>
+      </AboutStorySection>
 
       {/* Section 3 - Why Nanmai Exists (content left, image right) */}
-      <section className="py-20 px-4">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <p className="text-brand-pink font-semibold text-sm uppercase tracking-widest mb-2">
-              Our Purpose
-            </p>
-            <h2 className="section-title mb-5">Why Nanmai Exists</h2>
-            <div className="text-gray-600 leading-relaxed space-y-3">
-              <p>
-                As time passed, lifestyles changed, but the craving for
-                authentic taste never did.
-              </p>
-              <p>
-                We saw how traditional foods like appalam were becoming harder
-                to find in their true form. What was once handmade and pure was
-                slowly replaced by convenience without care.
-              </p>
-              <p>
-                Nanmai exists to bring back that balance. To make it easy for
-                anyone to enjoy authentic appalam, whether you are buying rice
-                papad online or preparing a quick snack at home as a microwave
-                pappadam or microwave papadum.
-              </p>
-              <p>
-                Because tradition should not be lost. It should evolve and stay
-                within reach.
-              </p>
-            </div>
-          </div>
-          <div className="relative rounded-3xl overflow-hidden aspect-[4/3] bg-gradient-to-br from-brand-green/10 to-brand-cream">
-<img
-               src="/images/new_assets/about.png"
-               alt="Nanmai Appalam"
-               className="w-full h-full object-cover"
-             />
-          </div>
-        </div>
-      </section>
+      <AboutStorySection
+        eyebrow="Our Purpose"
+        title="Why Nanmai Exists"
+        image="/images/new_assets/about.png"
+        imageClassName="bg-gradient-to-br from-brand-green/10 to-brand-cream"
+      >
+        <p>
+          As time passed, lifestyles changed, but the craving for authentic
+          taste never did.
+        </p>
+        <p>
+          We saw how traditional foods like appalam were becoming harder to
+          find in their true form. What was once handmade and pure was slowly
+          replaced by convenience without care.
+        </p>
+        <p>
+          Nanmai exists to bring back that balance. To make it easy for anyone
+          to enjoy authentic appalam, whether you are buying rice papad online
+          or preparing a quick snack at home as a microwave pappadam or
+          microwave papadum.
+        </p>
+        <p>
+          Because tradition should not be lost. It should evolve and stay
+          within reach.
+        </p>
+      </AboutStorySection>
 
       {/* Section 4 - Our Mission (image left, content right) */}
-      <section className="py-20 px-4 bg-brand-cream">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="relative rounded-3xl overflow-hidden aspect-[4/3] bg-gradient-to-br from-brand-pink/10 to-brand-cream order-last lg:order-first">
-            <img
-              src="/images/About Us Image 4.png"
-              alt="Nanmai Appalam"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div>
-            <p className="text-brand-pink font-semibold text-sm uppercase tracking-widest mb-2">
-              What We Stand For
-            </p>
-            <h2 className="section-title mb-5">Our Mission</h2>
-            <div className="text-gray-600 leading-relaxed space-y-3">
-              <p>
-                At Nanmai, our mission is to bring back the true taste of South
-                Indian appalam, crafted with an uncompromising commitment to
-                quality, hygiene, and integrity.
-              </p>
-              <p>Rooted in the values we grew up with, we are dedicated to:</p>
-              <ul className="list-disc list-inside space-y-2 pl-2">
-                <li>Upholding high standards of quality and food safety</li>
-                <li>Using carefully selected, honest ingredients</li>
-                <li>
-                  Maintaining a clean, simple formulation without unnecessary
-                  additions
-                </li>
-                <li>
-                  Making traditional, high quality food accessible for everyday
-                  living
-                </li>
-              </ul>
-              <p>
-                We also aim to make it easier for families everywhere to enjoy
-                authentic options like appalam, jeera papad packet, and
-                even regional favorites such as Punjabi Pappad, all available
-                with the convenience of buying papad online.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      <AboutStorySection
+        eyebrow="What We Stand For"
+        title="Our Mission"
+        image="/images/About Us Image 4.png"
+        imageClassName="bg-gradient-to-br from-brand-pink/10 to-brand-cream"
+        imageOnLeft
+        sectionClassName="bg-brand-cream"
+      >
+        <p>
+          At Nanmai, our mission is to bring back the true taste of South
+          Indian appalam, crafted with an uncompromising commitment to
+          quality, hygiene, and integrity.
+        </p>
+        <p>Rooted in the values we grew up with, we are dedicated to:</p>
+        <ul className="list-disc list-inside space-y-2 pl-2">
+          <li>Upholding high standards of quality and food safety</li>
+          <li>Using carefully selected, honest ingredients</li>
+          <li>
+            Maintaining a clean, simple formulation without unnecessary
+            additions
+          </li>
+          <li>
+            Making traditional, high quality food accessible for everyday
+            living
+          </li>
+        </ul>
+        <p>
+          We also aim to make it easier for families everywhere to enjoy
+          authentic options like appalam, jeera papad packet, and even
+          regional favorites such as Punjabi Pappad, all available with the
+          convenience of buying papad online.
+        </p>
+      </AboutStorySection>
 
       {/* Section 5 - Vision (content left, image right) */}
-      <section className="py-20 px-4">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <p className="text-brand-pink font-semibold text-sm uppercase tracking-widest mb-2">
-              Looking Ahead
-            </p>
-            <h2 className="section-title mb-5">Vision</h2>
-            <div className="text-gray-600 leading-relaxed space-y-3">
-              <p>
-                Our vision is to build Nanmai into a trusted household name,
-                known for its commitment to authenticity, consistency, and care.
-              </p>
-              <p>We aspire to:</p>
-              <ul className="list-disc list-inside space-y-2 pl-2">
-                <li>
-                  Deliver consistent quality at scale, supported by modern and
-                  efficient processes
-                </li>
-                <li>Set a standard for hygienic, reliable food production</li>
-                <li>
-                  Preserve traditional recipes while meeting today's
-                  expectations of quality
-                </li>
-                <li>
-                  Earn lasting trust by offering both value and excellence
-                  without compromise
-                </li>
-              </ul>
-              <p>
-                As we grow, we want Nanmai to be the name people think of when
-                they look for authentic appalam, whether they are searching for
-                rice papad online or simply choosing the best appalam packet for
-                their home.
-              </p>
-            </div>
-          </div>
-          <div className="relative rounded-3xl overflow-hidden aspect-[4/3] bg-gradient-to-br from-brand-gold/10 to-brand-cream">
-            <img
-              src="/images/Abour Us Image 5.png"
-              alt="Nanmai Appalam"
-              className="w-full h-full object-cover"
-            />
-          </div>
-        </div>
-      </section>
+      <AboutStorySection
+        eyebrow="Looking Ahead"
+        title="Vision"
+        image="/images/Abour Us Image 5.png"
+        imageClassName="bg-gradient-to-br from-brand-gold/10 to-brand-cream"
+      >
+        <p>
+          Our vision is to build Nanmai into a trusted household name, known
+          for its commitment to authenticity, consistency, and care.
+        </p>
+        <p>We aspire to:</p>
+        <ul className="list-disc list-inside space-y-2 pl-2">
+          <li>
+            Deliver consistent quality at scale, supported by modern and
+            efficient processes
+          </li>
+          <li>Set a standard for hygienic, reliable food production</li>
+          <li>
+            Preserve traditional recipes while meeting today's expectations of
+            quality
+          </li>
+          <li>
+            Earn lasting trust by offering both value and excellence without
+            compromise
+          </li>
+        </ul>
+        <p>
+          As we grow, we want Nanmai to be the name people think of when they
+          look for authentic appalam, whether they are searching for rice
+          papad online or simply choosing the best appalam packet for their
+          home.
+        </p>
+      </AboutStorySection>
 
       {/* CTA */}
       <section className="py-16 px-4 bg-gradient-to-r from-brand-pink to-brand-green text-white text-center">

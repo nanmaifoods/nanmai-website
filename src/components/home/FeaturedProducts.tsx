@@ -1,12 +1,13 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, ShoppingCart, Star, Loader2 } from "lucide-react";
+import { ArrowRight, ShoppingCart, Star } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
 import { Product } from "@/types/database";
 import toast from "react-hot-toast";
+import { Spinner } from "@/components/ui/Spinner";
 
-function ProductCard({ product }: { product: Product }) {
+function ProductCard({ product, index = 0 }: { product: Product; index?: number }) {
   const { addItem } = useCartStore();
   const discount = product.original_price
     ? Math.round(
@@ -21,6 +22,13 @@ function ProductCard({ product }: { product: Product }) {
   };
 
   return (
+    <div
+      className="animate-card-float"
+      style={{
+        animationDelay: `${(index % 4) * 0.4}s`,
+        animationDuration: `${4 + (index % 3) * 0.6}s`,
+      }}
+    >
     <div className="card group">
       {/* Image */}
       <Link href={`/products/${product.slug}`} className="block">
@@ -45,7 +53,11 @@ function ProductCard({ product }: { product: Product }) {
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-12">
-              <div className="text-6xl mb-2">🫓</div>
+              <img
+                src="/images/new_assets/appalam_rotation.png"
+                alt={product.name}
+                className="w-56 h-56 object-contain mb-2"
+              />
               <div className="text-xs text-gray-400">{product.weight}</div>
             </div>
           )}
@@ -88,6 +100,7 @@ function ProductCard({ product }: { product: Product }) {
         </div>
       </div>
     </div>
+    </div>
   );
 }
 
@@ -128,17 +141,14 @@ export function FeaturedProducts() {
 
         {loading ? (
           <div className="text-center py-12">
-            <Loader2
-              size={32}
-              className="animate-spin text-brand-pink mx-auto mb-4"
-            />
+            <Spinner size={140} className="mx-auto mb-4" />
             <p className="text-gray-500">Loading featured products...</p>
           </div>
         ) : products.length > 0 ? (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {products.map((p) => (
-                <ProductCard key={p.id} product={p} />
+              {products.map((p, i) => (
+                <ProductCard key={p.id} product={p} index={i} />
               ))}
             </div>
             <div className="text-center mt-10">

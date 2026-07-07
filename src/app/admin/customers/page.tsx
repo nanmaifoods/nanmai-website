@@ -1,7 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Search, Mail, Phone, MapPin, Loader2 } from "lucide-react";
+import { Search, Mail, Phone, MapPin } from "lucide-react";
 import { useAdminMode } from "@/store/adminModeContext";
+import { Spinner } from "@/components/ui/Spinner";
 
 const TEST_CUSTOMERS = [
   {
@@ -221,7 +222,7 @@ export default function AdminCustomersPage() {
           <div key={label} className={`rounded-2xl p-4 text-center ${color}`}>
             <div className="font-black text-2xl">
               {loading ? (
-                <Loader2 size={24} className="animate-spin mx-auto" />
+                <Spinner size={80} className="mx-auto" />
               ) : (
                 value
               )}
@@ -269,10 +270,7 @@ export default function AdminCustomersPage() {
               {loading ? (
                 <tr>
                   <td colSpan={6} className="px-5 py-12 text-center">
-                    <Loader2
-                      size={24}
-                      className="animate-spin text-brand-pink mx-auto"
-                    />
+                    <Spinner size={104} className="mx-auto" />
                   </td>
                 </tr>
               ) : filtered.length === 0 ? (

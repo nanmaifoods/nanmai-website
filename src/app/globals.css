@@ -1,12 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=DM+Mono:wght@400;500&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --font-display: "Playfair Display", Georgia, serif;
-  --font-body: "DM Sans", system-ui, sans-serif;
+  --font-display: "Bodoni Moda", Georgia, serif;
+  --font-body: "Bodoni Moda", Georgia, serif;
   --font-mono: "DM Mono", monospace;
 
   --brand-pink: #12a6df;
@@ -29,6 +29,7 @@ html {
 
 body {
   font-family: var(--font-body);
+  font-weight: 600;
   background: #ffffff;
   color: var(--brand-dark);
   overflow-x: hidden;
@@ -114,4 +115,57 @@ body {
     transparent 1px
   );
   background-size: 32px 32px;
+}
+
+/* Rotating appalam image animation */
+@keyframes appalam-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes appalam-spin-once {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+img[src*="appalam_rotation"] {
+  animation: appalam-spin-once 1.5s ease-in-out;
+}
+
+/* Gentle floating motion for product cards */
+@keyframes card-float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+.animate-card-float {
+  animation: card-float 4s ease-in-out infinite;
+}
+
+/* More pronounced float/bounce for the decorative broken-appalam corner pieces */
+@keyframes appalam-float {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+  }
+  50% {
+    transform: translateY(-26px) rotate(4deg) scale(1.05);
+  }
+}
+
+.animate-appalam-float {
+  animation: appalam-float 4s ease-in-out infinite;
 }

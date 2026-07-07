@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { Loader2 } from "lucide-react";
+import { Spinner } from "@/components/ui/Spinner";
 
 export function AdminGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -29,10 +29,7 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <Loader2
-            size={40}
-            className="animate-spin text-brand-pink mx-auto mb-4"
-          />
+          <Spinner size={152} className="mx-auto mb-4" />
           <p className="text-gray-500">Loading...</p>
         </div>
       </div>

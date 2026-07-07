@@ -24,9 +24,9 @@ import {
   Users,
   Package,
   ArrowUpRight,
-  Loader2,
 } from "lucide-react";
 import { useAdminMode } from "@/store/adminModeContext";
+import { Spinner } from "@/components/ui/Spinner";
 
 // Test mode data
 const TEST_MONTHLY = [
@@ -237,7 +237,7 @@ export default function AdminAnalyticsPage() {
               </span>
             </div>
             <div className="font-black text-2xl text-brand-dark">
-              {loading ? <Loader2 size={24} className="animate-spin" /> : value}
+              {loading ? <Spinner size={80} /> : value}
             </div>
             <div className="text-xs text-gray-500 mt-0.5">{label}</div>
           </div>
@@ -402,7 +402,7 @@ export default function AdminAnalyticsPage() {
                 </div>
                 <span className="text-sm font-bold w-12 text-right">
                   {loading ? (
-                    <Loader2 size={14} className="animate-spin inline" />
+                    <Spinner size={44} />
                   ) : (
                     orders
                   )}
