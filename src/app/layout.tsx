@@ -5,6 +5,7 @@ import { Footer } from "@/components/layout/Footer";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { Toaster } from "react-hot-toast";
 import { LayoutClientWrapper } from "@/components/layout/LayoutClientWrapper";
+import { AppalamCursor } from "@/components/ui/AppalamCursor";
 
 export const metadata: Metadata = {
   title: {
@@ -56,6 +57,7 @@ export default function RootLayout({
         <link rel="icon" href="/images/favicon.png" />
       </head>
       <body className="font-body">
+        <AppalamCursor />
         <LayoutClientWrapper>{children}</LayoutClientWrapper>
         <CartDrawer />
         <Toaster
