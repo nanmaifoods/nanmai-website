@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
 import { AboutStorySection } from "@/components/about/AboutStorySection";
 
 export const metadata: Metadata = {
@@ -61,15 +59,12 @@ export default function AboutPage() {
         image="/images/About Us Image 3.png"
         imageClassName="bg-gradient-to-br from-brand-cream to-brand-pink/10"
       >
-        <p>In Tamil, Nanmai (நன்மை) means goodness.</p>
         <p>
-          Not just in what we offer, but in how it is made, how it is shared,
-          and how it is felt.
-        </p>
-        <p>For us, Nanmai is more than a name. It is a value we grew up with.</p>
-        <p>
-          Today, that goodness lives on in every appalam we make, bringing
-          authentic flavor to those who seek quality papad online.
+          In Tamil, Nanmai (நன்மை) means goodness. Not just in what we offer,
+          but in how it is made, how it is shared, and how it is felt. For us,
+          Nanmai is more than a name. It is a value we grew up with. Today,
+          that goodness lives on in every appalam we make, bringing authentic
+          flavor to those who seek quality papad online.
         </p>
       </AboutStorySection>
 
@@ -84,29 +79,16 @@ export default function AboutPage() {
       >
         <p>
           Nanmai began in a village, in a joint family, where meals were
-          simple but full of life.
-        </p>
-        <p>
-          We gathered around, shared everything, and waited for the smallest
-          joys. One of them was always appalam.
-        </p>
-        <p>
+          simple but full of life. We gathered around, shared everything, and
+          waited for the smallest joys. One of them was always appalam.
           Crispy, warm, placed in the centre for everyone. And somehow,
-          getting one extra appalam always felt like a win.
-        </p>
-        <p>
-          We smiled over it. We waited for it. Sometimes… we even fought for
-          it.
-        </p>
-        <p>
-          Because that one crack, that one bite… was never just food. It was
-          happiness, togetherness, and home.
-        </p>
-        <p>
-          What we enjoyed back then as homemade appalam is what we now bring
-          to you through carefully packed appalam packets, so you can enjoy
-          the same feeling wherever you are, even if you are simply searching
-          for appalam near me.
+          getting one extra appalam always felt like a win. We smiled over it.
+          We waited for it. Sometimes… we even fought for it. Because that one
+          crack, that one bite… was never just food. It was happiness,
+          togetherness, and home. What we enjoyed back then as homemade
+          appalam is what we now bring to you through carefully packed
+          appalam packets, so you can enjoy the same feeling wherever you
+          are, even if you are simply searching for appalam near me.
         </p>
       </AboutStorySection>
 
@@ -119,22 +101,14 @@ export default function AboutPage() {
       >
         <p>
           As time passed, lifestyles changed, but the craving for authentic
-          taste never did.
-        </p>
-        <p>
-          We saw how traditional foods like appalam were becoming harder to
-          find in their true form. What was once handmade and pure was slowly
-          replaced by convenience without care.
-        </p>
-        <p>
-          Nanmai exists to bring back that balance. To make it easy for anyone
-          to enjoy authentic appalam, whether you are buying rice papad online
-          or preparing a quick snack at home as a microwave pappadam or
-          microwave papadum.
-        </p>
-        <p>
-          Because tradition should not be lost. It should evolve and stay
-          within reach.
+          taste never did. We saw how traditional foods like appalam were
+          becoming harder to find in their true form. What was once handmade
+          and pure was slowly replaced by convenience without care. Nanmai
+          exists to bring back that balance. To make it easy for anyone to
+          enjoy authentic appalam, whether you are buying rice papad online or
+          preparing a quick snack at home as a microwave pappadam or microwave
+          papadum. Because tradition should not be lost. It should evolve and
+          stay within reach.
         </p>
       </AboutStorySection>
 
@@ -150,9 +124,9 @@ export default function AboutPage() {
         <p>
           At Nanmai, our mission is to bring back the true taste of South
           Indian appalam, crafted with an uncompromising commitment to
-          quality, hygiene, and integrity.
+          quality, hygiene, and integrity. Rooted in the values we grew up
+          with, we are dedicated to:
         </p>
-        <p>Rooted in the values we grew up with, we are dedicated to:</p>
         <ul className="list-disc list-inside space-y-2 pl-2">
           <li>Upholding high standards of quality and food safety</li>
           <li>Using carefully selected, honest ingredients</li>
@@ -182,9 +156,9 @@ export default function AboutPage() {
       >
         <p>
           Our vision is to build Nanmai into a trusted household name, known
-          for its commitment to authenticity, consistency, and care.
+          for its commitment to authenticity, consistency, and care. We
+          aspire to:
         </p>
-        <p>We aspire to:</p>
         <ul className="list-disc list-inside space-y-2 pl-2">
           <li>
             Deliver consistent quality at scale, supported by modern and
@@ -207,23 +181,6 @@ export default function AboutPage() {
           home.
         </p>
       </AboutStorySection>
-
-      {/* CTA */}
-      <section className="py-16 px-4 bg-gradient-to-r from-brand-pink to-brand-green text-white text-center">
-        <h2 className="font-display text-3xl md:text-4xl font-black mb-4">
-          Taste the Nanmai Difference
-        </h2>
-        <p className="text-white/80 mb-6 max-w-md mx-auto">
-          Join thousands of families who trust Nanmai for authentic, premium
-          quality appalam.
-        </p>
-        <Link
-          href="/products"
-          className="inline-flex items-center gap-2 bg-white text-brand-pink font-bold px-8 py-4 rounded-full hover:bg-brand-cream transition-colors"
-        >
-          Shop Now <ArrowRight size={16} />
-        </Link>
-      </section>
     </div>
   );
 }

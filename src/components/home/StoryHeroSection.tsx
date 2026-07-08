@@ -1,17 +1,45 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Star, Shield, Leaf, Truck } from "lucide-react";
 
 export function StoryHeroSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [piecesVisible, setPiecesVisible] = useState(false);
+
+  useEffect(() => {
+    const node = sectionRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setPiecesVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="relative flex items-center overflow-hidden bg-gradient-to-br from-brand-cream via-white to-brand-cream/50">
+    <section
+      ref={sectionRef}
+      className="relative flex items-center overflow-hidden bg-gradient-to-br from-brand-cream via-white to-brand-cream/50"
+    >
       {/* Background blobs */}
       <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-brand-pink/10 blur-3xl pointer-events-none" />
       <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-brand-green/10 blur-3xl pointer-events-none" />
 
-      {/* Decorative broken appalam pieces */}
-      <div className="absolute -top-12 -left-12 w-36 h-36 sm:-top-32 sm:-left-32 sm:w-96 sm:h-96 md:-top-48 md:-left-48 md:w-[36rem] md:h-[36rem] rotate-[-18deg] opacity-90 pointer-events-none">
+      {/* Decorative broken appalam pieces - drop in and spin down into place once this section scrolls into view */}
+      <div
+        className={`absolute -top-12 -left-12 w-36 h-36 sm:-top-32 sm:-left-32 sm:w-96 sm:h-96 md:-top-48 md:-left-48 md:w-[36rem] md:h-[36rem] pointer-events-none ${
+          piecesVisible ? "animate-drop-spin-in-left" : "opacity-0"
+        }`}
+      >
         <div
           className="relative w-full h-full animate-appalam-float"
           style={{ animationDuration: "4.5s" }}
@@ -24,7 +52,11 @@ export function StoryHeroSection() {
           />
         </div>
       </div>
-      <div className="absolute -bottom-12 -right-12 w-36 h-36 sm:-bottom-32 sm:-right-32 sm:w-96 sm:h-96 md:-bottom-48 md:-right-48 md:w-[36rem] md:h-[36rem] rotate-[14deg] opacity-90 pointer-events-none">
+      <div
+        className={`absolute -bottom-12 -right-12 w-36 h-36 sm:-bottom-32 sm:-right-32 sm:w-96 sm:h-96 md:-bottom-48 md:-right-48 md:w-[36rem] md:h-[36rem] pointer-events-none ${
+          piecesVisible ? "animate-drop-spin-in-right" : "opacity-0"
+        }`}
+      >
         <div
           className="relative w-full h-full animate-appalam-float"
           style={{ animationDuration: "5.5s", animationDelay: "1.2s" }}

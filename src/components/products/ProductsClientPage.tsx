@@ -1,5 +1,6 @@
 "use client";
 import { useState, useMemo, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 import {
   ShoppingCart,
   Star,
@@ -14,6 +15,34 @@ import toast from "react-hot-toast";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Spinner } from "@/components/ui/Spinner";
+
+const heroImageVariants = {
+  hidden: { opacity: 0, scale: 0.4, y: -30 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut" },
+  },
+};
+
+const heroTextLeftVariants = {
+  hidden: { opacity: 0, x: -40 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.6, ease: "easeOut", delay: 0.45 },
+  },
+};
+
+const heroTextRightVariants = {
+  hidden: { opacity: 0, x: 40 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.6, ease: "easeOut", delay: 0.6 },
+  },
+};
 
 const CATEGORIES = ["all", "appalam", "punjabi-pappad", "appalam-snack-pack", "appalam-chips"];
 const SORT_OPTIONS = [
@@ -191,28 +220,39 @@ export function ProductsClientPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <div className="relative w-full bg-brand-cream overflow-visible flex items-center justify-center px-6 md:px-16 py-10 gap-6 md:gap-10">
-        <h2
+      <div className="relative w-full bg-brand-cream overflow-visible flex items-center justify-center px-6 md:px-16 py-2 sm:py-4 md:py-6 gap-6 md:gap-10">
+        <motion.h2
+          variants={heroTextLeftVariants}
+          initial="hidden"
+          animate="visible"
           className="text-brand-dark font-black uppercase leading-none text-2xl sm:text-3xl md:text-5xl lg:text-6xl text-right"
           style={{ fontFamily: "Impact, Arial Black, sans-serif" }}
         >
           <span className="text-brand-pink">Authentic</span> Crunch,
-        </h2>
+        </motion.h2>
 
-        <div className="relative w-36 h-36 sm:w-48 sm:h-48 md:w-64 md:h-64 flex-shrink-0 z-10 -my-10 sm:-my-16 md:-my-20">
+        <motion.div
+          variants={heroImageVariants}
+          initial="hidden"
+          animate="visible"
+          className="relative w-36 h-36 sm:w-48 sm:h-48 md:w-64 md:h-64 flex-shrink-0 z-10 -my-1 sm:-my-2 md:-my-3"
+        >
           <img
             src="/images/hero-image.png"
             alt="Nanmai Appalam"
             className="w-full h-full object-contain drop-shadow-2xl"
           />
-        </div>
+        </motion.div>
 
-        <h2
+        <motion.h2
+          variants={heroTextRightVariants}
+          initial="hidden"
+          animate="visible"
           className="text-brand-dark font-black uppercase leading-none text-2xl sm:text-3xl md:text-5xl lg:text-6xl text-left"
           style={{ fontFamily: "Impact, Arial Black, sans-serif" }}
         >
           <span className="text-brand-pink">Delivered</span> Daily.
-        </h2>
+        </motion.h2>
       </div>
 
       {/* Sticky Search + Sort bar */}

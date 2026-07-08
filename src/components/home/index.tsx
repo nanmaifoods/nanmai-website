@@ -5,6 +5,31 @@ import { ArrowRight, Star, Quote } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 
+// ─── Scroll-into-view trigger ─────────────────────────────────────────────────
+function useInView<T extends HTMLElement>(threshold = 0.2) {
+  const ref = useRef<T>(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [threshold]);
+
+  return { ref, inView };
+}
+
 // ─── Animated Counter Hook ────────────────────────────────────────────────────
 function useCountUp(target: number, duration = 2000, startOnView = true) {
   const [count, setCount] = useState(0);
@@ -109,10 +134,16 @@ const testimonialItemVariants = {
 };
 
 export function TestimonialsSection() {
+  const { ref: sectionRef, inView: piecesVisible } = useInView<HTMLElement>();
+
   return (
-    <section className="relative overflow-hidden py-20 bg-brand-cream">
-      {/* Decorative broken appalam pieces */}
-      <div className="absolute -top-12 -left-12 w-36 h-36 sm:-top-32 sm:-left-32 sm:w-96 sm:h-96 md:-top-48 md:-left-48 md:w-[36rem] md:h-[36rem] rotate-[-18deg] opacity-90 pointer-events-none">
+    <section ref={sectionRef} className="relative overflow-hidden py-20 bg-brand-cream">
+      {/* Decorative broken appalam pieces - drop in and spin down into place once this section scrolls into view */}
+      <div
+        className={`absolute -top-12 -left-12 w-36 h-36 sm:-top-32 sm:-left-32 sm:w-96 sm:h-96 md:-top-48 md:-left-48 md:w-[36rem] md:h-[36rem] rotate-[-18deg] pointer-events-none ${
+          piecesVisible ? 'animate-drop-spin-in-left' : 'opacity-0'
+        }`}
+      >
         <div
           className="relative w-full h-full animate-appalam-float"
           style={{ animationDuration: '4.5s' }}
@@ -125,7 +156,11 @@ export function TestimonialsSection() {
           />
         </div>
       </div>
-      <div className="absolute -bottom-12 -right-12 w-36 h-36 sm:-bottom-32 sm:-right-32 sm:w-96 sm:h-96 md:-bottom-48 md:-right-48 md:w-[36rem] md:h-[36rem] rotate-[14deg] opacity-90 pointer-events-none">
+      <div
+        className={`absolute -bottom-12 -right-12 w-36 h-36 sm:-bottom-32 sm:-right-32 sm:w-96 sm:h-96 md:-bottom-48 md:-right-48 md:w-[36rem] md:h-[36rem] rotate-[14deg] pointer-events-none ${
+          piecesVisible ? 'animate-drop-spin-in-right' : 'opacity-0'
+        }`}
+      >
         <div
           className="relative w-full h-full animate-appalam-float"
           style={{ animationDuration: '5.5s', animationDelay: '1.2s' }}
@@ -182,6 +217,26 @@ export function TestimonialsSection() {
 }
 
 // ─── Blog Preview ─────────────────────────────────────────────────────────────
+const MotionLink = motion.create(Link);
+
+const blogContainerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+
+const blogItemVariants = {
+  hidden: { opacity: 0, y: 32 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: 'easeOut' },
+  },
+};
+
 const BLOG_POSTS = [
   { slug: 'health-benefits-of-appalam', title: 'Health Benefits of Eating Appalam', excerpt: 'Discover why appalam is more than just a crunchy side dish – it packs surprising nutritional benefits.', category: 'Health', date: 'Mar 10, 2025', readTime: 4, cover: '/images/Blog 1_11zon.png' },
   { slug: 'traditional-south-indian-cooking', title: 'Traditional South Indian Cooking Tips', excerpt: 'Master the art of South Indian cooking with these time-honoured techniques and ingredient secrets.', category: 'Recipes', date: 'Mar 5, 2025', readTime: 6, cover: '/images/Blog 2_11zon.png' },
@@ -201,9 +256,21 @@ export function BlogPreview() {
           <Link href="/blogs" className="btn-secondary self-start whitespace-nowrap">View All <ArrowRight size={16} /></Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-3 gap-6"
+          variants={blogContainerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3, margin: "-150px 0px -150px 0px" }}
+        >
           {BLOG_POSTS.map((post) => (
-            <Link key={post.slug} href={`/blogs/${post.slug}`} className="card group cursor-pointer">
+            <MotionLink
+              key={post.slug}
+              href={`/blogs/${post.slug}`}
+              variants={blogItemVariants}
+              whileHover={{ y: -6 }}
+              className="card group cursor-pointer"
+            >
               <div className="h-44 bg-gradient-to-br from-brand-cream to-white overflow-hidden group-hover:scale-105 transition-transform duration-500">
                 <img src={post.cover} alt={post.title} className="w-full h-full object-cover" />
               </div>
@@ -219,9 +286,9 @@ export function BlogPreview() {
                   <span className="text-brand-pink text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">Read More <ArrowRight size={13} /></span>
                 </div>
               </div>
-            </Link>
+            </MotionLink>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

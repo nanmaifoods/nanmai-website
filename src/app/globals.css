@@ -1,12 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=DM+Mono:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --font-display: "Bodoni Moda", Georgia, serif;
-  --font-body: "Bodoni Moda", Georgia, serif;
+  --font-display: "DM Sans", system-ui, sans-serif;
+  --font-body: "DM Sans", system-ui, sans-serif;
   --font-mono: "DM Mono", monospace;
 
   --brand-pink: #12a6df;
@@ -29,6 +29,7 @@ html {
 
 body {
   font-family: var(--font-body);
+  font-optical-sizing: auto;
   font-weight: 600;
   background: #ffffff;
   color: var(--brand-dark);
@@ -187,6 +188,39 @@ img[src*="appalam_rotation"] {
   animation: card-float 4s ease-in-out infinite;
 }
 
+/* Slow, organic drift for the papad-shaped story images */
+@keyframes papad-float {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-16px) rotate(-2deg);
+  }
+}
+
+.animate-papad-float {
+  animation: papad-float 6s ease-in-out infinite;
+}
+
+/* Continuous, seamless logo ticker for the partners strip */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 32s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
 /* More pronounced float/bounce for the decorative broken-appalam corner pieces */
 @keyframes appalam-float {
   0%,
@@ -200,4 +234,59 @@ img[src*="appalam_rotation"] {
 
 .animate-appalam-float {
   animation: appalam-float 4s ease-in-out infinite;
+}
+
+/* Scroll-triggered entrance: pieces drop in from above, spinning, and settle
+   into their resting rotation (matches the static rotate-[-18deg]/[14deg]
+   these corners used to have). Runs once, then holds the final frame while
+   .animate-appalam-float (on the nested wrapper) takes over the looping motion. */
+@keyframes drop-spin-in-left {
+  0% {
+    transform: translate(-60%, -170%) rotate(-540deg) scale(0.5);
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0, 0) rotate(-18deg) scale(1);
+    opacity: 0.9;
+  }
+}
+
+@keyframes drop-spin-in-right {
+  0% {
+    transform: translate(60%, -170%) rotate(540deg) scale(0.5);
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0, 0) rotate(14deg) scale(1);
+    opacity: 0.9;
+  }
+}
+
+.animate-drop-spin-in-left {
+  animation: drop-spin-in-left 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-drop-spin-in-right {
+  animation: drop-spin-in-right 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: 0.15s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-drop-spin-in-left,
+  .animate-drop-spin-in-right {
+    animation: none;
+    opacity: 0.9;
+  }
+  .animate-drop-spin-in-left {
+    transform: rotate(-18deg);
+  }
+  .animate-drop-spin-in-right {
+    transform: rotate(14deg);
+  }
 }

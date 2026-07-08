@@ -55,11 +55,14 @@ export function AboutStorySection({
       initial="hidden"
       whileInView="visible"
       viewport={viewportConfig}
-      className={`relative rounded-3xl overflow-hidden aspect-[4/3] ${imageClassName} ${
-        imageOnLeft ? "order-last lg:order-first" : ""
-      }`}
+      className={`w-full ${imageOnLeft ? "order-last lg:order-first" : ""}`}
     >
-      <img src={image} alt={imageAlt} className="w-full h-full object-cover" />
+      <div
+        className={`relative overflow-hidden rounded-3xl aspect-[4/3] w-full animate-papad-float ${imageClassName}`}
+        style={{ animationDelay: imageOnLeft ? "1.2s" : "0s" }}
+      >
+        <img src={image} alt={imageAlt} className="w-full h-full object-cover" />
+      </div>
     </motion.div>
   );
 
@@ -79,8 +82,8 @@ export function AboutStorySection({
   );
 
   return (
-    <section className={`py-20 px-4 ${sectionClassName}`}>
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    <section className={`py-10 px-4 ${sectionClassName}`}>
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
         {imageOnLeft ? (
           <>
             {imageBlock}

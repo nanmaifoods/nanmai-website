@@ -81,9 +81,9 @@ export default function DealersClient() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-14">
-        {/* Direct Contact – moved to top */}
-        <section className="mb-16">
+      {/* Direct Contact – moved to top */}
+      <section className="py-14 px-4 bg-brand-cream">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <h2 className="font-bold text-xl text-brand-dark mb-6">
             Direct Contact
           </h2>
@@ -91,7 +91,7 @@ export default function DealersClient() {
             For immediate assistance with wholesale inquiries, you can also reach us directly:
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="p-6 rounded-lg border border-gray-100">
+            <div className="card p-6">
               <h3 className="font-semibold text-brand-dark">WhatsApp</h3>
               <p className="text-gray-500">
                 <a href="https://wa.me/919677030371" className="text-brand-pink hover:underline">
@@ -102,7 +102,7 @@ export default function DealersClient() {
                 Send us a message for quick responses
               </p>
             </div>
-            <div className="p-6 rounded-lg border border-gray-100">
+            <div className="card p-6">
               <h3 className="font-semibold text-brand-dark">Email</h3>
               <p className="text-gray-500">
                 <a href="mailto:Nanmaifoods2025@gmail.com" className="text-brand-pink hover:underline">
@@ -114,9 +114,11 @@ export default function DealersClient() {
               </p>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mb-16">
+      <section className="py-14 px-4 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <h2 className="font-bold text-xl text-brand-dark mb-6">
             Wholesale Inquiry Form
           </h2>
@@ -289,9 +291,11 @@ export default function DealersClient() {
               </button>
             </form>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mb-16">
+      <section className="py-14 px-4 bg-brand-cream">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <h2 className="font-bold text-2xl text-brand-dark mb-8">
             Why Partner With Nanmai Appalam?
           </h2>
@@ -327,48 +331,52 @@ export default function DealersClient() {
               </div>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mb-16">
+      <section className="py-14 px-4 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <h2 className="font-bold text-xl text-brand-dark mb-6">
             Wholesale Benefits
           </h2>
           <div className="grid grid-cols-1 gap-6">
-            <div className="p-6 rounded-lg border border-gray-100">
+            <div className="card p-6">
               <h3 className="font-semibold text-brand-dark mb-3">Competitive Pricing</h3>
               <p className="text-gray-500">
                 Tiered pricing structure based on order volume, ensuring better margins for your business.
               </p>
             </div>
-            <div className="p-6 rounded-lg border border-gray-100">
+            <div className="card p-6">
               <h3 className="font-semibold text-brand-dark mb-3">Flexible Ordering</h3>
               <p className="text-gray-500">
                 Minimum order quantities designed for small retailers to large distributors. Regular replenishment schedules available.
               </p>
             </div>
-            <div className="p-6 rounded-lg border border-gray-100">
+            <div className="card p-6">
               <h3 className="font-semibold text-brand-dark mb-3">Marketing Support</h3>
               <p className="text-gray-500">
                 Point-of-sale materials, digital assets, and co-branded promotional campaigns to help drive sales.
               </p>
             </div>
-            <div className="p-6 rounded-lg border border-gray-100">
+            <div className="card p-6">
               <h3 className="font-semibold text-brand-dark mb-3">Reliable Logistics</h3>
               <p className="text-gray-500">
                 Pan-India delivery network with tracking capabilities. Temperature-controlled warehousing to maintain product freshness.
               </p>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mb-16">
+      <section className="py-14 px-4 bg-brand-cream">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <h2 className="font-bold text-xl text-brand-dark mb-6">
             How It Works
           </h2>
           <ol className="space-y-6 pl-8 list-decimal">
             <li className="flex items-start gap-3">
               <div className="flex-shrink-0">
-                <span className="text-brand-pink font-medium rounded-full w-6 h-6 flex items-center justify-center text-sm">1</span>
+                <span className="bg-brand-pink/10 text-brand-pink font-medium rounded-full w-6 h-6 flex items-center justify-center text-sm">1</span>
               </div>
               <div>
                 <h3 className="font-semibold text-brand-dark">Submit Inquiry</h3>
@@ -379,7 +387,7 @@ export default function DealersClient() {
             </li>
             <li className="flex items-start gap-3">
               <div className="flex-shrink-0">
-                <span className="text-brand-pink font-medium rounded-full w-6 h-6 flex items-center justify-center text-sm">2</span>
+                <span className="bg-brand-pink/10 text-brand-pink font-medium rounded-full w-6 h-6 flex items-center justify-center text-sm">2</span>
               </div>
               <div>
                 <h3 className="font-semibold text-brand-dark">Team Review</h3>
@@ -390,7 +398,7 @@ export default function DealersClient() {
             </li>
             <li className="flex items-start gap-3">
               <div className="flex-shrink-0">
-                <span className="text-brand-pink font-medium rounded-full w-6 h-6 flex items-center justify-center text-sm">3</span>
+                <span className="bg-brand-pink/10 text-brand-pink font-medium rounded-full w-6 h-6 flex items-center justify-center text-sm">3</span>
               </div>
               <div>
                 <h3 className="font-semibold text-brand-dark">Account Setup</h3>
@@ -401,7 +409,7 @@ export default function DealersClient() {
             </li>
             <li className="flex items-start gap-3">
               <div className="flex-shrink-0">
-                <span className="text-brand-pink font-medium rounded-full w-6 h-6 flex items-center justify-center text-sm">4</span>
+                <span className="bg-brand-pink/10 text-brand-pink font-medium rounded-full w-6 h-6 flex items-center justify-center text-sm">4</span>
               </div>
               <div>
                 <h3 className="font-semibold text-brand-dark">Start Ordering</h3>
@@ -411,10 +419,8 @@ export default function DealersClient() {
               </div>
             </li>
           </ol>
-        </section>
-
-
-      </div>
+        </div>
+      </section>
     </div>
   );
 }

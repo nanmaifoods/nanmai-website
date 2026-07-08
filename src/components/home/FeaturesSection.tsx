@@ -9,7 +9,6 @@ import {
   Flame,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
 
 const FEATURES = [
   {
@@ -84,22 +83,7 @@ export function PartnersSection() {
     "/images/logo/image 451.png",
   ];
 
-  const [offset, setOffset] = useState(0);
-  const visibleCount = 4;
-  const totalSlides = Math.ceil(partnerLogos.length / visibleCount);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setOffset((prev) => (prev + 1) % totalSlides);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [totalSlides]);
-
-  const currentLogos = [];
-  for (let i = 0; i < visibleCount; i++) {
-    const index = (offset * visibleCount + i) % partnerLogos.length;
-    currentLogos.push(partnerLogos[index]);
-  }
+  const marqueeLogos = [...partnerLogos, ...partnerLogos];
 
   return (
     <section className="py-12 bg-white">
@@ -112,29 +96,23 @@ export function PartnersSection() {
             Trusted by Industry Leaders
           </h2>
         </div>
-        <div className="relative overflow-hidden">
-          <motion.div
-            className="flex transition-transform duration-500 ease-in-out"
-            style={{ transform: `translateX(-${offset * (100 / visibleCount)}%)` }}
-          >
-            {partnerLogos.map((logo, index) => (
-              <div
-                key={index}
-                className="flex-shrink-0 w-1/4 px-4"
-              >
+        <div className="relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+          <div className="flex w-max animate-marquee">
+            {marqueeLogos.map((logo, index) => (
+              <div key={index} className="flex-shrink-0 w-40 sm:w-48 px-4">
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   className="flex items-center justify-center h-24"
                 >
                   <img
                     src={logo}
-                    alt={`Partner ${index + 1}`}
+                    alt={`Partner ${(index % partnerLogos.length) + 1}`}
                     className="h-full w-auto object-contain opacity-75 hover:opacity-100 transition-opacity"
                   />
                 </motion.div>
               </div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
