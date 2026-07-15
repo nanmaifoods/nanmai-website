@@ -35,7 +35,15 @@ export function Footer() {
         {/* Brand */}
         <div>
           <div className="flex items-center gap-3 mb-4">
-            <img src="/images/footer-nanmai-logo-square.png" alt="Nanmai Appalam" className="h-24 w-24 object-cover mix-blend-screen" />
+            <img
+              src="/images/favicon.png"
+              alt="Nanmai Appalam"
+              className="h-14 w-14 object-contain"
+            />
+            <span className="font-display font-black leading-none uppercase text-white flex flex-col items-center">
+              <span className="text-xl" style={{ color: "#EC008C" }}>NANMAI</span>
+              <span className="text-sm">APPALAM</span>
+            </span>
           </div>
           <p className="text-gray-400 text-sm leading-relaxed mb-5">
             Perfect for everyday meals or special occasions, our appalams add a

@@ -7,7 +7,7 @@ import { Product } from "@/types/database";
 import toast from "react-hot-toast";
 import { Spinner } from "@/components/ui/Spinner";
 
-function ProductCard({ product, index = 0 }: { product: Product; index?: number }) {
+function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCartStore();
   const discount = product.original_price
     ? Math.round(
@@ -22,13 +22,6 @@ function ProductCard({ product, index = 0 }: { product: Product; index?: number 
   };
 
   return (
-    <div
-      className="animate-card-float"
-      style={{
-        animationDelay: `${(index % 4) * 0.4}s`,
-        animationDuration: `${4 + (index % 3) * 0.6}s`,
-      }}
-    >
     <div className="card group">
       {/* Image */}
       <Link href={`/products/${product.slug}`} className="block">
@@ -100,7 +93,6 @@ function ProductCard({ product, index = 0 }: { product: Product; index?: number 
         </div>
       </div>
     </div>
-    </div>
   );
 }
 
@@ -147,8 +139,8 @@ export function FeaturedProducts() {
         ) : products.length > 0 ? (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {products.map((p, i) => (
-                <ProductCard key={p.id} product={p} index={i} />
+              {products.map((p) => (
+                <ProductCard key={p.id} product={p} />
               ))}
             </div>
             <div className="text-center mt-10">

@@ -238,9 +238,9 @@ const blogItemVariants = {
 };
 
 const BLOG_POSTS = [
-  { slug: 'health-benefits-of-appalam', title: 'Health Benefits of Eating Appalam', excerpt: 'Discover why appalam is more than just a crunchy side dish – it packs surprising nutritional benefits.', category: 'Health', date: 'Mar 10, 2025', readTime: 4, cover: '/images/Blog 1_11zon.png' },
-  { slug: 'traditional-south-indian-cooking', title: 'Traditional South Indian Cooking Tips', excerpt: 'Master the art of South Indian cooking with these time-honoured techniques and ingredient secrets.', category: 'Recipes', date: 'Mar 5, 2025', readTime: 6, cover: '/images/Blog 2_11zon.png' },
-  { slug: 'how-appalam-is-made', title: 'How Our Appalam Is Made', excerpt: 'A behind-the-scenes look at our manufacturing process – from raw ingredients to the final crispy product.', category: 'Behind The Scenes', date: 'Feb 28, 2025', readTime: 5, cover: '/images/Blog 3_11zon.png' },
+  { slug: 'health-benefits-of-appalam', title: 'Health Benefits of Eating Appalam', excerpt: 'Discover why appalam is more than just a crunchy side dish – it packs surprising nutritional benefits.', category: 'Health', date: 'Mar 10, 2025', readTime: 4, cover: '/images/blog_poster/appalam-crunch-closeup.png' },
+  { slug: 'traditional-south-indian-cooking', title: 'Traditional South Indian Cooking Tips', excerpt: 'Master the art of South Indian cooking with these time-honoured techniques and ingredient secrets.', category: 'Recipes', date: 'Mar 5, 2025', readTime: 6, cover: '/images/blog_poster/chef-cooking-tips.png' },
+  { slug: 'how-appalam-is-made', title: 'How Our Appalam Is Made', excerpt: 'A behind-the-scenes look at our manufacturing process – from raw ingredients to the final crispy product.', category: 'Behind The Scenes', date: 'Feb 28, 2025', readTime: 5, cover: '/images/blog_poster/appalam-making-process.png' },
 ];
 
 export function BlogPreview() {

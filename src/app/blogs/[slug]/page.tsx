@@ -9,7 +9,7 @@ const BLOG_CONTENT: Record<string, {
 }> = {
      'health-benefits-of-appalam': {
      title: 'Health Benefits of Eating Appalam', excerpt: 'Discover the surprising nutritional benefits of this crispy South Indian delight.',
-     category: 'Health', date: 'March 10, 2025', readTime: 4, cover: '/images/Blog 1_11zon.png', tags: ['health', 'nutrition'],
+     category: 'Health', date: 'March 10, 2025', readTime: 4, cover: '/images/blog_poster/appalam-crunch-closeup.png', tags: ['health', 'nutrition'],
     author: 'Dr. Meena Rajan', authorRole: 'Nutritionist',
     content: `
 ## Introduction
@@ -51,7 +51,7 @@ Appalam is far more than a simple side dish. When made with quality ingredients 
   },
      'traditional-south-indian-cooking': {
      title: 'Traditional South Indian Cooking Tips', excerpt: 'Master authentic South Indian cooking with these time-honoured techniques.',
-     category: 'Recipes', date: 'March 5, 2025', readTime: 6, cover: '/images/Blog 2_11zon.png', tags: ['cooking', 'tips'],
+     category: 'Recipes', date: 'March 5, 2025', readTime: 6, cover: '/images/blog_poster/chef-cooking-tips.png', tags: ['cooking', 'tips'],
     author: 'Chef Subramanian', authorRole: 'Head Chef',
     content: `
 ## The Soul of South Indian Cooking
@@ -90,7 +90,7 @@ South Indian cooking rewards patience and attention to detail. Master these foun
   },
      'how-appalam-is-made': {
      title: 'How Our Appalam Is Made', excerpt: 'A behind-the-scenes look at our traditional manufacturing process.',
-     category: 'Behind The Scenes', date: 'Feb 28, 2025', readTime: 5, cover: '/images/Blog 3_11zon.png', tags: ['process', 'quality'],
+     category: 'Behind The Scenes', date: 'Feb 28, 2025', readTime: 5, cover: '/images/blog_poster/appalam-making-process.png', tags: ['process', 'quality'],
     author: 'Nanmai Team', authorRole: 'Quality Team',
     content: `
 ## From Seed to Crunch
@@ -132,7 +132,7 @@ This entire process is FSSAI certified and conducted in hygienic, food-safe cond
   },
      'best-ways-to-cook-appalam': {
      title: '5 Best Ways to Cook Your Appalam', excerpt: 'From deep frying to air frying — find the perfect cooking method for you.',
-     category: 'How-To', date: 'Feb 20, 2025', readTime: 5, cover: '/images/Blog 4_11zon.png', tags: ['cooking', 'tips'],
+     category: 'How-To', date: 'Feb 20, 2025', readTime: 5, cover: '/images/blog_poster/appalam-frying.png', tags: ['cooking', 'tips'],
     author: 'Nanmai Kitchen', authorRole: 'Recipe Team',
     content: `
 ## The Great Appalam Debate
@@ -181,7 +181,7 @@ For everyday health-conscious eating, we recommend the **microwave or air fryer*
   },
       'papad-in-indian-cuisine-history': {
      title: 'The History of Papad in Indian Cuisine', excerpt: 'A 2,000-year journey of India\'s most beloved crispy flatbread.',
-     category: 'Culture', date: 'Feb 12, 2025', readTime: 7, cover: '/images/Blog 5_11zon.png', tags: ['history', 'culture'],
+     category: 'Culture', date: 'Feb 12, 2025', readTime: 7, cover: '/images/blog_poster/papad-history-heritage.png', tags: ['history', 'culture'],
      author: 'Prof. K. Sundaram', authorRole: 'Food Historian',
     content: `
 ## Ancient Origins

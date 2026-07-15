@@ -15,10 +15,7 @@ export default function AboutPage() {
       <section className="relative overflow-hidden bg-brand-cream py-16 px-4">
         {/* Decorative broken appalam pieces */}
         <div className="absolute -top-10 -left-10 w-28 h-28 sm:-top-16 sm:-left-16 sm:w-56 sm:h-56 md:-top-24 md:-left-24 md:w-72 md:h-72 rotate-[-18deg] opacity-90 pointer-events-none">
-          <div
-            className="relative w-full h-full animate-appalam-float"
-            style={{ animationDuration: "4.5s" }}
-          >
+          <div className="relative w-full h-full">
             <Image
               src="/images/new_assets/broken1.png"
               alt=""
@@ -28,10 +25,7 @@ export default function AboutPage() {
           </div>
         </div>
         <div className="absolute -bottom-10 -right-10 w-28 h-28 sm:-bottom-16 sm:-right-16 sm:w-56 sm:h-56 md:-bottom-24 md:-right-24 md:w-72 md:h-72 rotate-[14deg] opacity-90 pointer-events-none">
-          <div
-            className="relative w-full h-full animate-appalam-float"
-            style={{ animationDuration: "5.5s", animationDelay: "1.2s" }}
-          >
+          <div className="relative w-full h-full">
             <Image
               src="/images/new_assets/broken2.png"
               alt=""
@@ -98,6 +92,7 @@ export default function AboutPage() {
         title="Why Nanmai Exists"
         image="/images/new_assets/about.png"
         imageClassName="bg-gradient-to-br from-brand-green/10 to-brand-cream"
+        imgClassName="scale-125 object-[58%_48%]"
       >
         <p>
           As time passed, lifestyles changed, but the craving for authentic

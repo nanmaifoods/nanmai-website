@@ -51,7 +51,7 @@ const SORT_OPTIONS = [
   { value: "price-desc", label: "Price: High–Low" },
 ];
 
-function ProductCard({ product, index = 0 }: { product: Product; index?: number }) {
+function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCartStore();
   const discount = product.original_price
     ? Math.round(
@@ -61,13 +61,6 @@ function ProductCard({ product, index = 0 }: { product: Product; index?: number 
     : 0;
 
   return (
-    <div
-      className="animate-card-float"
-      style={{
-        animationDelay: `${(index % 4) * 0.4}s`,
-        animationDuration: `${4 + (index % 3) * 0.6}s`,
-      }}
-    >
     <div className="card group flex flex-col">
       <Link href={`/products/${product.slug}`} className="block">
         <div className="relative bg-gradient-to-br from-brand-cream to-white overflow-hidden">
@@ -154,7 +147,6 @@ function ProductCard({ product, index = 0 }: { product: Product; index?: number 
           </p>
         )}
       </div>
-    </div>
     </div>
   );
 }
@@ -408,8 +400,8 @@ export function ProductsClientPage() {
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-                {filtered.map((p, i) => (
-                  <ProductCard key={p.id} product={p} index={i} />
+                {filtered.map((p) => (
+                  <ProductCard key={p.id} product={p} />
                 ))}
               </div>
             )}

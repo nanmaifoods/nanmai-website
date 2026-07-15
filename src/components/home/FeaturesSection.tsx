@@ -57,12 +57,8 @@ const COLOR_MAP: Record<string, string> = {
 
 export function PartnersSection() {
   const partnerLogos = [
-    "/images/logo/image 426.png",
     "/images/logo/image 428.png",
     "/images/logo/image 429.png",
-    "/images/logo/image 430.png",
-    "/images/logo/image 431.png",
-    "/images/logo/image 432.png",
     "/images/logo/image 433.png",
     "/images/logo/image 434.png",
     "/images/logo/image 435.png",
@@ -73,7 +69,6 @@ export function PartnersSection() {
     "/images/logo/image 441.png",
     "/images/logo/image 442.png",
     "/images/logo/image 443.png",
-    "/images/logo/image 444.png",
     "/images/logo/image 445.png",
     "/images/logo/image 446.png",
     "/images/logo/image 447.png",
@@ -121,31 +116,40 @@ export function PartnersSection() {
 
 export function OurStorySection() {
   return (
-    <section className="py-20 bg-brand-cream">
+    <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-0">
-          <p className="text-brand-pink font-semibold text-sm uppercase tracking-widest mb-2">
-            Pure Traditional Trusted
-          </p>
-          <h2 className="section-title">
-            {" "}
-            Our Story Tradition in Every Crunch
-          </h2>
-          <p className="section-subtitle max-w-7xl mx-auto px-4 sm:px-6">
-            {" "}
-            At Nanmai, we are passionate about preserving the authentic taste of
-            அப்பளம், a staple loved in South Indian homes for generations. Each
-            batch is carefully prepared using locally sourced ingredients and
-            traditional methods to ensure the same homemade quality and flavor.
-            Our appalams are made for both tradition and convenience. You can
-            enjoy them roasted, fried, or quickly prepared as a microwave
-            pappadam for a crisp snack in minutes. From microwave papadum
-            options to classic varieties, we offer versatility for every
-            lifestyle. We also bring you a wide range of flavors including jeera
-            papad packet, Punjabi Pappad, and traditional rice varieties, all
-            crafted with the same commitment to quality. With Nanmai, enjoying
-            authentic papad online has never been easier.
-          </p>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+          <div className="rounded-3xl overflow-hidden">
+            <img
+              src="/images/new_image/our_story_2.png"
+              alt="Our Story - Tradition in Every Crunch"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div>
+            <p className="text-brand-pink font-semibold text-sm uppercase tracking-widest mb-2">
+              Pure Traditional Trusted
+            </p>
+            <h2 className="section-title">
+              {" "}
+              Our Story Tradition in Every Crunch
+            </h2>
+            <p className="section-subtitle">
+              {" "}
+              At Nanmai, we are passionate about preserving the authentic taste of
+              அப்பளம், a staple loved in South Indian homes for generations. Each
+              batch is carefully prepared using locally sourced ingredients and
+              traditional methods to ensure the same homemade quality and flavor.
+              Our appalams are made for both tradition and convenience. You can
+              enjoy them roasted, fried, or quickly prepared as a microwave
+              pappadam for a crisp snack in minutes. From microwave papadum
+              options to classic varieties, we offer versatility for every
+              lifestyle. We also bring you a wide range of flavors including jeera
+              papad packet, Punjabi Pappad, and traditional rice varieties, all
+              crafted with the same commitment to quality. With Nanmai, enjoying
+              authentic papad online has never been easier.
+            </p>
+          </div>
         </div>
       </div>
     </section>

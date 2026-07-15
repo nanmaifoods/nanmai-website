@@ -1,32 +1,4 @@
-"use client";
-
-import { motion } from "framer-motion";
 import type { ReactNode } from "react";
-
-const imageVariants = {
-  hidden: { opacity: 0, y: 30, scale: 0.96 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.6, ease: "easeOut" },
-  },
-};
-
-const textVariants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: "easeOut", delay: 0.25 },
-  },
-};
-
-const viewportConfig = {
-  once: true,
-  amount: 0.3,
-  margin: "-150px 0px -150px 0px",
-} as const;
 
 interface AboutStorySectionProps {
   eyebrow: string;
@@ -34,6 +6,7 @@ interface AboutStorySectionProps {
   image: string;
   imageAlt?: string;
   imageClassName?: string;
+  imgClassName?: string;
   imageOnLeft?: boolean;
   sectionClassName?: string;
   children: ReactNode;
@@ -45,40 +18,33 @@ export function AboutStorySection({
   image,
   imageAlt = "Nanmai Appalam",
   imageClassName = "",
+  imgClassName = "",
   imageOnLeft = false,
   sectionClassName = "",
   children,
 }: AboutStorySectionProps) {
   const imageBlock = (
-    <motion.div
-      variants={imageVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={viewportConfig}
-      className={`w-full ${imageOnLeft ? "order-last lg:order-first" : ""}`}
-    >
+    <div className={`w-full ${imageOnLeft ? "order-last lg:order-first" : ""}`}>
       <div
-        className={`relative overflow-hidden rounded-3xl aspect-[4/3] w-full animate-papad-float ${imageClassName}`}
-        style={{ animationDelay: imageOnLeft ? "1.2s" : "0s" }}
+        className={`relative overflow-hidden rounded-3xl aspect-[4/3] w-full ${imageClassName}`}
       >
-        <img src={image} alt={imageAlt} className="w-full h-full object-cover" />
+        <img
+          src={image}
+          alt={imageAlt}
+          className={`w-full h-full object-cover ${imgClassName}`}
+        />
       </div>
-    </motion.div>
+    </div>
   );
 
   const textBlock = (
-    <motion.div
-      variants={textVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={viewportConfig}
-    >
+    <div>
       <p className="text-brand-pink font-semibold text-sm uppercase tracking-widest mb-2">
         {eyebrow}
       </p>
       <h2 className="section-title mb-5">{title}</h2>
       <div className="text-gray-600 leading-relaxed space-y-3">{children}</div>
-    </motion.div>
+    </div>
   );
 
   return (
