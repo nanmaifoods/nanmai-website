@@ -18,8 +18,8 @@ export default function HomePage() {
     <>
       <HeroSection />
       <PartnersSection />
-      <FeaturedProducts />
       <StoryHeroSection />
+      <FeaturedProducts />
       <OurStorySection />
       <FeatureCardsSection />
       <StatsSection />

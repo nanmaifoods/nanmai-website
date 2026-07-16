@@ -121,7 +121,7 @@ export function OurStorySection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
           <div className="rounded-3xl overflow-hidden">
             <img
-              src="/images/new_image/our_story_2.png"
+              src="/images/blog_poster/F98B14EC-1B35-4069-90A3-481340B9AC3C.png"
               alt="Our Story - Tradition in Every Crunch"
               className="w-full h-full object-cover"
             />
