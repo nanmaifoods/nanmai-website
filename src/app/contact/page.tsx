@@ -89,10 +89,10 @@ export default function ContactPage() {
                 Icon: Mail,
                 title: "Email",
                 lines: [
-                  "Nanmaifoods2025@gmail.com",
+                  "Info@nanmai.co.in",
                   "We reply within 24 hours",
                 ],
-                href: "mailto:Nanmaifoods2025@gmail.com",
+                href: "mailto:Info@nanmai.co.in",
                 color: "pink",
               },
               {

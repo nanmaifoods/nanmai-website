@@ -141,10 +141,10 @@ export function Footer() {
             <li className="flex items-center gap-3">
               <Mail size={16} className="text-brand-pink shrink-0" />
               <a
-                href="mailto:Nanmaifoods2025@gmail.com"
+                href="mailto:Info@nanmai.co.in"
                 className="hover:text-brand-pink transition-colors"
               >
-                Nanmaifoods2025@gmail.com
+                Info@nanmai.co.in
               </a>
             </li>
           </ul>

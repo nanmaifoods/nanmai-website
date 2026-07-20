@@ -65,17 +65,12 @@ export function PartnersSection() {
     "/images/logo/image 436.png",
     "/images/logo/image 437.png",
     "/images/logo/image 438.png",
-    "/images/logo/image 440.png",
     "/images/logo/image 441.png",
-    "/images/logo/image 442.png",
     "/images/logo/image 443.png",
     "/images/logo/image 445.png",
     "/images/logo/image 446.png",
     "/images/logo/image 447.png",
-    "/images/logo/image 448.png",
     "/images/logo/image 449.png",
-    "/images/logo/image 450.png",
-    "/images/logo/image 451.png",
   ];
 
   const marqueeLogos = [...partnerLogos, ...partnerLogos];

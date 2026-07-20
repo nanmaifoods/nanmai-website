@@ -79,7 +79,7 @@ const SECTIONS = {
         key: "email",
         label: "Email Address",
         type: "text",
-        value: "Nanmaifoods2025@gmail.com",
+        value: "Info@nanmai.co.in",
       },
       {
         key: "address",

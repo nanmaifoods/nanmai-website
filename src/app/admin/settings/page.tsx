@@ -77,7 +77,7 @@ export default function AdminSettingsPage() {
                 </label>
                 <input
                   type="email"
-                  defaultValue="Nanmaifoods2025@gmail.com"
+                  defaultValue="Info@nanmai.co.in"
                   className="input-field"
                 />
               </div>

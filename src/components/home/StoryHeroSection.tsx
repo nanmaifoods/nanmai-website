@@ -15,7 +15,7 @@ export function StoryHeroSection() {
           <div className="relative w-full">
             <div className="relative overflow-hidden rounded-3xl aspect-[4/3] w-full bg-gradient-to-br from-brand-cream to-brand-pink/10">
               <Image
-                src="/images/blog_poster/ChatGPT Image Jul 1, 2026, 02_30_23 AM (1).png"
+                src="/images/new_assets/nanmai.jpeg"
                 alt="Nanmai Appalam"
                 fill
                 className="object-cover"

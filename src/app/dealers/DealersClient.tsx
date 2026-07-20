@@ -105,8 +105,8 @@ export default function DealersClient() {
             <div className="card p-6">
               <h3 className="font-semibold text-brand-dark">Email</h3>
               <p className="text-gray-500">
-                <a href="mailto:Nanmaifoods2025@gmail.com" className="text-brand-pink hover:underline">
-                  Nanmaifoods2025@gmail.com
+                <a href="mailto:Info@nanmai.co.in" className="text-brand-pink hover:underline">
+                  Info@nanmai.co.in
                 </a>
               </p>
               <p className="text-sm text-gray-500 mt-1">
