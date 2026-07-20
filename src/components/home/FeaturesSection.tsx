@@ -71,6 +71,7 @@ export function PartnersSection() {
     "/images/logo/image 446.png",
     "/images/logo/image 447.png",
     "/images/logo/image 449.png",
+    "/images/new_assets/potys.png",
   ];
 
   const marqueeLogos = [...partnerLogos, ...partnerLogos];
