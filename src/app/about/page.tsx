@@ -111,7 +111,7 @@ export default function AboutPage() {
       <AboutStorySection
         eyebrow="What We Stand For"
         title="Our Mission"
-        image="/images/blog_poster/about4.png"
+        image="/images/photos/image3.png"
         imageClassName="bg-gradient-to-br from-brand-pink/10 to-brand-cream"
         imageOnLeft
         sectionClassName="bg-brand-cream"

@@ -7,8 +7,8 @@ import { AnimatePresence, motion } from "framer-motion";
 
 const SLIDES = [
   {
-    image: "/images/new_image/header1.png",
-    mobileImage: "/images/new_image/header3.jpg",
+    image: "/images/photos/image1.png",
+    mobileImage: "/images/photos/image2.png",
     alt: "Nanmai Appalam - Crispy Goodness, Authentic Taste",
     heading: ["Crispy Goodness", "Authentic Taste"],
     paragraph:
