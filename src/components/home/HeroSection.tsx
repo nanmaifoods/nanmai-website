@@ -5,10 +5,20 @@ import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 
-const SLIDES = [
+type Slide = {
+  image: string;
+  mobileImage: string;
+  mobileCropBottom?: number;
+  alt: string;
+  heading: [string, string];
+  paragraph: string;
+};
+
+const SLIDES: Slide[] = [
   {
     image: "/images/photos/image1.png",
-    mobileImage: "/images/photos/image2.png",
+    mobileImage: "/images/photos/image4.png",
+    mobileCropBottom: 10,
     alt: "Nanmai Appalam - Crispy Goodness, Authentic Taste",
     heading: ["Crispy Goodness", "Authentic Taste"],
     paragraph:
@@ -120,14 +130,25 @@ export function HeroSection() {
             transition={{ duration: 0.7, ease: "easeInOut" }}
             className="absolute inset-0"
           >
-            <Image
-              src={SLIDES[active].mobileImage}
-              alt={SLIDES[active].alt}
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover object-top"
-            />
+            <div className="absolute inset-0 overflow-hidden">
+              <div
+                className="absolute inset-x-0 top-0"
+                style={{
+                  height: SLIDES[active].mobileCropBottom
+                    ? `${100 / (1 - SLIDES[active].mobileCropBottom / 100)}%`
+                    : "100%",
+                }}
+              >
+                <Image
+                  src={SLIDES[active].mobileImage}
+                  alt={SLIDES[active].alt}
+                  fill
+                  priority
+                  sizes="100vw"
+                  className="object-cover object-top"
+                />
+              </div>
+            </div>
             <div className="absolute inset-x-0 top-[4%] flex flex-col items-center text-center gap-2 px-4">
               <div className="relative w-20 h-20">
                 <Image
