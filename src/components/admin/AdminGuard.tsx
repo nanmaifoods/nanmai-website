@@ -10,7 +10,7 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // Skip auth check for login page
-    if (pathname === "/admin/login") {
+    if (pathname === "/login") {
       setChecking(false);
       return;
     }
@@ -19,7 +19,7 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
     const isAuthenticated = localStorage.getItem("adminAuth") === "true";
 
     if (!isAuthenticated) {
-      router.push("/admin/login");
+      router.push("/login");
     } else {
       setChecking(false);
     }
@@ -37,7 +37,7 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
   }
 
   // Don't render admin layout for login page
-  if (pathname === "/admin/login") {
+  if (pathname === "/login") {
     return <>{children}</>;
   }
 

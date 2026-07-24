@@ -26,7 +26,7 @@ export default function AdminLoginPage() {
       // Set session in localStorage
       localStorage.setItem("adminAuth", "true");
       localStorage.setItem("adminEmail", email);
-      router.push("/admin");
+      router.push("/");
     } else {
       setError("Invalid email or password");
     }
@@ -111,7 +111,7 @@ export default function AdminLoginPage() {
 
           <div className="mt-4 sm:mt-6 text-center">
             <a
-              href="/"
+              href={process.env.NEXT_PUBLIC_APP_URL || "/"}
               className="text-xs sm:text-sm text-gray-500 hover:text-brand-pink transition-colors inline-flex items-center gap-1"
             >
               <span>←</span> Back to Website

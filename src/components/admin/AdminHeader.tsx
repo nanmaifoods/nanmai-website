@@ -5,12 +5,12 @@ import { useAdminMode } from "@/store/adminModeContext";
 import { useSidebar } from "@/store/sidebarContext";
 
 const PAGE_TITLES: Record<string, string> = {
-  "/admin": "Dashboard",
-  "/admin/orders": "Orders",
-  "/admin/products": "Products",
-  "/admin/analytics": "Analytics",
-  "/admin/customers": "Customers",
-  "/admin/settings": "Settings",
+  "/": "Dashboard",
+  "/orders": "Orders",
+  "/products": "Products",
+  "/analytics": "Analytics",
+  "/customers": "Customers",
+  "/settings": "Settings",
 };
 
 export function AdminHeader() {
@@ -23,7 +23,7 @@ export function AdminHeader() {
   const handleLogout = () => {
     localStorage.removeItem("adminAuth");
     localStorage.removeItem("adminEmail");
-    router.push("/admin/login");
+    router.push("/login");
   };
 
   return (

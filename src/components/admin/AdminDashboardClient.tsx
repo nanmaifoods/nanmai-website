@@ -483,7 +483,7 @@ export function AdminDashboardClient() {
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
           <h3 className="font-bold text-base">Recent Orders</h3>
           <a
-            href="/admin/orders"
+            href="/orders"
             className="text-sm text-brand-pink font-semibold hover:underline"
           >
             View All

@@ -22,18 +22,18 @@ const NAV = [
   {
     section: "Main",
     items: [
-      { href: "/admin", icon: LayoutDashboard, label: "Dashboard" },
-      { href: "/admin/orders", icon: ShoppingBag, label: "Orders" },
-      { href: "/admin/products", icon: Package, label: "Products" },
-      { href: "/admin/analytics", icon: BarChart3, label: "Analytics" },
-      { href: "/admin/enquiries", icon: Inbox, label: "Enquiries" },
+      { href: "/", icon: LayoutDashboard, label: "Dashboard" },
+      { href: "/orders", icon: ShoppingBag, label: "Orders" },
+      { href: "/products", icon: Package, label: "Products" },
+      { href: "/analytics", icon: BarChart3, label: "Analytics" },
+      { href: "/enquiries", icon: Inbox, label: "Enquiries" },
     ],
   },
   {
     section: "System",
     items: [
-      { href: "/admin/customers", icon: Users, label: "Customers" },
-      { href: "/admin/settings", icon: Settings, label: "Settings" },
+      { href: "/customers", icon: Users, label: "Customers" },
+      { href: "/settings", icon: Settings, label: "Settings" },
     ],
   },
 ];
@@ -46,7 +46,7 @@ export function AdminSidebar() {
   const handleLogout = () => {
     localStorage.removeItem("adminAuth");
     localStorage.removeItem("adminEmail");
-    router.push("/admin/login");
+    router.push("/login");
   };
 
   return (
@@ -107,7 +107,7 @@ export function AdminSidebar() {
               {items.map(({ href, icon: Icon, label }) => {
                 const active =
                   pathname === href ||
-                  (href !== "/admin" && pathname.startsWith(href));
+                  (href !== "/" && pathname.startsWith(href));
                 return (
                   <li key={href}>
                     <Link
@@ -133,14 +133,15 @@ export function AdminSidebar() {
 
       {/* Bottom */}
       <div className="border-t border-white/10 p-3">
-        <Link
-          href="/"
+        <a
+          href={process.env.NEXT_PUBLIC_APP_URL || "/"}
           target="_blank"
+          rel="noopener noreferrer"
           className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-white/60 hover:bg-white/10 hover:text-white transition-all"
         >
           <Globe size={18} className="shrink-0" />
           {!collapsed && <span>View Website</span>}
-        </Link>
+        </a>
         <button
           onClick={handleLogout}
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-white/60 hover:bg-red-500/20 hover:text-red-400 transition-all mt-1"

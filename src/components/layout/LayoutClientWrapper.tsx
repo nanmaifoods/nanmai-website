@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
@@ -10,7 +11,16 @@ export function LayoutClientWrapper({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const isAdmin = pathname?.startsWith("/admin");
+  // Local dev without the admin subdomain (e.g. localhost:3000/admin) still
+  // works via the path prefix; in production the admin subdomain rewrite
+  // strips it, so we also detect the host on the client after mount.
+  const [isAdminHost, setIsAdminHost] = useState(false);
+
+  useEffect(() => {
+    setIsAdminHost(window.location.hostname.startsWith("admin."));
+  }, []);
+
+  const isAdmin = pathname?.startsWith("/admin") || isAdminHost;
 
   return (
     <>

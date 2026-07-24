@@ -6,7 +6,7 @@ import { SidebarProvider, useSidebar } from "@/store/sidebarContext";
 
 function AdminLayoutContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isLoginPage = pathname === "/admin/login";
+  const isLoginPage = pathname === "/login";
   const { collapsed, toggle } = useSidebar();
 
   // Login page has its own standalone UI - don't wrap with sidebar/header
@@ -40,7 +40,7 @@ export default function AdminLayoutWrapper({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const isLoginPage = pathname === "/admin/login";
+  const isLoginPage = pathname === "/login";
 
   // Login page has its own standalone UI - don't wrap with sidebar/header
   if (isLoginPage) {
