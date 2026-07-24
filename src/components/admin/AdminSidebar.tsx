@@ -13,6 +13,7 @@ import {
   Leaf,
   ChevronRight,
   X,
+  Inbox,
 } from "lucide-react";
 import clsx from "clsx";
 import { useSidebar } from "@/store/sidebarContext";
@@ -25,6 +26,7 @@ const NAV = [
       { href: "/admin/orders", icon: ShoppingBag, label: "Orders" },
       { href: "/admin/products", icon: Package, label: "Products" },
       { href: "/admin/analytics", icon: BarChart3, label: "Analytics" },
+      { href: "/admin/enquiries", icon: Inbox, label: "Enquiries" },
     ],
   },
   {

@@ -19,10 +19,25 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 1500));
-    toast.success("Message sent! We'll get back to you within 24 hours.");
-    setForm({ name: "", email: "", phone: "", subject: "", message: "" });
-    setLoading(false);
+    try {
+      const res = await fetch("/api/enquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to send message");
+      }
+
+      toast.success("Message sent! We'll get back to you within 24 hours.");
+      setForm({ name: "", email: "", phone: "", subject: "", message: "" });
+    } catch (err) {
+      console.error("Contact form error:", err);
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

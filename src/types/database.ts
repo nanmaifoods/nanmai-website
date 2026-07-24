@@ -54,6 +54,14 @@ export interface Database {
         Insert: Omit<Database['public']['Tables']['reviews']['Row'], 'id' | 'created_at'>;
         Update: Partial<Database['public']['Tables']['reviews']['Insert']>;
       };
+      enquiries: {
+        Row: {
+          id: string; created_at: string; name: string; email: string;
+          phone: string | null; subject: string; message: string; status: string;
+        };
+        Insert: Omit<Database['public']['Tables']['enquiries']['Row'], 'id' | 'created_at' | 'status'> & { status?: string };
+        Update: Partial<Database['public']['Tables']['enquiries']['Insert']>;
+      };
     };
   };
 }
@@ -63,3 +71,4 @@ export type Order = Database['public']['Tables']['orders']['Row'];
 export type Blog = Database['public']['Tables']['blogs']['Row'];
 export type SiteContent = Database['public']['Tables']['site_content']['Row'];
 export type Review = Database['public']['Tables']['reviews']['Row'];
+export type Enquiry = Database['public']['Tables']['enquiries']['Row'];
