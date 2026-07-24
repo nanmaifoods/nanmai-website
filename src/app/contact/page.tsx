@@ -113,7 +113,11 @@ export default function ContactPage() {
               {
                 Icon: MapPin,
                 title: "Address",
-                lines: ["123 Temple Street,", "Chennai, Tamil Nadu 600001"],
+                lines: [
+                  "Apple Infinite Solutions",
+                  "No,418 2nd main road, Prakash Nagar,",
+                  "Thirunindravur, Tiruvallur, Chennai - 602024",
+                ],
                 href: "#",
                 color: "gold",
               },
